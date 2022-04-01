@@ -1,0 +1,18 @@
+<ul class="sb-sidebar-menu pl-0" *ngIf="!hideSidePanel">
+    <li *ngFor='let d of menu' class="ua-sidebar-menu-list" [ngClass]="{'menu-active': isActive(d.route)}"
+        (click)="navigate(d.route, $event)" id="d.route"><a>{{d.label}}</a></li>
+</ul>
+
+<!-- for mobile-view -->
+<!--<button type="button" class="openbtn" (click)="showMenuButton()">☰</button>
+<div class="overlay-sidebar" *ngIf="!showSideMenu">
+    <div class="overlay-sidebar__menu">
+        <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+        <div class="sidebar-menu__content">
+            <ul class="sb-sidebar-menu-mob pl-0">
+                <li class="ua-sidebar-menu-list" *ngIf="false" (click)="navigate('', $event)" id="all-discussions"><a>Bots</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->

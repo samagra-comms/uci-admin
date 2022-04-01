@@ -1,0 +1,110 @@
+<div class="uci-container">
+    <mat-grid-list cols="2" rowHeight="4rem">
+        <mat-grid-tile colspan="1" class="font-1-2 font-weight-bold">
+            <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.conversationFlow}}</div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1" class="right aligned">
+            <div class="w-100 text-right">
+                <button mat-raised-button class="primary" *ngIf="botLogics && botLogics.length" (click)="openModel()">
+                    {{resourceService.frmelmnts?.btn?.addLogic}}
+                </button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="1">
+
+        <ng-container *ngIf="botLogics && botLogics.length <= 0; else showTable">
+            <mat-grid-list cols="1">
+                <div class="text-center" style="margin: auto; padding: 2rem;">
+                    <div class="text-center">
+                        <div class="text-center">
+                            <img alt="Search Icon" src="assets/uci-console/images/empty.svg">
+                        </div>
+                        <div class="text-center mt-20">
+                            {{resourceService.frmelmnts?.lbl?.noLogic}}
+                        </div>
+                    </div>
+                    <button mat-raised-button class="mt-10" (click)="openModel()">
+                        {{resourceService.frmelmnts?.btn?.addLogic}}
+                    </button>
+                </div>
+            </mat-grid-list>
+        </ng-container>
+        <ng-template #showTable>
+            <div class="computer only">
+                <table mat-table [dataSource]="datasource">
+                    <ng-container matColumnDef="sno">
+                        <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.step}}</th>
+                        <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.name}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="description">
+                        <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.description}}</th>
+                        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.action}}</th>
+                        <td mat-cell *matCellDef="let element; let i = index" class="center aligned">
+                            <button mat-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu" class="uci-list-menu">
+                                <button mat-menu-item (click)="openModel(element, i)">
+                                    {{resourceService.frmelmnts?.lbl?.edit}}
+                                </button>
+                                <button mat-menu-item (click)="onDelete(element, i)">
+                                    {{resourceService.frmelmnts?.lbl?.delete}}
+                                </button>
+                            </mat-menu>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+
+            <div class="mobile only">
+                <div *ngFor="let botLogic of botLogics; let i = index" class="mb-5">
+                    <mat-card>
+                        <mat-card-content>
+                            <mat-grid-list cols="4" rowHeight="35">
+                                <mat-grid-tile colspan="1">
+                                    <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.name}}</div>
+                                </mat-grid-tile>
+                                <mat-grid-tile colspan="3" class="overflow-visible">
+                                    <div class="w-100 d-flex justify-between align-middle">
+                                        <h5>{{botLogic.name}}</h5>
+                                        <div class="ui dropdown" suiDropdown>
+                                            <button mat-icon-button>
+                                                <mat-icon>more_vert</mat-icon>
+                                            </button>
+                                            <div class="menu" suiDropdownMenu>
+                                                <div class="item" (click)="openModel(botLogic, i)">
+                                                    {{resourceService.frmelmnts?.lbl?.edit}}
+                                                </div>
+                                                <div class="item" (click)="onDelete(botLogic, i)">
+                                                    {{resourceService.frmelmnts?.lbl?.delete}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile colspan="1">
+                                    <div class="w-100 wrap-text text-left">{{resourceService.frmelmnts?.lbl?.description}}</div>
+                                </mat-grid-tile>
+                                <mat-grid-tile colspan="3">
+                                    <div class="w-100 text-left">
+                                        {{botLogic.description}}
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </ng-template>
+    </mat-grid-list>
+</div>

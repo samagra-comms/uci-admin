@@ -1,0 +1,101 @@
+<section class="uci-modal">
+    <h1 mat-dialog-title>
+        {{resourceService.frmelmnts?.lbl?.confirmWarning}}:
+    </h1>
+
+    <div mat-dialog-content class="mb-40">
+        <mat-grid-list [cols]="breakpoint" (window:resize)="onResize($event)">
+            <mat-grid-tile>
+                <div>
+                    <mat-list>
+                        <mat-list-item>
+                            <h4>{{resourceService.frmelmnts?.lbl?.appropriateness}}</h4>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item *ngFor="let list of Appropriateness; let i = index">
+                            <mat-checkbox [color]="'primary'" [name]="'appropriateness' + i"
+                                          [(ngModel)]="list.checks" (ngModelChange)="updateAllChecked()">
+                                <div class="confirm-checkbox-label">
+                                    {{list.text}}
+                                </div>
+                            </mat-checkbox>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <div>
+                    <mat-list>
+                        <mat-list-item>
+                            <h4>{{resourceService.frmelmnts?.lbl?.contentDetails}}</h4>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item *ngFor="let list of contentDetails; let i = index">
+                            <mat-checkbox [color]="'primary'" [name]="'contentDetails' + i" [(ngModel)]="list.checks"
+                                          (ngModelChange)="updateAllChecked()">
+                                <div class="confirm-checkbox-label">
+                                    {{list.text}}
+                                </div>
+                            </mat-checkbox>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <div>
+                    <mat-list>
+                        <mat-list-item>
+                            <h4>{{resourceService.frmelmnts?.lbl?.usability}}</h4>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+
+                        <mat-list-item *ngFor="let list of usability; let i = index">
+                            <mat-checkbox [color]="'primary'" [name]="'usability' + i" [(ngModel)]="list.checks"
+                                          (ngModelChange)="updateAllChecked()">
+                                <div class="confirm-checkbox-label">
+                                    {{list.text}}
+                                </div>
+                            </mat-checkbox>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+    <mat-dialog-actions class="confirm-all-action">
+        <div>
+            <button mat-raised-button class="primary" (click)="allCheck(true)">
+                {{resourceService.frmelmnts?.btn?.confirmAll}}
+            </button>
+        </div>
+
+        <div>
+            <button mat-raised-button class="action-button"
+                    (click)="allCheck(false);">
+                {{resourceService.frmelmnts?.btn?.cancel}}
+            </button>
+            <ng-container *ngIf="isLoaderShow; else submitBtn">
+                <button mat-raised-button class="action-button p-0">
+                    <div class="ui active tiny inline loader"></div>
+                </button>
+            </ng-container>
+            <ng-template #submitBtn>
+                <button mat-raised-button *ngIf="isSubmit" class="action-button"
+                        [disabled]="!this.allChecked"
+                        (click)="onSubmit(true);">
+                    {{resourceService.frmelmnts?.btn?.submit}}
+                </button>
+                <button mat-raised-button *ngIf="!isSubmit" class="action-button"
+                        [disabled]="!this.allChecked"
+                        (click)="onSubmit(false);">
+                    {{resourceService.frmelmnts?.btn?.save}}
+                </button>
+            </ng-template>
+        </div>
+    </mat-dialog-actions>
+</section>

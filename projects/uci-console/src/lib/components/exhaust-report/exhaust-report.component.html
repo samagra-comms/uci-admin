@@ -1,0 +1,125 @@
+<div class="header">
+    <form [formGroup]="filterForm">
+        <mat-grid-list cols="4" rowHeight="3rem">
+            <mat-grid-tile colspan="1">
+                <div class="w-100 text-left">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Exhaust type</mat-label>
+                        <mat-select formControlName="exhaustType">
+                            <mat-option *ngFor="let exhaustType of exhaustTypes" [value]="exhaustType.value">
+                                {{ exhaustType.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <div class="w-100 text-left">
+                    <!--<mat-form-field appearance="fill">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="startPicker" />
+                        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                        </mat-form-field>-->
+                    <div class="ui left icon input">
+                        <i class="calendar icon"></i>
+                        <input suiDatepicker
+                               placeholder="Start Date"
+                               formControlName="startDate"
+                               [pickerMode]="'date'"
+                               [pickerUseNativeOnMobile]="false">
+                    </div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <div class="w-100 text-left">
+                    <!--<mat-form-field appearance="fill">
+                    <mat-label>End date</mat-label>
+                    <input matInput [matDatepicker]="endPicker">
+                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>-->
+                    <div class="ui left icon input">
+                        <i class="calendar icon"></i>
+                        <input suiDatepicker
+                               placeholder="End Date"
+                               formControlName="endDate"
+                               [pickerMode]="'date'"
+                               [pickerUseNativeOnMobile]="false">
+                    </div>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <div class="w-100 text-left">
+                    <button mat-raised-button color="primary" (click)="getJobList()">Submit</button>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+</div>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Request ID Column -->
+        <ng-container matColumnDef="requestid">
+            <th mat-header-cell *matHeaderCellDef> Request ID</th>
+            <td mat-cell *matCellDef="let element"> {{element.requestid}} </td>
+        </ng-container>
+
+        <!-- Request Type Column -->
+        <ng-container matColumnDef="requesttype">
+            <th mat-header-cell *matHeaderCellDef> Request Type</th>
+            <td mat-cell *matCellDef="let element"> {{element.requesttype}} </td>
+        </ng-container>
+
+        <!-- Request Date Column -->
+        <ng-container matColumnDef="requestdate">
+            <th mat-header-cell *matHeaderCellDef> Request Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.requestdate}} </td>
+        </ng-container>
+
+        <!-- Conversation ID Column -->
+        <ng-container matColumnDef="conversationid">
+            <th mat-header-cell *matHeaderCellDef> Conversation ID</th>
+            <td mat-cell *matCellDef="let element"> {{element.conversationid}} </td>
+        </ng-container>
+
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startdate">
+            <th mat-header-cell *matHeaderCellDef> Start Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.startdate}} </td>
+        </ng-container>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="enddate">
+            <th mat-header-cell *matHeaderCellDef> End Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.enddate}} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status</th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+
+        <!-- Report Link  Column -->
+        <ng-container matColumnDef="reportlink">
+            <th mat-header-cell *matHeaderCellDef> Report Link</th>
+            <td mat-cell *matCellDef="let element"> {{element.reportlink}} </td>
+        </ng-container>
+
+        <!--Generated Date Column -->
+        <ng-container matColumnDef="generateddate">
+            <th mat-header-cell *matHeaderCellDef> Generated Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.generateddate}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

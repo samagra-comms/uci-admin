@@ -1,0 +1,150 @@
+<div class="uci-container">
+    <mat-grid-list cols="2" rowHeight="4rem">
+        <mat-grid-tile colspan="1">
+            <div class="w-100 text-left">
+                <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="search"
+                           [placeholder]="resourceService.frmelmnts?.btn?.search"
+                           (keyup.enter)="getSearch()">
+                    <button mat-button matSuffix mat-stroked-button aria-label="search"
+                            class="uci-action-button computer only" (click)="getSearch()">
+<!--                        <mat-icon>search</mat-icon>-->
+                        {{resourceService.frmelmnts?.btn?.search}}
+                    </button>
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="1">
+            <div class="pb-10 text-right w-100">
+                <div class="right-floated pt-0">
+                    <button mat-raised-button class="uci-action-button"
+                            (click)="onAddNew()"> {{resourceService.frmelmnts?.btn?.addNew}} </button>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1">
+        <table mat-table class="computer only" [dataSource]="chatBots" #botTable>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.name}}</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.status}} </th>
+                <td mat-cell *matCellDef="let element"
+                    [ngClass]="'status-' + (element.status ? element.status.toLowerCase(): '')"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.description}}</th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+            <ng-container matColumnDef="startingMessage">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.startingMessage}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.startingMessage}} </td>
+            </ng-container>
+            <ng-container matColumnDef="botUrl">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.botUrl}} </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <span class="hide" [id]="'copyUrl-' + i">{{element.url}}</span>
+                    <button mat-raised-button class="uci-copy-button"
+                            (click)="onCopy('copyUrl-' + i)">
+                        {{resourceService.frmelmnts?.btn?.copy}}
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="botId">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.botId}}</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <span class="hide" [id]="'copyId-' + i">{{element.id}}</span>
+                    <button mat-raised-button class="uci-copy-button"
+                            (click)="onCopy('copyId-' + i)">
+                        {{resourceService.frmelmnts?.btn?.copy}}
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> {{resourceService.frmelmnts?.lbl?.action}}</th>
+                <td mat-cell *matCellDef="let element; let i = index" class="center aligned">
+                    <button mat-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu" class="uci-list-menu">
+                        <button mat-menu-item (click)="onEdit(element)">{{resourceService.frmelmnts?.lbl?.edit}} </button>
+                        <button mat-menu-item (click)="onDelete(element, i)">{{resourceService.frmelmnts?.lbl?.delete}} </button>
+                        <button mat-menu-item (click)="onStatusChange(element, i)">
+                            {{element.status === 'Live' ? resourceService.frmelmnts?.lbl?.disable : resourceService.frmelmnts?.lbl?.enable}}
+                        </button>
+                        <button mat-menu-item (click)="onReport(element, i)">
+                            {{resourceService.frmelmnts?.lbl?.report}}
+                        </button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="mobile only">
+            <div *ngFor="let chatBot of chatBots; let i = index" class="mb-5">
+                <mat-card>
+                    <mat-card-content>
+                        <mat-grid-list cols="4" rowHeight="35">
+                            <mat-grid-tile colspan="1">
+                                <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.name}}</div>
+                            </mat-grid-tile>
+                            <mat-grid-tile colspan="3" class="overflow-visible">
+                                <div class="w-100 d-flex justify-between align-middle">
+                                    <h5>{{chatBot.name}}</h5>
+                                    <button mat-button [matMenuTriggerFor]="menuMobile">
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #menuMobile="matMenu" class="uci-list-menu">
+                                        <button mat-menu-item (click)="onEdit(chatBot)">{{resourceService.frmelmnts?.lbl?.edit}} </button>
+                                        <button mat-menu-item (click)="onDelete(chatBot, i)">{{resourceService.frmelmnts?.lbl?.delete}} </button>
+                                        <button mat-menu-item (click)="onStatusChange(chatBot, i)">
+                                            {{chatBot.status === 'Live' ? resourceService.frmelmnts?.lbl?.disable : resourceService.frmelmnts?.lbl?.enable}}
+                                        </button>
+                                        <button mat-menu-item (click)="onReport(chatBot, i)">
+                                            {{resourceService.frmelmnts?.lbl?.report}}
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile colspan="1">
+                                <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.description}}</div>
+                            </mat-grid-tile>
+                            <mat-grid-tile colspan="3">
+                                <div class="w-100 text-left">
+                                    {{chatBot.description}}
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile colspan="1">
+                                <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.startingMessage}}</div>
+                            </mat-grid-tile>
+                            <mat-grid-tile colspan="3">
+                                <div class="w-100 d-flex justify-between align-middle">
+                                    <span>{{chatBot.startingMessage}}</span>
+                                    <span>
+                                        <button mat-flat-button class="small-btn"
+                                                [ngClass]="'status-' + (chatBot.status ? chatBot.status.toLowerCase(): '')">
+                                            {{chatBot.status}}
+                                        </button>
+                                    </span>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="uci-mat-pagination">
+            <mat-paginator [length]="pager.totalItems"
+                           [pageSize]="pager.pageSize"
+                           [pageIndex]="pager.currentPage - 1"
+                           [pageSizeOptions]="pager.pageSizeOptions"
+                           (page)="navigateToPage($event)">
+            </mat-paginator>
+        </div>
+    </mat-grid-list>
+</div>

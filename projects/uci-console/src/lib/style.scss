@@ -1,0 +1,147 @@
+@import url( 'https://fonts.googleapis.com/css?family=Material+Icons');
+.uci-container {
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+}
+
+.mat-table {
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-weight: 700;
+  color: black;
+}
+
+.uci-action-button {
+  background-color: #005a9e;
+  color: #FFFFFF;
+}
+
+.uci-copy-button {
+  background-color: #e0e1e2;
+  color: #000000;
+}
+
+.hide {
+  display: none;
+}
+
+.asterisk-color {
+  color: red;
+}
+
+.uci-mat-pagination {
+  text-align: right;
+}
+
+.small-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  line-height: 1;
+  min-width: auto;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-middle {
+  align-items: center;
+}
+
+.overflow-visible {
+  overflow: visible !important;
+}
+
+.background-transparent {
+  background: transparent !important;
+}
+
+.wrap-text {
+  word-wrap: break-word;
+}
+
+/* ----- flex css start ---------- */
+.col-3 {
+  flex-grow: 3;
+}
+
+.col-1 {
+  flex-grow: 1;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-flow: row !important;
+}
+
+.flex-column {
+  flex-flow: column !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-start {
+  justify-content: start !important;
+}
+
+.justify-content-end {
+  justify-content: end !important;
+}
+
+.justify-content-around {
+  justify-content: space-around !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.align-items-start {
+  align-items: start !important;
+}
+
+.align-items-baseline {
+  align-items: baseline !important;
+}
+
+.align-items-end {
+  align-items: end !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+
+  .margin-auto {
+    margin: auto !important;
+  }
+}
+
+/* ----- flex css end ----------  */
+/* ----- Media Query --------- */
+
+/* ----- Media Query End -------- */

@@ -1,0 +1,87 @@
+@import "../../style";
+
+.ua-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+}
+
+.ua-btn-close {
+  color: #000;
+  font-weight: bold;
+  background: #ef64af;
+}
+
+.uci-admin {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  z-index: unset;
+}
+
+.uci-admin-content {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  margin: 0 1.5rem;
+}
+
+.uci-admin-left-panel {
+  padding: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.uci-admin-right-panel {
+  padding: 1.5rem;
+}
+
+.ui.loader:after {
+  border-color: #fff transparent transparent !important;
+}
+
+@media (max-width: 768px) {
+  .uci-admin {
+    padding: 0 8px;
+    height: 100vh;
+    overflow: auto;
+    background: #e9e8d9;
+  }
+  .uci-admin-left-panel {
+    padding: 1rem 0;
+  }
+  .uci-admin-right-panel {
+    padding: 0px 0px 48px 0px;
+  }
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.font-weight-normal {
+  font-weight: normal;
+}
+
+.font-1-2 {
+  font-size: 1.2rem;
+}
+
+.z-index-2 {
+  z-index: 2 !important;
+}
+
+@media screen and (min-width: 376px) and (max-width: 768px) {
+  .uci-admin-content {
+    grid-template-columns: 1fr;
+    margin: 0px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 375px) {
+  .uci-admin-content {
+    grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+    margin: 0px;
+  }
+}
+

@@ -1,0 +1,77 @@
+<div class="uci-container">
+    <div class="ui grid">
+        <div class="seven wide column font-1-2 font-weight-bold">
+            Select user segment
+        </div>
+        <div class="five wide column">
+            <div class="right-floated pt-0">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="onCancel()"> Cancel</button>
+                <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="onAdd()"> Add</button>
+            </div>
+        </div>
+    </div>
+    <div class="ui grid">
+        <div class="ten wide column">
+            <div class="sb-search-box b-0 ml-0 large">
+                <div class="input-div relative" id="search-input-container">
+                    <img alt="Search Icon" class="search icon" src="assets/images/search-icon.svg">
+                    <input class="sb-search-input disabled ng-untouched ng-pristine" id="keyword" name="filter_search"
+                           [(ngModel)]="search" type="text" placeholder="Search">
+                </div>
+                <button class="sb-btn sb-btn-normal disabled" (click)="getSearch()">Search</button>
+            </div>
+        </div>
+    </div>
+    <table class="ui single line upForReviewTable table">
+        <thead>
+        <tr>
+            <th class="one wide UpReviewTableHeader sorted bl-0 w-50-px">
+
+            </th>
+            <th class="four wide UpReviewTableHeader sorted bl-0">
+                Name
+            </th>
+            <th class="four wide UpReviewTableHeader sorted bl-0">
+                Category
+            </th>
+            <th class="two wide UpReviewTableHeader sorted bl-0 center aligned">
+                Total members
+            </th>
+            <th class="two wide UpReviewTableHeader sorted bl-0 center aligned">
+                Last Updated On
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="UpForReviewListHover" *ngFor="let content of userSegments; let i = index;">
+            <td class="center aligned">
+                <input type="checkbox" [checked]="!!selectedUserSegmentMap[content.id]" (change)="onCheck($event, content)">
+            </td>
+            <td>{{content.name}}</td>
+            <td>{{content?.category}}</td>
+            <td class="center aligned">{{content?.count}}</td>
+            <td class="center aligned">{{content?.updated_at | date}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="ui grid">
+        <div class="two wide column"></div>
+        <div class="ten wide column">
+            <div class="pb-10">
+                <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages">
+                    <a [ngClass]="{disabled:pager.currentPage===1 }" class="item "
+                       (click)="navigateToPage(1) ">First</a>
+                    <a [ngClass]="{disabled:pager.currentPage===1 }" class="item "
+                       (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+                    <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}"
+                       (click)="navigateToPage(page)" class="item">{{page}}</a>
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}"
+                       (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}"
+                       (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

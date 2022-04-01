@@ -1,0 +1,12 @@
+.font-1-2 {
+    font-size: 1.2rem;
+}
+
+.user-segment-form label {
+    font-weight: normal !important;
+}
+
+button:disabled {
+    background: #89CFF0;
+    border-color: #89CFF0;
+}

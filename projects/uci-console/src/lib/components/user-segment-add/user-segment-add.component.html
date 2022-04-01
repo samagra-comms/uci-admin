@@ -1,0 +1,140 @@
+<div class="uci-add-segment">
+    <div class="ui grid">
+        <div class="nine wide column font-1-2 font-weight-bold">
+            Create new segment
+        </div>
+        <div class="three wide column">
+            <div class="right-floated pt-0">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-10" (click)="onCancel()">
+                    Cancel
+                </button>
+                <ng-container *ngIf="isLoaderShow; else addBtn">
+                    <button class="sb-btn sb-btn-normal sb-btn-primary p-0">
+                        <div class="ui active tiny inline loader"></div>
+                    </button>
+                </ng-container>
+                <ng-template #addBtn>
+                    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="onAdd()"
+                            [disabled]="userSegmentForm.invalid">
+                        Add
+                    </button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <div class="ten wide column font-1-2">
+        <form class="ui form user-segment-form" [formGroup]="userSegmentForm">
+            <div class="field">
+                <label>Name <sup><i class="asterisk icon asterisk-color"></i></sup></label>
+                <input type="text" name="name" placeholder="Name" formControlName="name">
+            </div>
+            <div class="field">
+                <label>Description</label>
+                <textarea name="description" formControlName="description" placeholder="Enter description"></textarea>
+            </div>
+            <div class="ui divider mt-30"></div>
+            <div class="two fields">
+                <div class="field">
+                    <label>District</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="district"
+                                          [options]="districts"
+                                          #multiSelectDistrict>
+                            <sui-select-option *ngFor="let option of multiSelectDistrict.filteredOptions"
+                                               [value]="option.district">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label>Block</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="block"
+                                          [options]="blocks"
+                                          #multiSelectBlock>
+                            <sui-select-option *ngFor="let option of multiSelectBlock.filteredOptions"
+                                               [value]="option.block">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field" *ngIf="clusters.length">
+                    <label>Cluster</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="cluster"
+                                          [options]="clusters"
+                                          #multiSelectCluster>
+                            <sui-select-option *ngFor="let option of multiSelectCluster.filteredOptions"
+                                               [value]="option.cluster">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>School</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="school"
+                                          [options]="schools"
+                                          #multiSelectSchool>
+                            <sui-select-option *ngFor="let option of multiSelectSchool.filteredOptions"
+                                               [value]="option.school">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Role</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="role"
+                                          [options]="roles"
+                                          #multiSelectRole>
+                            <sui-select-option *ngFor="let option of multiSelectRole.filteredOptions"
+                                               [value]="option.name">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Board</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="board"
+                                          [options]="boards"
+                                          #multiSelectBoard>
+                            <sui-select-option *ngFor="let option of multiSelectBoard.filteredOptions"
+                                               [value]="option.name">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Grade</label>
+                    <div class="ui segment p-0">
+                        <sui-multi-select class="selection w-100"
+                                          formControlName="grade"
+                                          [options]="grade"
+                                          #multiSelectGrade>
+                            <sui-select-option *ngFor="let option of multiSelectGrade.filteredOptions"
+                                               [value]="option">
+                            </sui-select-option>
+                        </sui-multi-select>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

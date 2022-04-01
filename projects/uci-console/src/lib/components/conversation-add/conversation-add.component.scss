@@ -1,0 +1,164 @@
+@import "../../style";
+
+.uci-add-container {
+  /*padding-top: 1.5rem;*/
+  /*padding-left: 1.5rem;*/
+  /*padding-right: 1.5rem;*/
+  /*z-index: 2!important;*/
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+  pointer-events: none;
+}
+
+::ng-deep .mat-vertical-stepper-header {
+  pointer-events: none;
+}
+
+.filter_search {
+  border-radius: 25px !important;
+}
+
+.ellipsis-icon {
+  font-size: 1.2rem;
+}
+
+.w-50-px {
+  width: 50px !important;
+}
+
+.font-1-2 {
+  font-size: 1.2rem;
+}
+
+.ui.form .field > label {
+  font-weight: normal;
+}
+
+.action-dropdown {
+  top: 2px;
+  left: -56px;
+  z-index: 2;
+  position: absolute;
+}
+
+.action-dropdown .item {
+  cursor: pointer;
+}
+
+.action-dropdown .item:hover {
+  background-color: #f6f6f6;
+}
+
+.steps {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  border: 1px solid #777777;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e2e2e2;
+  color: #000000;
+  margin-right: 0.7rem;
+  font-size: 0.75rem;
+}
+
+.font-0-75 {
+  font-size: 0.75rem;
+}
+
+.line {
+  background-color: #777;
+  width: 25%;
+  height: 1px;
+}
+
+.blue-bg-white-text {
+  background-color: #0c5593 !important;
+  color: #FFFFFF !important;
+}
+
+.green-bg-white-text {
+  background-color: #3c763d !important;
+  color: #FFFFFF !important;
+}
+
+.w-25-per {
+  width: 25%;
+}
+
+.delete-icon {
+  color: red;
+  font-size: 1.5rem;
+}
+
+.delete-icon-sec {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:disabled {
+  background: #89CFF0;
+  border-color: #89CFF0;
+}
+
+.t-and-c-title {
+  cursor: pointer !important;
+}
+
+.t-and-c-title:hover {
+  color: #89CFF0 !important;
+}
+
+.sb-modal.ui.modal {
+  box-shadow: none !important;
+}
+
+.sb-modal.ui.modal.normal {
+  max-width: 45rem;
+  height: 0 !important;
+}
+
+.line-height {
+  line-height: normal;
+}
+
+.allCheckBtn {
+  position: absolute;
+  left: 1rem;
+}
+
+.text-danger {
+  color: red !important;
+}
+
+.text-success {
+  color: green !important;
+}
+
+/* material-ui */
+
+.circular-button {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button {
+  min-width: 95px;
+  border-radius: 50px;
+  color: #fff;
+}
+
+.tc-tag {
+  text-decoration: none;
+}
+
+.step2-wrapper {
+  min-height: 300px;
+}

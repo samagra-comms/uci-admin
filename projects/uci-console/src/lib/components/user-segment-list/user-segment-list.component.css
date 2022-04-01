@@ -1,0 +1,25 @@
+.uci-container {
+    /*padding-top: 1.5rem;*/
+    /*padding-left: 1.5rem;*/
+    /*padding-right: 1.5rem;*/
+    /*z-index: 2!important;*/
+}
+
+.filter_search {
+    border-radius: 25px !important;
+}
+
+.ellipsis-icon {
+    font-size: 1.2rem;
+}
+
+.w-50-px {
+    width: 50px !important;
+}
+
+.font-1-5 {
+    font-size: 1.5rem;
+}
+.font-1-2 {
+    font-size: 1.2rem;
+}

@@ -1,0 +1,22 @@
+<div class="ui">
+    <div class="relative position">
+        <div class="py-8 ua-btn-container ua-back-btn-container px-20 z-index-2">
+           <div class="mx-20">
+               <button mat-raised-button (click)="goBack()">
+                   <mat-icon>keyboard_backspace</mat-icon>
+                   {{resourceService?.frmelmnts?.btn?.back || 'Back'}}
+               </button>
+           </div>
+        </div>
+    </div>
+    <div class="uci-admin">
+        <div class="uci-admin-content">
+            <div class="uci-admin-left-panel ua-side-content z-index-2">
+                <lib-side-panel></lib-side-panel>
+            </div>
+            <div class="uci-admin-right-panel ua-main-content z-index-2">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

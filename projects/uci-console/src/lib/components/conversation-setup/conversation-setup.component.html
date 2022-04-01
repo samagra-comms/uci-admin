@@ -1,0 +1,110 @@
+<div class="uci-container">
+    <mat-grid-list cols="1" rowHeight="4rem">
+        <mat-grid-tile colspan="1" class="font-1-2 font-weight-bold">
+            <div class="w-100 text-left">{{resourceService.frmelmnts?.lbl?.addConversation}}</div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <form [formGroup]="conversationForm">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.conversationName}}
+                <sup><i class="asterisk icon asterisk-color"></i></sup>
+            </mat-label>
+            <input matInput type="text" name="name"
+                   placeholder="{{resourceService.frmelmnts?.lbl?.enterName}}"
+                   formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.conversationDescription}}</mat-label>
+            <textarea matInput rows="5" name="description"
+                      placeholder="{{resourceService.frmelmnts?.lbl?.enterDescription}}"
+                      formControlName="description">
+            </textarea>
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>
+                {{resourceService.frmelmnts?.lbl?.conversationPurpose}}
+                <sup><i class="asterisk icon asterisk-color"></i></sup>
+            </mat-label>
+            <input matInput type="text" name="name"
+                   placeholder="{{resourceService.frmelmnts?.lbl?.enterPurpose}}"
+                   formControlName="purpose">
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.startMessage}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <input matInput type="text" name="startingMessage"
+                   placeholder="{{resourceService.frmelmnts?.lbl?.enterMessage}}"
+                   formControlName="startingMessage">
+            <mat-error *ngIf="isStartingMessageExist">
+                {{resourceService.frmelmnts?.lbl?.startMessageError}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-grid-list [cols]="matDateBreakpoint" rowHeight="6rem">
+            <mat-grid-tile>
+                <div class="w-100 text-left">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>
+                            {{resourceService.frmelmnts?.lbl?.startDate}}
+                            <sup><i class="asterisk icon asterisk-color"></i></sup>
+                        </mat-label>
+                        <input matInput [matDatepicker]="picker" [min]="startMinDate" formControlName="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div class="w-100 text-left">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>
+                            {{resourceService.frmelmnts?.lbl?.endDate}}
+                        </mat-label>
+                        <input matInput [matDatepicker]="endPicker" [min]="endMinDate" formControlName="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+</div>
+<!--Will enable this in future-->
+<!--<div class="ui divider"></div>
+<div class="ui grid">
+    <div class="six wide column">
+        <h6>User segments</h6>
+        <p class="pt-10">{{userSegments.length}} segments added</p>
+    </div>
+    <div class="six wide column  right aligned">
+        <div class="pt-0">
+            <button mat-mini-fab class="action-button mr-10"
+                    (click)="onUserSegmentAddClick()">
+                Create new
+            </button>
+            <button mat-mini-fab class="action-button" (click)="userSegment()">
+                Choose from existing
+            </button>
+        </div>
+    </div>
+</div>-->
+<div class="">
+    <ng-container *ngIf="userSegments && userSegments.length">
+        <div class="ui three column grid">
+            <div class="column" *ngFor="let userSegment of userSegments; let i = index">
+                <div class="ui fluid card">
+                    <div class="content">
+                        <i class="right floated icon trash delete-icon"
+                           (click)="onUserSegmentDelete(i)"></i>
+                        {{userSegment.name}}
+                        <div class="meta">{{resourceService.frmelmnts?.lbl?.userCount}} {{userSegment.count}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+</div>

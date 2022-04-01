@@ -1,0 +1,16 @@
+@import "../../style";
+
+::ng-deep .uci-logic-container {
+  padding: 20px;
+}
+
+.sample-download {
+  text-decoration: underline !important;
+  cursor: pointer !important;
+}
+
+.mobile {
+  .sample-download {
+    font-size: 0.8rem;
+  }
+}

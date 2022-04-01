@@ -1,0 +1,26 @@
+.tabs-content-wrapper {
+  padding: 0 24px !important;
+}
+
+.confirm-all-action {
+  justify-content: space-between;
+}
+
+.uci-modal {
+  background: #fff;
+  padding: 20px;
+  max-height: 90vh;
+  overflow: auto;
+
+  .mat-dialog-content {
+    max-height: initial !important;
+  }
+
+  ::ng-deep .mat-figure {
+    align-items: initial !important;
+  }
+
+  .confirm-checkbox-label {
+    white-space: break-spaces;
+  }
+}

@@ -1,0 +1,72 @@
+@import "../../style";
+
+::ng-deep .mat-select-panel-wrap {
+  flex-basis: auto;
+}
+
+.mat-column-action {
+  width: 5px;
+}
+
+.uci-list-menu {
+  background: red;
+}
+
+/* Old CSS*/
+
+.uci-container {
+  ::ng-deep .cdk-overlay-pane {
+    width: auto;
+  }
+}
+
+.filter_search {
+}
+
+.ellipsis-icon {
+  font-size: 1.2rem;
+}
+
+.status-live {
+  color: #3c763d;
+}
+
+.status-draft {
+  color: #ffb300;
+}
+
+.status-disabled {
+  color: #ff4a2f;
+}
+
+.mobile {
+  .status-draft {
+    font-weight: 900;
+    background-color: rgba(241, 210, 140, 0.69);
+  }
+
+  .status-disabled {
+    font-weight: 900;
+    background-color: rgba(229, 135, 126, 0.63);
+  }
+
+  .status-live {
+    font-weight: 900;
+    background-color: rgba(120, 206, 122, 0.58);
+  }
+}
+
+.action-dropdown {
+  top: 2px;
+  left: -56px;
+  z-index: 2;
+  position: absolute;
+}
+
+.action-dropdown .item {
+  cursor: pointer;
+}
+
+.action-dropdown .item:hover {
+  background-color: #f6f6f6;
+}
