@@ -3,11 +3,16 @@ import {RouterModule, Routes} from '@angular/router';
 
 
 const routes: Routes = [
+
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'uci-admin'
+  },
   {
     path: 'uci-admin',
-    // loadChildren: './uci-admin/uci-admin.module#UciAdminModule'
     loadChildren: () => import('./uci-admin/uci-admin.module').then(m => m.UciAdminModule)
-  },
+  }
 ];
 
 @NgModule({
