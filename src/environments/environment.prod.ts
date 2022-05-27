@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  url: 'http://143.110.255.220:9999',
-  blobUrl: 'http://luezoid.com',
-  botPhoneNumber: '+918802130198'
+  url: process.env.NG_APP_url,
+  blobUrl: process.env.NG_APP_blobUrl,
+  botPhoneNumber: process.env.NG_APP_botPhoneNumber
 };
