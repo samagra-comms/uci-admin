@@ -16,7 +16,7 @@ node() {
 
     properties([
         parameters([
-            string(name: 'docker_repo', defaultValue: 'uci-web-channel', description: 'Docker Image Name'),
+            string(name: 'docker_repo', defaultValue: 'uci-admin', description: 'Docker Image Name'),
             string(name: 'docker_server', defaultValue: 'localhost:5000', description: 'Docker Registry URL'),
 
         ])
