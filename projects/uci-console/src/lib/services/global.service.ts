@@ -8,10 +8,12 @@ export class GlobalService {
     private user: BehaviorSubject<any> = new BehaviorSubject(undefined);
     public readonly user$ = this.user.asObservable();
     private baseUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
+    private nlBaseUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
     private blobUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
     private botPhoneNumber: BehaviorSubject<any> = new BehaviorSubject('');
     private resourceService: BehaviorSubject<any> = new BehaviorSubject({});
     public readonly baseUrl$ = this.baseUrl.asObservable();
+    public readonly nlBaseUrl$ = this.nlBaseUrl.asObservable();
     public readonly resourceService$ = this.resourceService.asObservable();
 
     constructor() {
@@ -31,6 +33,14 @@ export class GlobalService {
 
     getBaseUrl() {
         return this.baseUrl.value;
+    }
+
+    setNlBaseUrl(baseUrl) {
+        this.nlBaseUrl.next(baseUrl);
+    }
+
+    getNlBaseUrl() {
+        return this.nlBaseUrl.value;
     }
 
     setBlobUrl(baseUrl) {

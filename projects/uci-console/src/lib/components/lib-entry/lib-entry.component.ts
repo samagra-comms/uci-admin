@@ -17,6 +17,7 @@ import {GlobalService} from '../../services/global.service';
 export class LibEntryComponent implements OnInit {
     @Input() user;
     @Input() baseUrl;
+    @Input() nlBaseUrl;
     @Input() blobUrl;
     @Input() botPhoneNumber;
     @Input() resourceService;
@@ -39,6 +40,9 @@ export class LibEntryComponent implements OnInit {
         }
         if (this.baseUrl) {
             this.globalService.setBaseUrl(this.baseUrl);
+        }
+        if (this.nlBaseUrl) {
+            this.globalService.setNlBaseUrl(this.nlBaseUrl);
         }
         if (this.blobUrl) {
             this.globalService.setBlobUrl(this.blobUrl);

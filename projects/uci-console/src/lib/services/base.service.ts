@@ -21,6 +21,9 @@ export class BaseService {
         if (user && user.rootOrgId) {
             headers.ownerOrgID = user.rootOrgId;
         }
+        if (user.token) {
+          headers['admin-token'] = user.token;
+        }
 
         return headers;
     }
@@ -48,6 +51,38 @@ export class BaseService {
         };
 
         return this.http.post(url, data, {headers}).pipe(
+            map((res: any) => {
+                return res.result;
+            }),
+            catchError(err => {
+                return this.handleError(err);
+            })
+        );
+    }
+
+    public patchRequest(url, data = {}, headers: any = {}) {
+        headers = {
+            ...headers,
+            ...this.getDefaultHeaders()
+        };
+
+        return this.http.patch(url, data, {headers}).pipe(
+            map((res: any) => {
+                return res.result;
+            }),
+            catchError(err => {
+                return this.handleError(err);
+            })
+        );
+    }
+
+    public deleteRequest(url, headers: any = {}) {
+        headers = {
+            ...headers,
+            ...this.getDefaultHeaders()
+        };
+
+        return this.http.delete(url, {headers}).pipe(
             map((res: any) => {
                 return res.result;
             }),

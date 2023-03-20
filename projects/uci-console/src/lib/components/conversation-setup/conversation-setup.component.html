@@ -43,6 +43,31 @@
             </mat-error>
         </mat-form-field>
 
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.segmentId}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <input matInput type="text" name="segmentId"
+                  placeholder="{{resourceService.frmelmnts?.lbl?.enterSegmentId}}"
+                  formControlName="segmentId">
+        </mat-form-field>
+
+        <!--<mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.notificationTitle}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <input matInput type="text" name="notificationTitle"
+                  placeholder="{{resourceService.frmelmnts?.lbl?.enterTitle}}"
+                  formControlName="notificationTitle">
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.notificationDescription}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <textarea matInput rows="5" name="notificationDescription"
+                    placeholder="{{resourceService.frmelmnts?.lbl?.enterDescription}}"
+                    formControlName="notificationDescription">
+            </textarea>
+        </mat-form-field>-->
+
         <mat-grid-list [cols]="matDateBreakpoint" rowHeight="6rem">
             <mat-grid-tile>
                 <div class="w-100 text-left">
