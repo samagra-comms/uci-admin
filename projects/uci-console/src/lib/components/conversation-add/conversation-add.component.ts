@@ -198,7 +198,7 @@ export class ConversationAddComponent implements OnInit {
 
     afterBotSubmit(extras) {
       const mappingData = {
-        segmentId: this.conversationForm.value.segmentId,
+        segmentId: parseInt(this.conversationForm.value.segmentId, 10),
         botId: extras.queryParams.botId
       };
 
