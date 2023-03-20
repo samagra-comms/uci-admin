@@ -1,3 +1,4 @@
+import { environment } from './../../../../../../src/environments/environment';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UciService} from '../../services/uci.service';
 import {GlobalService} from '../../services/global.service';
@@ -64,17 +65,22 @@ export class LogicListComponent implements OnInit {
 
     onLogicAdd(logicFormData) {
         const reqData = {
-            ...logicFormData,
+            id: logicFormData.id,
+            name: 'Firebase Broadcast Logic',
+            description: 'desc',
             transformers: [
                 {
-                    id: 'bbf56981-b8c9-40e9-8067-468c2c753659',
+                    id: '774cd134-6657-4688-85f6-6338e2323dde',
                     meta: {
                         form: 'https://hosted.my.form.here.com',
-                        formID: logicFormData.formId
+                        formID: logicFormData.formId,
+                        title: logicFormData.name,
+                        body: logicFormData.description,
+                        type: 'JS_TEMPLATE_LITERALS'
                     }
                 }
             ],
-            adapter: '44a9df72-3d7a-4ece-94c5-98cf26307324'
+            adapter: environment.adapterId
         };
 
         this.isModalLoaderShow = true;
@@ -97,7 +103,7 @@ export class LogicListComponent implements OnInit {
                     const existingLogic = reqData;
                     delete existingLogic.id;
                     this.botLogics.push({
-                        id: data.data.id,
+                        id: data.id,
                         ...existingLogic,
                     });
                     this.onModify();

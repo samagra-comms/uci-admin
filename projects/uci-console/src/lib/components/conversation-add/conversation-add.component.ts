@@ -12,6 +12,7 @@ import {AddLogicComponent} from '../add-logic/add-logic.component';
 import {TermsConditionsComponent} from '../terms-conditions/terms-conditions.component';
 import {TermsConditionConfirmComponent} from '../terms-condition-confirm/terms-condition-confirm.component';
 import {MatStepper} from '@angular/material/stepper';
+import {environment} from '../../../../../../src/environments/environment';
 
 @Component({
     selector: 'lib-conversation-add',
@@ -75,6 +76,9 @@ export class ConversationAddComponent implements OnInit {
             startingMessage: ['', Validators.required],
             startDate: [null, Validators.required],
             endDate: [null],
+            segmentId: ['', Validators.required],
+            // notificationTitle: ['', Validators.required],
+            // notificationDescription: ['', Validators.required],
             status: ['Draft']
         });
 
@@ -133,7 +137,7 @@ export class ConversationAddComponent implements OnInit {
 
     onSubmit(isTriggerBot = false) {
         const reqObj = {
-            ...this.conversationForm.value,
+            ...this.conversationForm.getRawValue(),
             users: [],
             logic: []
         };
@@ -157,7 +161,8 @@ export class ConversationAddComponent implements OnInit {
                 data => {
                     this.closeVerifyModal();
                     this.isLoaderShow = false;
-                    this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: this.conversationId}});
+                    // this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: this.conversationId}});
+                    this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: this.conversationId}});
                 }, error => {
                     this.isLoaderShow = false;
                     this.verifyAllItemsModal = true;
@@ -171,11 +176,12 @@ export class ConversationAddComponent implements OnInit {
             this.uciService.botCreate({data: reqObj}).subscribe(
                 (data: any) => {
                     if (isTriggerBot) {
-                        this.startConversation(data.data);
+                        this.startConversation(data);
                     } else {
                         this.closeVerifyModal();
                         this.isLoaderShow = false;
-                        this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: data.data.id}});
+                        // this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: data.data.id}});
+                        this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
                     }
 
                 }, error => {
@@ -190,17 +196,55 @@ export class ConversationAddComponent implements OnInit {
         }
     }
 
+    afterBotSubmit(extras) {
+      const mappingData = {
+        segmentId: this.conversationForm.value.segmentId,
+        botId: extras.queryParams.botId
+      };
+
+      this.uciService.nlSegmentBotMapping(mappingData).subscribe(
+        data => {
+            this.router.navigate(['uci-admin/success'], extras);
+        }
+      );
+    }
+
+    createNotification() {
+      const notificationData = {
+        name: 'Firebase Broadcast Logic',
+        transformers: [
+          {
+            id: '774cd134-6657-4688-85f6-6338e2323dde',
+            meta: {
+              title: this.conversationForm.value.notificationTitle,
+              body: this.conversationForm.value.notificationDescription,
+              type: 'JS_TEMPLATE_LITERALS'
+            },
+            type: 'broadcast'
+          }
+        ],
+        adapter: environment.adapterId
+      };
+
+      this.resourceService.notificationCreate(notificationData).subscribe(
+        data => {
+          console.log('----', data);
+        }
+      );
+    }
+
     startConversation(bot) {
         this.uciService.startConversation(bot.id).subscribe(
             data => {
                 this.isLoaderShow = false;
                 this.closeVerifyModal();
-                this.router.navigate(['uci-admin/success'], {
+                /*this.router.navigate(['uci-admin/success'], {
                     queryParams: {
                         text: this.conversationForm.value.startingMessage,
                         botId: bot.id
                     }
-                });
+                });*/
+                this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
             }, error => {
                 this.verifyAllItemsModal = true;
                 this.allChecked = false;
@@ -269,7 +313,8 @@ export class ConversationAddComponent implements OnInit {
     }
 
     onStarringMessageChange() {
-        this.uciService.getCheckStartingMessage({startingMessage: this.conversationForm.value.startingMessage}).subscribe(val => {
+        this.uciService.searchConversation({startingMessage: this.conversationForm.value.startingMessage, match: true}).subscribe(val => {
+            console.log(val);
             if (val && val.data && val.data.id) {
                 this.isStartingMessageExist = (this.conversationId !== val.data.id);
             }
