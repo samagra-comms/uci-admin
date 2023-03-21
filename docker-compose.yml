@@ -1,0 +1,8 @@
+version: '3'
+services:
+  uci-admin:
+    build: .
+    image: uci-admin
+    ports:
+      - 5429:80
+    
