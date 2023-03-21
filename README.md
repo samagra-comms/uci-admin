@@ -14,3 +14,13 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 * **url:** API base URL 
 * **blobUrl:** Sample file download base URL
 * **botPhoneNumber:** Bot's Whatsapp number
+
+# Run as a Docker Container
+
+* Install Docker and Docker Compose 
+
+```
+    docker-compose up -d --build
+```
+
+An optimized production build is made and served through nginx. 
