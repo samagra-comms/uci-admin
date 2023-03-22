@@ -72,13 +72,13 @@ export class ConversationAddComponent implements OnInit {
             return;
         }
         this.conversationForm = this.fb.group({
-            name: ['nameee', Validators.required],
-            description: ['desd'],
-            purpose: ['purpose', Validators.required],
-            startingMessage: ['hello', Validators.required],
+            name: ['', Validators.required],
+            description: [''],
+            purpose: ['', Validators.required],
+            startingMessage: ['', Validators.required],
             startDate: [null, Validators.required],
             endDate: [null],
-            segmentId: ['1', Validators.required],
+            segmentId: ['', Validators.required],
             // notificationTitle: ['', Validators.required],
             // notificationDescription: ['', Validators.required],
             status: ['enabled']

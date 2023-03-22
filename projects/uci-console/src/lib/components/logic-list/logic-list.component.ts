@@ -65,7 +65,7 @@ export class LogicListComponent implements OnInit {
     }
 
     onLogicAdd(logicFormData) {
-        const reqData = {
+        const reqData: any = {
             id: logicFormData.id,
             name: 'Firebase Broadcast Logic',
             description: 'desc',
@@ -77,8 +77,7 @@ export class LogicListComponent implements OnInit {
                         formID: logicFormData.formId,
                         title: logicFormData.name,
                         body: logicFormData.description,
-                        templateType: 'JS_TEMPLATE_LITERALS',
-                        type: 'broadcast'
+                        templateType: 'JS_TEMPLATE_LITERALS'
                     }
                 }
             ],
@@ -115,6 +114,7 @@ export class LogicListComponent implements OnInit {
             );
             // Broadcast bot logic
             reqData.adapter = environment.broadcastAdapterId;
+            reqData.transformers[0].meta.type = 'broadcast';
             this.uciService.createLogic({data: reqData}).subscribe(
                 (data: any) => {
                     this.isModalLoaderShow = false;
