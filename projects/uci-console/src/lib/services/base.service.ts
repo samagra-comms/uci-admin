@@ -60,6 +60,22 @@ export class BaseService {
         );
     }
 
+    public postSegmentRequest(url, data = {}, headers: any = {}) {
+        headers = {
+            ...headers,
+            ...this.getDefaultHeaders()
+        };
+
+        return this.http.post(url, data, {headers}).pipe(
+            map((res: any) => {
+                return res.result ? res.result : res;
+            }),
+            catchError(err => {
+                return this.handleError(err);
+            })
+        );
+    }
+
     public patchRequest(url, data = {}, headers: any = {}) {
         headers = {
             ...headers,

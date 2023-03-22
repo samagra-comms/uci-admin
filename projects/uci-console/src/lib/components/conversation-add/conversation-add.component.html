@@ -112,7 +112,7 @@
                 </mat-step>
                 <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationFlow}}">
                     <div class="step2-wrapper" *ngIf="stepIndex === 2">
-                        <lib-logic-list [botLogics]="botLogics" (modify)="onBotLogicModify($event)">
+                        <lib-logic-list [botLogics]="botLogics" [notificationBotLogics]="notificationBotLogics" (modify)="onBotLogicModify($event)">
                         </lib-logic-list>
                     </div>
                     <div *ngIf="stepIndex === 2">

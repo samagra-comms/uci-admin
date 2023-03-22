@@ -24,8 +24,10 @@ export class ConversationAddComponent implements OnInit {
     @ViewChild('horizontalStepper') horizontalStepper;
     @ViewChild('verticalStepper') verticalStepper;
     currentViewState = 'ADD_CONVERSATION';
+    conversationBot;
     stepIndex = 1;
     botLogics = [];
+    notificationBotLogics = [];
     userSegments = [];
     column = '';
     sortDirection = '';
@@ -70,16 +72,16 @@ export class ConversationAddComponent implements OnInit {
             return;
         }
         this.conversationForm = this.fb.group({
-            name: ['', Validators.required],
-            description: [''],
-            purpose: ['', Validators.required],
-            startingMessage: ['', Validators.required],
+            name: ['nameee', Validators.required],
+            description: ['desd'],
+            purpose: ['purpose', Validators.required],
+            startingMessage: ['hello', Validators.required],
             startDate: [null, Validators.required],
             endDate: [null],
-            segmentId: ['', Validators.required],
+            segmentId: ['1', Validators.required],
             // notificationTitle: ['', Validators.required],
             // notificationDescription: ['', Validators.required],
-            status: ['Draft']
+            status: ['enabled']
         });
 
         // Edit case
@@ -135,7 +137,7 @@ export class ConversationAddComponent implements OnInit {
         this.router.navigate(['uci-admin']);
     }
 
-    onSubmit(isTriggerBot = false) {
+    onSubmit(isTriggerBot = false, isNavigateToEnd = false) {
         const reqObj = {
             ...this.conversationForm.getRawValue(),
             users: [],
@@ -153,6 +155,9 @@ export class ConversationAddComponent implements OnInit {
         if (reqObj.endDate) {
             reqObj.endDate = moment(reqObj.endDate).format('YYYY-MM-DD');
         }
+        if (isNavigateToEnd) {
+          reqObj.name += ' Broadcast';
+        }
 
         this.isLoaderShow = true;
 
@@ -161,7 +166,6 @@ export class ConversationAddComponent implements OnInit {
                 data => {
                     this.closeVerifyModal();
                     this.isLoaderShow = false;
-                    // this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: this.conversationId}});
                     this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: this.conversationId}});
                 }, error => {
                     this.isLoaderShow = false;
@@ -175,13 +179,19 @@ export class ConversationAddComponent implements OnInit {
         } else {
             this.uciService.botCreate({data: reqObj}).subscribe(
                 (data: any) => {
+                    if (!isNavigateToEnd) {
+                      this.conversationBot = {text: reqObj.startingMessage, botId: data.id};
+                    }
                     if (isTriggerBot) {
-                        this.startConversation(data);
+                        this.startConversation(data, isNavigateToEnd);
                     } else {
                         this.closeVerifyModal();
                         this.isLoaderShow = false;
-                        // this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: data.data.id}});
-                        this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
+                        if (isNavigateToEnd) {
+                          this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
+                        } else {
+                          this.createSegment();
+                        }
                     }
 
                 }, error => {
@@ -199,7 +209,7 @@ export class ConversationAddComponent implements OnInit {
     afterBotSubmit(extras) {
       const mappingData = {
         segmentId: parseInt(this.conversationForm.value.segmentId, 10),
-        botId: extras.queryParams.botId
+        botId: this.conversationBot.botId
       };
 
       this.uciService.nlSegmentBotMapping(mappingData).subscribe(
@@ -209,42 +219,52 @@ export class ConversationAddComponent implements OnInit {
       );
     }
 
-    createNotification() {
-      const notificationData = {
-        name: 'Firebase Broadcast Logic',
-        transformers: [
-          {
-            id: '774cd134-6657-4688-85f6-6338e2323dde',
-            meta: {
-              title: this.conversationForm.value.notificationTitle,
-              body: this.conversationForm.value.notificationDescription,
-              type: 'JS_TEMPLATE_LITERALS'
+    createSegment() {
+      const segData  = {
+        name: this.conversationForm.getRawValue().name,
+        all: {
+          type: 'get',
+          config: {
+            url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot`,
+            type: 'GET',
+            cadence: {
+              perPage: 5,
+              retries: 5,
+              timeout: 60,
+              concurrent: true,
+              pagination: true,
+              concurrency: 10,
+              'retries-interval': 10
             },
-            type: 'broadcast'
+            pageParam: 'page',
+            credentials: {},
+            totalRecords: 200000
           }
-        ],
-        adapter: environment.adapterId
+        },
+        byID: {},
+        byPhone: {}
       };
-
-      this.resourceService.notificationCreate(notificationData).subscribe(
+      segData.byID = segData.all;
+      segData.byPhone = segData.all;
+      this.uciService.createUserSegment(segData).subscribe(
         data => {
-          console.log('----', data);
+          this.userSegments.push(data);
+          this.botLogics = this.notificationBotLogics;
+          this.onSubmit(true, true);
         }
       );
     }
 
-    startConversation(bot) {
+    startConversation(bot, isNavigateToEnd = false) {
         this.uciService.startConversation(bot.id).subscribe(
             data => {
                 this.isLoaderShow = false;
                 this.closeVerifyModal();
-                /*this.router.navigate(['uci-admin/success'], {
-                    queryParams: {
-                        text: this.conversationForm.value.startingMessage,
-                        botId: bot.id
-                    }
-                });*/
-                this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
+                if (isNavigateToEnd) {
+                  this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
+                } else  {
+                  this.createSegment();
+                }
             }, error => {
                 this.verifyAllItemsModal = true;
                 this.allChecked = false;
@@ -324,7 +344,8 @@ export class ConversationAddComponent implements OnInit {
 
     }
 
-    onBotLogicModify(bots) {
-        this.botLogics = bots;
+    onBotLogicModify(logics: any) {
+        this.botLogics = logics.botLogic;
+        this.notificationBotLogics = logics.notificationBotLogic;
     }
 }

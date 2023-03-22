@@ -80,7 +80,7 @@ export class UciService extends BaseService {
     }
 
     createUserSegment(data) {
-        return this.postRequest(this.BASE_URL + 'userSegment/create', data, {asset: 'userSegment'});
+        return this.postSegmentRequest(this.BASE_URL + 'user-segment', data, {asset: 'userSegment'});
     }
 
     userSegmentQueryBuilder(data) {
@@ -126,7 +126,7 @@ export class UciService extends BaseService {
         return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
     }
 
-    notificationCreate(data) {
-        return this.postRequest(this.DATASET_URL + `admin/v1/conversationLogic/create`, data, {asset: 'conversationLogic'});
+    submitSegmentData(data) {
+        return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
     }
 }

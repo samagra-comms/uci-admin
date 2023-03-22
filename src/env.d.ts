@@ -5,6 +5,7 @@ declare let process: {
     NG_APP_blobUrl: string,
     NG_APP_botPhoneNumber: string,
     NG_APP_adapterId: string,
+    NG_APP_broadcastAdapterId: string,
     NG_APP_userId: string,
     NG_APP_orgId: string,
     NG_APP_token: string,
