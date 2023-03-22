@@ -157,6 +157,7 @@ export class ConversationAddComponent implements OnInit {
         }
         if (isNavigateToEnd) {
           reqObj.name += ' Broadcast';
+          reqObj.startingMessage += ' Broadcast';
         }
 
         this.isLoaderShow = true;
