@@ -13,6 +13,7 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 export class LogicListComponent implements OnInit {
     @Input() botLogics = [];
+    @Input() notificationBotLogics = [];
     @Output() modify = new EventEmitter<any>();
     datasource = new MatTableDataSource<any>([]);
     logicFormRequest = {};
@@ -76,7 +77,8 @@ export class LogicListComponent implements OnInit {
                         formID: logicFormData.formId,
                         title: logicFormData.name,
                         body: logicFormData.description,
-                        type: 'JS_TEMPLATE_LITERALS'
+                        templateType: 'JS_TEMPLATE_LITERALS',
+                        type: 'broadcast'
                     }
                 }
             ],
@@ -111,6 +113,22 @@ export class LogicListComponent implements OnInit {
                     this.isModalLoaderShow = false;
                 }
             );
+            // Broadcast bot logic
+            reqData.adapter = environment.broadcastAdapterId;
+            this.uciService.createLogic({data: reqData}).subscribe(
+                (data: any) => {
+                    this.isModalLoaderShow = false;
+                    const existingLogic = reqData;
+                    delete existingLogic.id;
+                    this.notificationBotLogics.push({
+                        id: data.id,
+                        ...existingLogic,
+                    });
+                    this.onModify();
+                }, error => {
+                    this.isModalLoaderShow = false;
+                }
+            );
         }
     }
 
@@ -124,6 +142,6 @@ export class LogicListComponent implements OnInit {
 
     onModify() {
         this.datasource.data = this.botLogics;
-        this.modify.emit(this.botLogics);
+        this.modify.emit({botLogic: this.botLogics, notificationBotLogic: this.notificationBotLogics});
     }
 }
