@@ -1,10 +1,10 @@
-import { environment } from './../../../../../../src/environments/environment';
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UciService} from '../../services/uci.service';
 import {GlobalService} from '../../services/global.service';
 import {AddLogicComponent} from '../add-logic/add-logic.component';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
+import {environment} from '../../../../../../src/environments/environment';
 
 @Component({
     selector: 'lib-logic-list',
@@ -67,8 +67,8 @@ export class LogicListComponent implements OnInit {
     onLogicAdd(logicFormData) {
         const reqData: any = {
             id: logicFormData.id,
-            name: 'Firebase Broadcast Logic',
-            description: 'desc',
+            name: logicFormData.name,
+            description: logicFormData.description,
             transformers: [
                 {
                     id: '774cd134-6657-4688-85f6-6338e2323dde',
@@ -112,23 +112,6 @@ export class LogicListComponent implements OnInit {
                     this.isModalLoaderShow = false;
                 }
             );
-            // Broadcast bot logic
-            reqData.adapter = environment.broadcastAdapterId;
-            reqData.transformers[0].meta.type = 'broadcast';
-            this.uciService.createLogic({data: reqData}).subscribe(
-                (data: any) => {
-                    this.isModalLoaderShow = false;
-                    const existingLogic = reqData;
-                    delete existingLogic.id;
-                    this.notificationBotLogics.push({
-                        id: data.id,
-                        ...existingLogic,
-                    });
-                    this.onModify();
-                }, error => {
-                    this.isModalLoaderShow = false;
-                }
-            );
         }
     }
 
@@ -142,6 +125,6 @@ export class LogicListComponent implements OnInit {
 
     onModify() {
         this.datasource.data = this.botLogics;
-        this.modify.emit({botLogic: this.botLogics, notificationBotLogic: this.notificationBotLogics});
+        this.modify.emit(this.botLogics);
     }
 }
