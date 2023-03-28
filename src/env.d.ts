@@ -2,6 +2,9 @@ declare let process: {
   env: {
     NG_APP_url: string,
     NG_APP_nl_url: string,
+    NG_APP_nl_login_url: string,
+    NG_APP_nl_login_token: string,
+    NG_APP_nl_application_id: string,
     NG_APP_blobUrl: string,
     NG_APP_botPhoneNumber: string,
     NG_APP_adapterId: string,

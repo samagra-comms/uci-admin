@@ -20,7 +20,7 @@
                             <lib-conversation-setup
                                     [conversationForm]="conversationForm"
                                     [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                    [isStartingMessageExist]="isStartingMessageExist"
+                                    [isStartingMessageExist]="isStartingMessageExist.value"
                                     (starringMessageChange)="onStarringMessageChange()"
                                     (userSegmentDelete)="onUserSegmentDelete($event)"
                             >
@@ -42,7 +42,7 @@
                             {{resourceService.frmelmnts?.btn?.cancel}}
                         </button>
                         <button mat-raised-button class="uci-action-button"
-                                [disabled]="conversationForm.invalid || isStartingMessageExist"
+                                [disabled]="conversationForm.invalid"
                                 (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                         </button>
                     </div>
@@ -91,7 +91,7 @@
                         <lib-conversation-setup
                                 [conversationForm]="conversationForm"
                                 [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                [isStartingMessageExist]="isStartingMessageExist"
+                                [isStartingMessageExist]="isStartingMessageExist.value"
                                 (starringMessageChange)="onStarringMessageChange()"
                                 (userSegmentDelete)="onUserSegmentDelete($event)"
                         >
@@ -104,7 +104,7 @@
                                 {{resourceService.frmelmnts?.btn?.cancel}}
                             </button>
                             <button mat-raised-button class="uci-action-button"
-                                    [disabled]="conversationForm.invalid || isStartingMessageExist"
+                                    [disabled]="conversationForm.invalid"
                                     (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                             </button>
                         </div>

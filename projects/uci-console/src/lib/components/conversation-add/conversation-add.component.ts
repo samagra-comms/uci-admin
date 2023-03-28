@@ -1,6 +1,6 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 import {GlobalService} from '../../services/global.service';
 import {UciService} from '../../services/uci.service';
@@ -10,6 +10,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {TermsConditionsComponent} from '../terms-conditions/terms-conditions.component';
 import {TermsConditionConfirmComponent} from '../terms-condition-confirm/terms-condition-confirm.component';
 import {environment} from '../../../../../../src/environments/environment';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, first, map, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'lib-conversation-add',
@@ -43,7 +45,7 @@ export class ConversationAddComponent implements OnInit {
   endMinDate;
   allChecked: boolean;
   isSubmit: boolean;
-  isStartingMessageExist = false;
+  isStartingMessageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   isStartingMessageAvailable = false;
   fileErrorStatus;
   user;
@@ -72,12 +74,10 @@ export class ConversationAddComponent implements OnInit {
       name: ['', Validators.required],
       description: [''],
       purpose: ['', Validators.required],
-      startingMessage: ['', Validators.required],
+      startingMessage: ['', [Validators.required], [this.validateStartingMessage()]],
       startDate: [null, Validators.required],
       endDate: [null],
       segmentId: ['', Validators.required],
-      // notificationTitle: ['', Validators.required],
-      // notificationDescription: ['', Validators.required],
       status: ['enabled']
     });
 
@@ -360,15 +360,59 @@ export class ConversationAddComponent implements OnInit {
   }
 
   onStarringMessageChange() {
-    this.uciService.searchConversation({startingMessage: this.conversationForm.value.startingMessage, match: true}).subscribe(val => {
-      console.log(val);
-      if (val && val.data && val.data.id) {
-        this.isStartingMessageExist = (this.conversationId !== val.data.id);
-      }
-    }, error => {
-      this.isStartingMessageExist = false;
-    });
+    // this.uciService.searchConversation({startingMessage: this.conversationForm.value.startingMessage, match: true}).subscribe(val => {
+    //   console.log(val);
+    //   if (val && val.data && val.data.length) {
+    //     console.log(val.data);
+    //     this.isStartingMessageExist.next((this.conversationId !== val.data[0].id));
+    //   } else {
+    //     this.isStartingMessageExist.next(false);
+    //   }
+    // }, error => {
+    //   this.isStartingMessageExist.next(false);
+    // });
+  }
 
+  private validateStartingMessage(): AsyncValidatorFn {
+    return control => control.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        switchMap(value => this.uciService.searchConversation({startingMessage: value, match: true})),
+        map((val) => {
+          console.log('---', val);
+          let isStartingMessageExist = false;
+          if (val && val.data && val.data.length) {
+            isStartingMessageExist = (this.conversationId !== val.data[0].id);
+          }
+          console.log('vaaaaaaa', isStartingMessageExist, isStartingMessageExist ? {alreadyExist: true} : null);
+          return isStartingMessageExist ? {alreadyExist: true} : null;
+        }));
+    /*return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      // return this.isStartingMessageExist.pipe(
+      //   map(val => {
+      //     console.log('vaaaaaaa', val, val ? {alreadyExist: true} : null);
+      //     return val ? {alreadyExist: true} : null;
+      //   })
+      // );
+
+
+
+      // return this.uciService.searchConversation({startingMessage: control.value, match: true})
+      //   .pipe(
+      //     debounceTime(1000),
+      //     map(val => {
+      //       console.log(val);
+      //       let isStartingMessageExist = false;
+      //       if (val && val.data && val.data.length) {
+      //         isStartingMessageExist = (this.conversationId !== val.data[0].id);
+      //       }
+      //       console.log('-----', isStartingMessageExist);
+      //       return isStartingMessageExist ? {alreadyExist: true} : null;
+      //     })
+      //   );
+      // return {alreadyExist: true};
+    };*/
   }
 
   onBotLogicModify(logics) {

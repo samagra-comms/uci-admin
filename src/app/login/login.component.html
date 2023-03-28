@@ -1,0 +1,6 @@
+<form class="login" [formGroup]="loginForm">
+    <h2>Welcome</h2>
+    <input type="text" class="input-field" placeholder="User name" aria-label="User address" formControlName="loginId"/>
+    <input type="password" class="input-field" placeholder="Password" aria-label="Password" formControlName="password"/>
+    <input type="submit" value="Log In" (click)="onSubmit()"/>
+</form>

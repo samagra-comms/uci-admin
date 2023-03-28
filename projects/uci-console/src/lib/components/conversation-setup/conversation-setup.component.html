@@ -38,7 +38,9 @@
             <input matInput type="text" name="startingMessage"
                    placeholder="{{resourceService.frmelmnts?.lbl?.enterMessage}}"
                    formControlName="startingMessage">
-            <mat-error *ngIf="isStartingMessageExist">
+          {{isStartingMessageExist}}
+          {{conversationForm.invalid}}
+            <mat-error>
                 {{resourceService.frmelmnts?.lbl?.startMessageError}}
             </mat-error>
         </mat-form-field>
