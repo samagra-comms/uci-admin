@@ -74,7 +74,7 @@ export class ConversationAddComponent implements OnInit {
       name: ['', Validators.required],
       description: [''],
       purpose: ['', Validators.required],
-      startingMessage: ['', [Validators.required], [this.validateStartingMessage()]],
+      startingMessage: ['', [Validators.required]],
       startDate: [null, Validators.required],
       endDate: [null],
       segmentId: ['', Validators.required],
