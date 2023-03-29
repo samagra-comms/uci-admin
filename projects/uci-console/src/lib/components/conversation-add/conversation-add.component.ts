@@ -222,7 +222,7 @@ export class ConversationAddComponent implements OnInit {
       all: {
         type: 'get',
         config: {
-          url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot&botId=${this.conversationBot.botId}`,
+          url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${this.conversationBot.botId}`,
           type: 'GET',
           cadence: {
             perPage: 5,
