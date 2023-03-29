@@ -1,0 +1,31 @@
+export declare class GlobalService {
+    private user;
+    readonly user$: import("rxjs").Observable<any>;
+    private baseUrl;
+    private nlBaseUrl;
+    private blobUrl;
+    private botPhoneNumber;
+    private resourceService;
+    private broadcastAdapterId;
+    private adapterId;
+    readonly baseUrl$: import("rxjs").Observable<any>;
+    readonly nlBaseUrl$: import("rxjs").Observable<any>;
+    readonly resourceService$: import("rxjs").Observable<any>;
+    constructor();
+    setUser(user: any): void;
+    getUser(): any;
+    setBaseUrl(baseUrl: any): void;
+    getBaseUrl(): any;
+    setNlBaseUrl(baseUrl: any): void;
+    getNlBaseUrl(): any;
+    setBlobUrl(baseUrl: any): void;
+    getBlobUrl(): any;
+    setBotPhoneNumber(phoneNumber: any): void;
+    getBotPhoneNumber(): any;
+    setResourceService(resourceService: any): void;
+    getResourceService(): any;
+    setBroadcastAdapterId(broadcastAdapterId: any): void;
+    getBroadcastAdapterId(): any;
+    setAdapterId(broadcastAdapterId: any): void;
+    getAdapterId(): any;
+}

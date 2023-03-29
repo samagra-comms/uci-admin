@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { UciConsoleComponent } from './uci-console.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ComponentsModule} from './components/components.module';

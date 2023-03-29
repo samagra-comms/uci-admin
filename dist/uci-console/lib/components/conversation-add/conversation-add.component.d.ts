@@ -5,7 +5,8 @@ import { GlobalService } from '../../services/global.service';
 import { UciService } from '../../services/uci.service';
 import { ToasterService } from '../../services/toaster.service';
 import { MatDialog } from '@angular/material/dialog';
-import * as i0 from "@angular/core";
+import { BehaviorSubject } from 'rxjs';
+import * as ɵngcc0 from '@angular/core';
 export declare class ConversationAddComponent implements OnInit {
     private uciService;
     private router;
@@ -18,8 +19,10 @@ export declare class ConversationAddComponent implements OnInit {
     horizontalStepper: any;
     verticalStepper: any;
     currentViewState: string;
+    conversationBot: any;
     stepIndex: number;
     botLogics: any[];
+    broadcastBotLogics: any[];
     userSegments: any[];
     column: string;
     sortDirection: string;
@@ -38,7 +41,7 @@ export declare class ConversationAddComponent implements OnInit {
     endMinDate: any;
     allChecked: boolean;
     isSubmit: boolean;
-    isStartingMessageExist: boolean;
+    isStartingMessageExist: BehaviorSubject<boolean>;
     isStartingMessageAvailable: boolean;
     fileErrorStatus: any;
     user: any;
@@ -54,14 +57,21 @@ export declare class ConversationAddComponent implements OnInit {
     nextStep(): void;
     backToStepOne(): void;
     onAddCancel(): void;
-    onSubmit(isTriggerBot?: boolean): void;
-    startConversation(bot: any): void;
+    onSubmit(isTriggerBot?: boolean, isNavigateToEnd?: boolean): void;
+    afterBotSubmit(extras: any): void;
+    createSegment(): void;
+    createBroadcastBotLogic(): void;
+    afterBroadcastBotLogic(): void;
+    startConversation(bot: any, isNavigateToEnd?: boolean): void;
     closeVerifyModal(): void;
     openTermAndConditionModel(): void;
     openItemsVerifyModal(isSubmitBtn: boolean): void;
     getBotDetails(): void;
     onStarringMessageChange(): void;
-    onBotLogicModify(bots: any): void;
-    static ɵfac: i0.ɵɵFactoryDef<ConversationAddComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDefWithMeta<ConversationAddComponent, "lib-conversation-add", never, {}, {}, never, never>;
+    private validateStartingMessage;
+    onBotLogicModify(logics: any): void;
+    static ɵfac: ɵngcc0.ɵɵFactoryDef<ConversationAddComponent, never>;
+    static ɵcmp: ɵngcc0.ɵɵComponentDefWithMeta<ConversationAddComponent, "lib-conversation-add", never, {}, {}, never, never>;
 }
+
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29udmVyc2F0aW9uLWFkZC5jb21wb25lbnQuZC50cyIsInNvdXJjZXMiOlsiY29udmVyc2F0aW9uLWFkZC5jb21wb25lbnQuZC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOztBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7O0FBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBBY3RpdmF0ZWRSb3V0ZSwgUm91dGVyIH0gZnJvbSAnQGFuZ3VsYXIvcm91dGVyJztcbmltcG9ydCB7IE9uSW5pdCB9IGZyb20gJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0IHsgRm9ybUJ1aWxkZXIsIEZvcm1Hcm91cCB9IGZyb20gJ0Bhbmd1bGFyL2Zvcm1zJztcbmltcG9ydCB7IEdsb2JhbFNlcnZpY2UgfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy9nbG9iYWwuc2VydmljZSc7XG5pbXBvcnQgeyBVY2lTZXJ2aWNlIH0gZnJvbSAnLi4vLi4vc2VydmljZXMvdWNpLnNlcnZpY2UnO1xuaW1wb3J0IHsgVG9hc3RlclNlcnZpY2UgfSBmcm9tICcuLi8uLi9zZXJ2aWNlcy90b2FzdGVyLnNlcnZpY2UnO1xuaW1wb3J0IHsgTWF0RGlhbG9nIH0gZnJvbSAnQGFuZ3VsYXIvbWF0ZXJpYWwvZGlhbG9nJztcbmltcG9ydCB7IEJlaGF2aW9yU3ViamVjdCB9IGZyb20gJ3J4anMnO1xuZXhwb3J0IGRlY2xhcmUgY2xhc3MgQ29udmVyc2F0aW9uQWRkQ29tcG9uZW50IGltcGxlbWVudHMgT25Jbml0IHtcbiAgICBwcml2YXRlIHVjaVNlcnZpY2U7XG4gICAgcHJpdmF0ZSByb3V0ZXI7XG4gICAgcHJpdmF0ZSBhY3RpdmF0ZWRSb3V0ZTtcbiAgICBwcml2YXRlIGZiO1xuICAgIHByaXZhdGUgZ2xvYmFsU2VydmljZTtcbiAgICBwcml2YXRlIHRvYXN0ZXJTZXJ2aWNlO1xuICAgIGRpYWxvZzogTWF0RGlhbG9nO1xuICAgIHZlcmlmeUFsbE1vZGFsOiBhbnk7XG4gICAgaG9yaXpvbnRhbFN0ZXBwZXI6IGFueTtcbiAgICB2ZXJ0aWNhbFN0ZXBwZXI6IGFueTtcbiAgICBjdXJyZW50Vmlld1N0YXRlOiBzdHJpbmc7XG4gICAgY29udmVyc2F0aW9uQm90OiBhbnk7XG4gICAgc3RlcEluZGV4OiBudW1iZXI7XG4gICAgYm90TG9naWNzOiBhbnlbXTtcbiAgICBicm9hZGNhc3RCb3RMb2dpY3M6IGFueVtdO1xuICAgIHVzZXJTZWdtZW50czogYW55W107XG4gICAgY29sdW1uOiBzdHJpbmc7XG4gICAgc29ydERpcmVjdGlvbjogc3RyaW5nO1xuICAgIHJldmVyc2U6IGJvb2xlYW47XG4gICAgY29sbGVjdGlvbkxpc3RNb2RhbDogYm9vbGVhbjtcbiAgICBpc0xvYWRlclNob3c6IGJvb2xlYW47XG4gICAgaXNNb2RhbExvYWRlclNob3c6IGJvb2xlYW47XG4gICAgbG9naWNGb3JtUmVxdWVzdDoge307XG4gICAgaXNDaGVja2VkVGVybUNvbmRpdGlvbjogYm9vbGVhbjtcbiAgICBjb252ZXJzYXRpb25Gb3JtOiBGb3JtR3JvdXA7XG4gICAgdGVybXNBbmRDb25kaXRpb25Nb2RhbDogYm9vbGVhbjtcbiAgICB2ZXJpZnlBbGxJdGVtc01vZGFsOiBib29sZWFuO1xuICAgIGNvbnZlcnNhdGlvbklkOiBhbnk7XG4gICAgc2VsZWN0ZWRMb2dpY0luZGV4OiBhbnk7XG4gICAgc3RhcnRNaW5EYXRlOiBEYXRlO1xuICAgIGVuZE1pbkRhdGU6IGFueTtcbiAgICBhbGxDaGVja2VkOiBib29sZWFuO1xuICAgIGlzU3VibWl0OiBib29sZWFuO1xuICAgIGlzU3RhcnRpbmdNZXNzYWdlRXhpc3Q6IEJlaGF2aW9yU3ViamVjdDxib29sZWFuPjtcbiAgICBpc1N0YXJ0aW5nTWVzc2FnZUF2YWlsYWJsZTogYm9vbGVhbjtcbiAgICBmaWxlRXJyb3JTdGF0dXM6IGFueTtcbiAgICB1c2VyOiBhbnk7XG4gICAgcmVzb3VyY2VTZXJ2aWNlOiBhbnk7XG4gICAgY29uc3RydWN0b3IodWNpU2VydmljZTogVWNpU2VydmljZSwgcm91dGVyOiBSb3V0ZXIsIGFjdGl2YXRlZFJvdXRlOiBBY3RpdmF0ZWRSb3V0ZSwgZmI6IEZvcm1CdWlsZGVyLCBnbG9iYWxTZXJ2aWNlOiBHbG9iYWxTZXJ2aWNlLCB0b2FzdGVyU2VydmljZTogVG9hc3RlclNlcnZpY2UsIGRpYWxvZzogTWF0RGlhbG9nKTtcbiAgICBuZ09uSW5pdCgpOiB2b2lkO1xuICAgIHVzZXJTZWdtZW50KCk6IHZvaWQ7XG4gICAgb25Vc2VyU2VnbWVudENhbmNlbCgpOiB2b2lkO1xuICAgIG9uVXNlclNlZ21lbnRBZGRDbGljaygpOiB2b2lkO1xuICAgIG9uVXNlclNlZ21lbnRBZGQoc2VnbWVudHM6IGFueSk6IHZvaWQ7XG4gICAgb25Vc2VyU2VnbWVudENyZWF0ZShzZWdtZW50OiBhbnkpOiB2b2lkO1xuICAgIG9uVXNlclNlZ21lbnREZWxldGUoaW5kZXg6IGFueSk6IHZvaWQ7XG4gICAgbmV4dFN0ZXAoKTogdm9pZDtcbiAgICBiYWNrVG9TdGVwT25lKCk6IHZvaWQ7XG4gICAgb25BZGRDYW5jZWwoKTogdm9pZDtcbiAgICBvblN1Ym1pdChpc1RyaWdnZXJCb3Q/OiBib29sZWFuLCBpc05hdmlnYXRlVG9FbmQ/OiBib29sZWFuKTogdm9pZDtcbiAgICBhZnRlckJvdFN1Ym1pdChleHRyYXM6IGFueSk6IHZvaWQ7XG4gICAgY3JlYXRlU2VnbWVudCgpOiB2b2lkO1xuICAgIGNyZWF0ZUJyb2FkY2FzdEJvdExvZ2ljKCk6IHZvaWQ7XG4gICAgYWZ0ZXJCcm9hZGNhc3RCb3RMb2dpYygpOiB2b2lkO1xuICAgIHN0YXJ0Q29udmVyc2F0aW9uKGJvdDogYW55LCBpc05hdmlnYXRlVG9FbmQ/OiBib29sZWFuKTogdm9pZDtcbiAgICBjbG9zZVZlcmlmeU1vZGFsKCk6IHZvaWQ7XG4gICAgb3BlblRlcm1BbmRDb25kaXRpb25Nb2RlbCgpOiB2b2lkO1xuICAgIG9wZW5JdGVtc1ZlcmlmeU1vZGFsKGlzU3VibWl0QnRuOiBib29sZWFuKTogdm9pZDtcbiAgICBnZXRCb3REZXRhaWxzKCk6IHZvaWQ7XG4gICAgb25TdGFycmluZ01lc3NhZ2VDaGFuZ2UoKTogdm9pZDtcbiAgICBwcml2YXRlIHZhbGlkYXRlU3RhcnRpbmdNZXNzYWdlO1xuICAgIG9uQm90TG9naWNNb2RpZnkobG9naWNzOiBhbnkpOiB2b2lkO1xufVxuIl19
