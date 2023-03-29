@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'uci-admin',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: MainComponent,
     children: [
       {
