@@ -1,0 +1,9 @@
+import { GlobalService } from './global.service';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+export declare class PaginatorIntl extends MatPaginatorIntl {
+    globalService: GlobalService;
+    resourceService: any;
+    constructor(globalService: GlobalService);
+    getPaginatorIntl(): void;
+    getRangeLabel: (page: number, pageSize: number, length: number) => string;
+}

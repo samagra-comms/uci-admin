@@ -9,7 +9,6 @@ import {ToasterService} from '../../services/toaster.service';
 import {MatDialog} from '@angular/material/dialog';
 import {TermsConditionsComponent} from '../terms-conditions/terms-conditions.component';
 import {TermsConditionConfirmComponent} from '../terms-condition-confirm/terms-condition-confirm.component';
-import {environment} from '../../../../../../src/environments/environment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, first, map, switchMap} from 'rxjs/operators';
 
@@ -254,7 +253,7 @@ export class ConversationAddComponent implements OnInit {
 
   createBroadcastBotLogic() {
     for (const botLogic of this.botLogics) {
-      botLogic.adapter = environment.broadcastAdapterId;
+      botLogic.adapter = this.globalService.getBroadcastAdapterId();
       botLogic.transformers[0].meta.type = 'broadcast';
       botLogic.transformers[0].meta.data = {botId: this.conversationBot.botId};
 

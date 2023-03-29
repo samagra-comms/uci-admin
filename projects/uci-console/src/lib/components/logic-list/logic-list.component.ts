@@ -4,7 +4,6 @@ import {GlobalService} from '../../services/global.service';
 import {AddLogicComponent} from '../add-logic/add-logic.component';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
-import {environment} from '../../../../../../src/environments/environment';
 
 @Component({
     selector: 'lib-logic-list',
@@ -81,7 +80,7 @@ export class LogicListComponent implements OnInit {
                     }
                 }
             ],
-            adapter: environment.adapterId
+            adapter: this.globalService.getAdapterId()
         };
 
         this.isModalLoaderShow = true;

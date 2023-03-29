@@ -12,6 +12,8 @@ export class GlobalService {
     private blobUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
     private botPhoneNumber: BehaviorSubject<any> = new BehaviorSubject('');
     private resourceService: BehaviorSubject<any> = new BehaviorSubject({});
+    private broadcastAdapterId: BehaviorSubject<any> = new BehaviorSubject('');
+    private adapterId: BehaviorSubject<any> = new BehaviorSubject('');
     public readonly baseUrl$ = this.baseUrl.asObservable();
     public readonly nlBaseUrl$ = this.nlBaseUrl.asObservable();
     public readonly resourceService$ = this.resourceService.asObservable();
@@ -65,5 +67,21 @@ export class GlobalService {
 
     getResourceService() {
         return this.resourceService.value;
+    }
+
+    setBroadcastAdapterId(broadcastAdapterId) {
+        this.broadcastAdapterId.next(broadcastAdapterId);
+    }
+
+    getBroadcastAdapterId() {
+        return this.broadcastAdapterId.value;
+    }
+
+    setAdapterId(broadcastAdapterId) {
+        this.adapterId.next(broadcastAdapterId);
+    }
+
+    getAdapterId() {
+        return this.adapterId.value;
     }
 }
