@@ -76,6 +76,16 @@ export class LogicListComponent implements OnInit {
                         formID: logicFormData.formId,
                         title: logicFormData.name,
                         body: logicFormData.description,
+                        hiddenFields: [
+                            {
+                                name: "mobilePhone",
+                                path: "mobilePhone",
+                                type: "param",
+                                config: {
+                                    dataObjName: "user"
+                                }
+                            }
+                        ],
                         templateType: 'JS_TEMPLATE_LITERALS'
                     }
                 }
