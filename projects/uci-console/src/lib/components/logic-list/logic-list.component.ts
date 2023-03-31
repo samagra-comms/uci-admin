@@ -76,6 +76,7 @@ export class LogicListComponent implements OnInit {
                         formID: logicFormData.formId,
                         title: logicFormData.name,
                         body: logicFormData.description,
+                        serviceClass: "SurveyService",
                         hiddenFields: [
                             {
                                 name: "mobilePhone",
