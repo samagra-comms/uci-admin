@@ -16,6 +16,7 @@ export const environment = {
   userId: process.env.NG_APP_userId,
   orgId: process.env.NG_APP_orgId,
   token: process.env.NG_APP_token,
+  conversationAdapterId: process.env.NG_APP_conversationAdapterId
 };
 
 /*

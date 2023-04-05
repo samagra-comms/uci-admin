@@ -1,8 +1,9 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/material/icon'), require('@angular/material/button'), require('@angular/common'), require('@angular/common/http'), require('rxjs/operators'), require('rxjs'), require('@angular/router'), require('lodash'), require('@angular/forms'), require('moment'), require('@angular/material/dialog'), require('ng2-semantic-ui-v9'), require('@angular/material/input'), require('@angular/material/grid-list'), require('@angular/material/checkbox'), require('@angular/material/table'), require('@angular/material/paginator'), require('@angular/material/menu'), require('@angular/material/datepicker'), require('@angular/material/core'), require('@angular/material/card'), require('@angular/material/stepper'), require('@angular/material/list'), require('@angular/material/tooltip'), require('@angular/material/select'), require('@angular/material/form-field'), require('uuid')) :
-    typeof define === 'function' && define.amd ? define('@samagra-x/uci-console', ['exports', '@angular/core', '@angular/material/icon', '@angular/material/button', '@angular/common', '@angular/common/http', 'rxjs/operators', 'rxjs', '@angular/router', 'lodash', '@angular/forms', 'moment', '@angular/material/dialog', 'ng2-semantic-ui-v9', '@angular/material/input', '@angular/material/grid-list', '@angular/material/checkbox', '@angular/material/table', '@angular/material/paginator', '@angular/material/menu', '@angular/material/datepicker', '@angular/material/core', '@angular/material/card', '@angular/material/stepper', '@angular/material/list', '@angular/material/tooltip', '@angular/material/select', '@angular/material/form-field', 'uuid'], factory) :
-    (global = global || self, factory((global['samagra-x'] = global['samagra-x'] || {}, global['samagra-x']['uci-console'] = {}), global.ng.core, global.ng.material.icon, global.ng.material.button, global.ng.common, global.ng.common.http, global.rxjs.operators, global.rxjs, global.ng.router, global.lodash, global.ng.forms, global.moment, global.ng.material.dialog, global.ng2SemanticUiV9, global.ng.material.input, global.ng.material.gridList, global.ng.material.checkbox, global.ng.material.table, global.ng.material.paginator, global.ng.material.menu, global.ng.material.datepicker, global.ng.material.core, global.ng.material.card, global.ng.material.stepper, global.ng.material.list, global.ng.material.tooltip, global.ng.material.select, global.ng.material.formField, global.uuid));
-}(this, (function (exports, core, icon, button, common, http, operators, rxjs, router, lodash, forms, moment, dialog, ng2SemanticUiV9, input, gridList, checkbox, table, paginator, menu, datepicker, core$1, card, stepper, list, tooltip, select, formField, uuid) { 'use strict';
+        typeof define === 'function' && define.amd ? define('@samagra-x/uci-console', ['exports', '@angular/core', '@angular/material/icon', '@angular/material/button', '@angular/common', '@angular/common/http', 'rxjs/operators', 'rxjs', '@angular/router', 'lodash', '@angular/forms', 'moment', '@angular/material/dialog', 'ng2-semantic-ui-v9', '@angular/material/input', '@angular/material/grid-list', '@angular/material/checkbox', '@angular/material/table', '@angular/material/paginator', '@angular/material/menu', '@angular/material/datepicker', '@angular/material/core', '@angular/material/card', '@angular/material/stepper', '@angular/material/list', '@angular/material/tooltip', '@angular/material/select', '@angular/material/form-field', 'uuid'], factory) :
+            (global = global || self, factory((global['samagra-x'] = global['samagra-x'] || {}, global['samagra-x']['uci-console'] = {}), global.ng.core, global.ng.material.icon, global.ng.material.button, global.ng.common, global.ng.common.http, global.rxjs.operators, global.rxjs, global.ng.router, global.lodash, global.ng.forms, global.moment, global.ng.material.dialog, global.ng2SemanticUiV9, global.ng.material.input, global.ng.material.gridList, global.ng.material.checkbox, global.ng.material.table, global.ng.material.paginator, global.ng.material.menu, global.ng.material.datepicker, global.ng.material.core, global.ng.material.card, global.ng.material.stepper, global.ng.material.list, global.ng.material.tooltip, global.ng.material.select, global.ng.material.formField, global.uuid));
+}(this, (function (exports, core, icon, button, common, http, operators, rxjs, router, lodash, forms, moment, dialog, ng2SemanticUiV9, input, gridList, checkbox, table, paginator, menu, datepicker, core$1, card, stepper, list, tooltip, select, formField, uuid) {
+    'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -20,7 +21,7 @@
     ***************************************************************************** */
     /* global Reflect, Promise */
 
-    var extendStatics = function(d, b) {
+    var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
@@ -33,7 +34,7 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
-    var __assign = function() {
+    var __assign = function () {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -82,8 +83,8 @@
     }
 
     function __generator(thisArg, body) {
-        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
             if (f) throw new TypeError("Generator is already executing.");
@@ -188,7 +189,7 @@
         var m = o[Symbol.asyncIterator], i;
         return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
         function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function (v) { resolve({ value: v, done: d }); }, reject); }
     }
 
     function __makeTemplateObject(cooked, raw) {
@@ -410,10 +411,12 @@
             }
             return formData;
         };
-        BaseService.ctorParameters = function () { return [
-            { type: http.HttpClient },
-            { type: GlobalService }
-        ]; };
+        BaseService.ctorParameters = function () {
+            return [
+                { type: http.HttpClient },
+                { type: GlobalService }
+            ];
+        };
         BaseService.ɵprov = core.ɵɵdefineInjectable({ factory: function BaseService_Factory() { return new BaseService(core.ɵɵinject(http.HttpClient), core.ɵɵinject(GlobalService)); }, token: BaseService, providedIn: "root" });
         BaseService = __decorate([
             core.Injectable({
@@ -518,10 +521,12 @@
         UciService.prototype.submitSegmentData = function (data) {
             return this.postRequest(this.NL_BASE_URL + "segment-bot-mapping", data);
         };
-        UciService.ctorParameters = function () { return [
-            { type: http.HttpClient },
-            { type: GlobalService }
-        ]; };
+        UciService.ctorParameters = function () {
+            return [
+                { type: http.HttpClient },
+                { type: GlobalService }
+            ];
+        };
         UciService.ɵprov = core.ɵɵdefineInjectable({ factory: function UciService_Factory() { return new UciService(core.ɵɵinject(http.HttpClient), core.ɵɵinject(GlobalService)); }, token: UciService, providedIn: "root" });
         UciService = __decorate([
             core.Injectable({
@@ -576,10 +581,12 @@
         ConfigService.prototype.getRouterSlug = function () {
             return this._config.routerSlug ? this._config.routerSlug : '';
         };
-        ConfigService.ctorParameters = function () { return [
-            { type: router.ActivatedRoute },
-            { type: UciService }
-        ]; };
+        ConfigService.ctorParameters = function () {
+            return [
+                { type: router.ActivatedRoute },
+                { type: UciService }
+            ];
+        };
         ConfigService.ɵprov = core.ɵɵdefineInjectable({ factory: function ConfigService_Factory() { return new ConfigService(core.ɵɵinject(router.ActivatedRoute), core.ɵɵinject(UciService)); }, token: ConfigService, providedIn: "root" });
         ConfigService = __decorate([
             core.Injectable({
@@ -657,11 +664,13 @@
                 }
             };
             if (this.currentObj) {
-                impressionEvent.context = { cdata: [{
-                            id: lodash.get(this.currentObj, 'id').toString(),
-                            type: lodash.get(this.currentObj, 'type')
-                        }
-                    ] };
+                impressionEvent.context = {
+                    cdata: [{
+                        id: lodash.get(this.currentObj, 'id').toString(),
+                        type: lodash.get(this.currentObj, 'type')
+                    }
+                    ]
+                };
             }
             this.discussionEvents.emitTelemetry(impressionEvent);
         };
@@ -685,9 +694,9 @@
                 object['rollup'] = this._context.length > 1 ? this.getRollUp() : {};
                 interactEvent.context = {
                     cdata: [{
-                            id: lodash.get(this.currentObj, 'id').toString(),
-                            type: lodash.get(this.currentObj, 'type')
-                        }], object: object
+                        id: lodash.get(this.currentObj, 'id').toString(),
+                        type: lodash.get(this.currentObj, 'type')
+                    }], object: object
                 };
             }
             this.discussionEvents.emitTelemetry(interactEvent);
@@ -706,10 +715,12 @@
             }
             return {};
         };
-        TelemetryUtilsService.ctorParameters = function () { return [
-            { type: UciEventsService },
-            { type: router.Router }
-        ]; };
+        TelemetryUtilsService.ctorParameters = function () {
+            return [
+                { type: UciEventsService },
+                { type: router.Router }
+            ];
+        };
         TelemetryUtilsService.ɵprov = core.ɵɵdefineInjectable({ factory: function TelemetryUtilsService_Factory() { return new TelemetryUtilsService(core.ɵɵinject(UciEventsService), core.ɵɵinject(router.Router)); }, token: TelemetryUtilsService, providedIn: "root" });
         TelemetryUtilsService = __decorate([
             core.Injectable({
@@ -789,14 +800,16 @@
         SidePanelComponent.prototype.closeNav = function () {
             this.showSideMenu = !this.showSideMenu;
         };
-        SidePanelComponent.ctorParameters = function () { return [
-            { type: router.Router },
-            { type: UciService },
-            { type: router.ActivatedRoute },
-            { type: TelemetryUtilsService },
-            { type: ConfigService },
-            { type: GlobalService }
-        ]; };
+        SidePanelComponent.ctorParameters = function () {
+            return [
+                { type: router.Router },
+                { type: UciService },
+                { type: router.ActivatedRoute },
+                { type: TelemetryUtilsService },
+                { type: ConfigService },
+                { type: GlobalService }
+            ];
+        };
         SidePanelComponent = __decorate([
             core.Component({
                 selector: 'lib-side-panel',
@@ -941,11 +954,13 @@
         ConversationListComponent.prototype.onReport = function (conversation, i) {
             this.router.navigateByUrl("uci-admin/" + conversation.id + "/reports");
         };
-        ConversationListComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: router.Router },
-            { type: GlobalService }
-        ]; };
+        ConversationListComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: router.Router },
+                { type: GlobalService }
+            ];
+        };
         __decorate([
             core.ViewChild('botTable')
         ], ConversationListComponent.prototype, "botTable", void 0);
@@ -1046,11 +1061,13 @@
         TermsConditionsComponent.prototype.onCancel = function () {
             this.dialogRef.close();
         };
-        TermsConditionsComponent.ctorParameters = function () { return [
-            { type: GlobalService },
-            { type: dialog.MatDialogRef },
-            { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
-        ]; };
+        TermsConditionsComponent.ctorParameters = function () {
+            return [
+                { type: GlobalService },
+                { type: dialog.MatDialogRef },
+                { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
+            ];
+        };
         TermsConditionsComponent = __decorate([
             core.Component({
                 selector: 'lib-terms-conditions',
@@ -1221,11 +1238,13 @@
         TermsConditionConfirmComponent.prototype.onResize = function (event) {
             this.breakpoint = (event.target.innerWidth <= 1000) ? 1 : 3;
         };
-        TermsConditionConfirmComponent.ctorParameters = function () { return [
-            { type: GlobalService },
-            { type: dialog.MatDialogRef },
-            { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
-        ]; };
+        TermsConditionConfirmComponent.ctorParameters = function () {
+            return [
+                { type: GlobalService },
+                { type: dialog.MatDialogRef },
+                { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
+            ];
+        };
         TermsConditionConfirmComponent = __decorate([
             core.Component({
                 selector: 'lib-terms-condition-confirm',
@@ -1559,16 +1578,18 @@
         };
         ConversationAddComponent.prototype.validateStartingMessage = function () {
             var _this = this;
-            return function (control) { return control.valueChanges
-                .pipe(operators.debounceTime(400), operators.distinctUntilChanged(), operators.switchMap(function (value) { return _this.uciService.searchConversation({ startingMessage: value, match: true }); }), operators.map(function (val) {
-                console.log('---', val);
-                var isStartingMessageExist = false;
-                if (val && val.data && val.data.length) {
-                    isStartingMessageExist = (_this.conversationId !== val.data[0].id);
-                }
-                console.log('vaaaaaaa', isStartingMessageExist, isStartingMessageExist ? { alreadyExist: true } : null);
-                return isStartingMessageExist ? { alreadyExist: true } : null;
-            })); };
+            return function (control) {
+                return control.valueChanges
+                    .pipe(operators.debounceTime(400), operators.distinctUntilChanged(), operators.switchMap(function (value) { return _this.uciService.searchConversation({ startingMessage: value, match: true }); }), operators.map(function (val) {
+                        console.log('---', val);
+                        var isStartingMessageExist = false;
+                        if (val && val.data && val.data.length) {
+                            isStartingMessageExist = (_this.conversationId !== val.data[0].id);
+                        }
+                        console.log('vaaaaaaa', isStartingMessageExist, isStartingMessageExist ? { alreadyExist: true } : null);
+                        return isStartingMessageExist ? { alreadyExist: true } : null;
+                    }));
+            };
             /*return (control: AbstractControl): Observable<ValidationErrors | null> => {
               // return this.isStartingMessageExist.pipe(
               //   map(val => {
@@ -1598,15 +1619,17 @@
         ConversationAddComponent.prototype.onBotLogicModify = function (logics) {
             this.botLogics = logics;
         };
-        ConversationAddComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: router.Router },
-            { type: router.ActivatedRoute },
-            { type: forms.FormBuilder },
-            { type: GlobalService },
-            { type: ToasterService },
-            { type: dialog.MatDialog }
-        ]; };
+        ConversationAddComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: router.Router },
+                { type: router.ActivatedRoute },
+                { type: forms.FormBuilder },
+                { type: GlobalService },
+                { type: ToasterService },
+                { type: dialog.MatDialog }
+            ];
+        };
         __decorate([
             core.ViewChild('verifyAllModal')
         ], ConversationAddComponent.prototype, "verifyAllModal", void 0);
@@ -1709,11 +1732,13 @@
         UserSegmentListComponent.prototype.onAdd = function () {
             this.add.emit(Object.values(this.selectedUserSegmentMap));
         };
-        UserSegmentListComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: router.Router },
-            { type: GlobalService }
-        ]; };
+        UserSegmentListComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: router.Router },
+                { type: GlobalService }
+            ];
+        };
         __decorate([
             core.Output()
         ], UserSegmentListComponent.prototype, "cancel", void 0);
@@ -1788,10 +1813,12 @@
         UciGraphQlService.prototype.baseRequest = function (body) {
             return this.http.post(this.BASE_URL, body, {});
         };
-        UciGraphQlService.ctorParameters = function () { return [
-            { type: http.HttpClient },
-            { type: GlobalService }
-        ]; };
+        UciGraphQlService.ctorParameters = function () {
+            return [
+                { type: http.HttpClient },
+                { type: GlobalService }
+            ];
+        };
         UciGraphQlService.ɵprov = core.ɵɵdefineInjectable({ factory: function UciGraphQlService_Factory() { return new UciGraphQlService(core.ɵɵinject(http.HttpClient), core.ɵɵinject(GlobalService)); }, token: UciGraphQlService, providedIn: "root" });
         UciGraphQlService = __decorate([
             core.Injectable({
@@ -2039,12 +2066,14 @@
                 }
             });
         };
-        UserSegmentAddComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: forms.FormBuilder },
-            { type: UciGraphQlService },
-            { type: GlobalService }
-        ]; };
+        UserSegmentAddComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: forms.FormBuilder },
+                { type: UciGraphQlService },
+                { type: GlobalService }
+            ];
+        };
         __decorate([
             core.Output()
         ], UserSegmentAddComponent.prototype, "cancel", void 0);
@@ -2080,11 +2109,13 @@
         ConversationSuccessComponent.prototype.onClose = function () {
             this.router.navigate(['/uci-admin']);
         };
-        ConversationSuccessComponent.ctorParameters = function () { return [
-            { type: router.Router },
-            { type: router.ActivatedRoute },
-            { type: GlobalService }
-        ]; };
+        ConversationSuccessComponent.ctorParameters = function () {
+            return [
+                { type: router.Router },
+                { type: router.ActivatedRoute },
+                { type: GlobalService }
+            ];
+        };
         ConversationSuccessComponent = __decorate([
             core.Component({
                 selector: 'lib-conversation-success',
@@ -2169,14 +2200,16 @@
         AddLogicComponent.prototype.onResize = function (event) {
             this.breakpoint = (event.target.innerWidth <= 1000) ? 1 : 3;
         };
-        AddLogicComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: forms.FormBuilder },
-            { type: ToasterService },
-            { type: GlobalService },
-            { type: dialog.MatDialogRef },
-            { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
-        ]; };
+        AddLogicComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: forms.FormBuilder },
+                { type: ToasterService },
+                { type: GlobalService },
+                { type: dialog.MatDialogRef },
+                { type: undefined, decorators: [{ type: core.Inject, args: [dialog.MAT_DIALOG_DATA,] }] }
+            ];
+        };
         AddLogicComponent = __decorate([
             core.Component({
                 selector: 'lib-add-logic',
@@ -2289,11 +2322,13 @@
             this.datasource.data = this.botLogics;
             this.modify.emit(this.botLogics);
         };
-        LogicListComponent.ctorParameters = function () { return [
-            { type: UciService },
-            { type: GlobalService },
-            { type: dialog.MatDialog }
-        ]; };
+        LogicListComponent.ctorParameters = function () {
+            return [
+                { type: UciService },
+                { type: GlobalService },
+                { type: dialog.MatDialog }
+            ];
+        };
         __decorate([
             core.Input()
         ], LogicListComponent.prototype, "botLogics", void 0);
@@ -2338,8 +2373,8 @@
                 this.conversationForm.get('startingMessage').valueChanges
                     .pipe(operators.debounceTime(1000))
                     .subscribe(function (value) {
-                    _this.onStarringMessageChange();
-                });
+                        _this.onStarringMessageChange();
+                    });
             }
         };
         ConversationSetupComponent.prototype.onStarringMessageChange = function () {
@@ -2348,12 +2383,14 @@
         ConversationSetupComponent.prototype.onUserSegmentDelete = function (index) {
             this.userSegmentDelete.emit(index);
         };
-        ConversationSetupComponent.ctorParameters = function () { return [
-            { type: forms.FormBuilder },
-            { type: UciService },
-            { type: GlobalService },
-            { type: dialog.MatDialog }
-        ]; };
+        ConversationSetupComponent.ctorParameters = function () {
+            return [
+                { type: forms.FormBuilder },
+                { type: UciService },
+                { type: GlobalService },
+                { type: dialog.MatDialog }
+            ];
+        };
         __decorate([
             core.Input()
         ], ConversationSetupComponent.prototype, "conversationForm", void 0);
@@ -2420,9 +2457,11 @@
             this.changes.next();
             // this.getRangeLabel = this.getRangeLabel.bind(this);
         };
-        PaginatorIntl.ctorParameters = function () { return [
-            { type: GlobalService }
-        ]; };
+        PaginatorIntl.ctorParameters = function () {
+            return [
+                { type: GlobalService }
+            ];
+        };
         PaginatorIntl.ɵprov = core.ɵɵdefineInjectable({ factory: function PaginatorIntl_Factory() { return new PaginatorIntl(core.ɵɵinject(GlobalService)); }, token: PaginatorIntl, providedIn: "root" });
         PaginatorIntl = __decorate([
             core.Injectable({
@@ -2522,14 +2561,16 @@
                 console.log('job Info');
             });
         };
-        ExhaustReportComponent.ctorParameters = function () { return [
-            { type: forms.FormBuilder },
-            { type: UciService },
-            { type: router.Router },
-            { type: router.ActivatedRoute },
-            { type: ToasterService },
-            { type: GlobalService }
-        ]; };
+        ExhaustReportComponent.ctorParameters = function () {
+            return [
+                { type: forms.FormBuilder },
+                { type: UciService },
+                { type: router.Router },
+                { type: router.ActivatedRoute },
+                { type: ToasterService },
+                { type: GlobalService }
+            ];
+        };
         ExhaustReportComponent = __decorate([
             core.Component({
                 selector: 'lib-exhaust-report',
@@ -2607,6 +2648,9 @@
         return ComponentsModule;
     }());
 
+    const LIB_ENTRY_COMPONENT_TEMPLATE = "<div class=\"ui\">\n    <div class=\"relative position\">\n        <div class=\"py-8 ua-btn-container ua-back-btn-container px-20 z-index-2\">\n           <div class=\"mx-20\">\n               <button mat-raised-button (click)=\"goBack()\">\n                   <mat-icon>keyboard_backspace</mat-icon>\n                   {{resourceService?.frmelmnts?.btn?.back || 'Back'}}\n               </button>\n           </div>\n        </div>\n    </div>\n    <div class=\"uci-admin\">\n        <div class=\"uci-admin-content\">\n            <div class=\"uci-admin-left-panel ua-side-content z-index-2\">\n                <lib-side-panel></lib-side-panel>\n            </div>\n            <div class=\"uci-admin-right-panel ua-main-content z-index-2\">\n                <router-outlet></router-outlet>\n            </div>\n        </div>\n    </div>\n</div>\n";
+    const LIB_ENTRY_COMPONENT_STYLE = ["@import url(https://fonts.googleapis.com/css?family=Material+Icons);.uci-container ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline{background-color:#fff;border-radius:5px}.mat-table{width:100%}.mat-header-cell{font-weight:700;color:#000}.uci-action-button{background-color:#005a9e;color:#fff}.uci-copy-button{background-color:#e0e1e2;color:#000}.hide{display:none}.asterisk-color{color:red}.uci-mat-pagination{text-align:right}.small-btn{padding:6px 14px;font-size:12px;line-height:1;min-width:auto}.w-100{width:100%}.justify-between{justify-content:space-between}.align-middle{align-items:center}.overflow-visible{overflow:visible!important}.background-transparent{background:0 0!important}.wrap-text{word-wrap:break-word}.col-3{flex-grow:3}.col-1{flex-grow:1}.d-flex{display:flex}.flex-row{flex-flow:row!important}.flex-column{flex-flow:column!important}.justify-content-center{justify-content:center!important}.justify-content-start{justify-content:start!important}.justify-content-end{justify-content:end!important}.justify-content-around{justify-content:space-around!important}.justify-content-between{justify-content:space-between!important}.align-items-center{align-items:center!important}.align-items-start{align-items:start!important}.align-items-baseline{align-items:baseline!important}.align-items-end{align-items:end!important}.text-center{text-align:center!important}.text-left{text-align:left!important}.text-right{text-align:right!important}.text-right .margin-auto{margin:auto!important}.ua-btn-container{display:flex;align-items:center;justify-content:space-between;background:#fff}.ua-btn-close{color:#000;font-weight:700;background:#ef64af}.uci-admin{width:100%;min-height:100vh;position:relative;z-index:unset}.uci-admin-content{display:grid;grid-template-columns:1fr 4fr;margin:0 1.5rem}.uci-admin-left-panel{padding:1.5rem;position:relative;z-index:2}.uci-admin-right-panel{padding:1.5rem}.ui.loader:after{border-color:#fff transparent transparent!important}@media (max-width:768px){.uci-admin{padding:0 8px;height:100vh;overflow:auto;background:#e9e8d9}.uci-admin-left-panel{padding:1rem 0}.uci-admin-right-panel{padding:0 0 48px}}.font-weight-bold{font-weight:700}.font-weight-normal{font-weight:400}.font-1-2{font-size:1.2rem}.z-index-2{z-index:2!important}@media screen and (min-width:376px) and (max-width:768px){.uci-admin-content{grid-template-columns:1fr;margin:0}}@media screen and (min-width:320px) and (max-width:375px){.uci-admin-content{grid-template-columns:repeat(auto-fill,minmax(292px,1fr));margin:0}}"];
+
     var LibEntryComponent = /** @class */ (function () {
         function LibEntryComponent(activatedRoute, uciService, configService, location, uciEventsService, telemetryUtils, globalService, router) {
             this.activatedRoute = activatedRoute;
@@ -2657,16 +2701,18 @@
             this.uciEventsService.emitTelemetry(eventAction);
             this.telemetryUtils.logInteract(event, UciData.IPageName.LIB_ENTRY);
         };
-        LibEntryComponent.ctorParameters = function () { return [
-            { type: router.ActivatedRoute },
-            { type: UciService },
-            { type: ConfigService },
-            { type: common.Location },
-            { type: UciEventsService },
-            { type: TelemetryUtilsService },
-            { type: GlobalService },
-            { type: router.Router }
-        ]; };
+        LibEntryComponent.ctorParameters = function () {
+            return [
+                { type: router.ActivatedRoute },
+                { type: UciService },
+                { type: ConfigService },
+                { type: common.Location },
+                { type: UciEventsService },
+                { type: TelemetryUtilsService },
+                { type: GlobalService },
+                { type: router.Router }
+            ];
+        };
         __decorate([
             core.Input()
         ], LibEntryComponent.prototype, "user", void 0);
@@ -2694,8 +2740,8 @@
         LibEntryComponent = __decorate([
             core.Component({
                 selector: 'lib-lib-entry',
-                template: "<div class=\"ui\">\n    <div class=\"relative position\">\n        <div class=\"py-8 ua-btn-container ua-back-btn-container px-20 z-index-2\">\n           <div class=\"mx-20\">\n               <button mat-raised-button (click)=\"goBack()\">\n                   <mat-icon>keyboard_backspace</mat-icon>\n                   {{resourceService?.frmelmnts?.btn?.back || 'Back'}}\n               </button>\n           </div>\n        </div>\n    </div>\n    <div class=\"uci-admin\">\n        <div class=\"uci-admin-content\">\n            <div class=\"uci-admin-left-panel ua-side-content z-index-2\">\n                <lib-side-panel></lib-side-panel>\n            </div>\n            <div class=\"uci-admin-right-panel ua-main-content z-index-2\">\n                <router-outlet></router-outlet>\n            </div>\n        </div>\n    </div>\n</div>\n",
-                styles: ["@import url(https://fonts.googleapis.com/css?family=Material+Icons);.uci-container ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline{background-color:#fff;border-radius:5px}.mat-table{width:100%}.mat-header-cell{font-weight:700;color:#000}.uci-action-button{background-color:#005a9e;color:#fff}.uci-copy-button{background-color:#e0e1e2;color:#000}.hide{display:none}.asterisk-color{color:red}.uci-mat-pagination{text-align:right}.small-btn{padding:6px 14px;font-size:12px;line-height:1;min-width:auto}.w-100{width:100%}.justify-between{justify-content:space-between}.align-middle{align-items:center}.overflow-visible{overflow:visible!important}.background-transparent{background:0 0!important}.wrap-text{word-wrap:break-word}.col-3{flex-grow:3}.col-1{flex-grow:1}.d-flex{display:flex}.flex-row{flex-flow:row!important}.flex-column{flex-flow:column!important}.justify-content-center{justify-content:center!important}.justify-content-start{justify-content:start!important}.justify-content-end{justify-content:end!important}.justify-content-around{justify-content:space-around!important}.justify-content-between{justify-content:space-between!important}.align-items-center{align-items:center!important}.align-items-start{align-items:start!important}.align-items-baseline{align-items:baseline!important}.align-items-end{align-items:end!important}.text-center{text-align:center!important}.text-left{text-align:left!important}.text-right{text-align:right!important}.text-right .margin-auto{margin:auto!important}.ua-btn-container{display:flex;align-items:center;justify-content:space-between;background:#fff}.ua-btn-close{color:#000;font-weight:700;background:#ef64af}.uci-admin{width:100%;min-height:100vh;position:relative;z-index:unset}.uci-admin-content{display:grid;grid-template-columns:1fr 4fr;margin:0 1.5rem}.uci-admin-left-panel{padding:1.5rem;position:relative;z-index:2}.uci-admin-right-panel{padding:1.5rem}.ui.loader:after{border-color:#fff transparent transparent!important}@media (max-width:768px){.uci-admin{padding:0 8px;height:100vh;overflow:auto;background:#e9e8d9}.uci-admin-left-panel{padding:1rem 0}.uci-admin-right-panel{padding:0 0 48px}}.font-weight-bold{font-weight:700}.font-weight-normal{font-weight:400}.font-1-2{font-size:1.2rem}.z-index-2{z-index:2!important}@media screen and (min-width:376px) and (max-width:768px){.uci-admin-content{grid-template-columns:1fr;margin:0}}@media screen and (min-width:320px) and (max-width:375px){.uci-admin-content{grid-template-columns:repeat(auto-fill,minmax(292px,1fr));margin:0}}"]
+                template: LIB_ENTRY_COMPONENT_TEMPLATE,
+                styles: LIB_ENTRY_COMPONENT_STYLE
             })
         ], LibEntryComponent);
         return LibEntryComponent;

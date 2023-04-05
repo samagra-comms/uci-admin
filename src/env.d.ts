@@ -12,5 +12,6 @@ declare let process: {
     NG_APP_userId: string,
     NG_APP_orgId: string,
     NG_APP_token: string,
+    NG_APP_conversationAdapterId: string
   };
 };
