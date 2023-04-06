@@ -3,3 +3,17 @@
 .mat-column-action {
   width: 5px;
 }
+
+
+.has-error{
+  font-family: Roboto,Helvetica Neue,sans-serif;
+  color: #f44336;
+  display: block;
+  padding-bottom: 20px;
+}
+
+.custom-error {
+  ::ng-deep .mat-form-field-wrapper{
+    padding-bottom: 0px;
+  }
+}

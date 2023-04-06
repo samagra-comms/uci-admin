@@ -1285,6 +1285,7 @@
       "segmentId": "Segment Id",
       "startMessage": "Start Message",
       "startMessageError": "This starting message is not available",
+      "nameError": "This name is not available",
       "userCount": "User count",
       "startDate": "Start Date",
       "endDate": "End Date",

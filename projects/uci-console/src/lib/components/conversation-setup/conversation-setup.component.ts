@@ -47,17 +47,32 @@ export class ConversationSetupComponent implements OnInit {
                 .pipe(debounceTime(1000))
                 .subscribe(
                     value => {
-                        this.onStarringMessageChange();
+                        this.onKeyChange('startingMessage');
+                    }
+                );
+            this.conversationForm.get('name').valueChanges
+                .pipe(debounceTime(1000))
+                .subscribe(
+                    value => {
+                        this.onKeyChange('name');
                     }
                 );
         }
     }
 
-    onStarringMessageChange() {
-        this.starringMessageChange.emit({});
+    onKeyChange(value) {
+        this.starringMessageChange.emit(value);
     }
 
     onUserSegmentDelete(index) {
         this.userSegmentDelete.emit(index);
+    }
+
+    disableField(){
+        if(this.conversationForm.value.isBroadcastBotEnabled) {
+            this.conversationForm.controls['segmentId'].enable();
+        } else{
+            this.conversationForm.controls['segmentId'].disable();
+        }
     }
 }
