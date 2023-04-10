@@ -9,6 +9,10 @@ import {GlobalService} from './global.service';
 })
 export class UciService extends BaseService {
     BASE_URL;
+    BASE_URL_V1;
+    BASE_URL_V2;
+
+    NL_BASE_URL;
     DATASET_URL;
     FORM_BASE_URL = 'https://dev.sunbirded.org/';
 
@@ -16,14 +20,22 @@ export class UciService extends BaseService {
         super(http, globalService);
         this.globalService.baseUrl$.subscribe(value => {
             if (value) {
-                this.BASE_URL = value + '/admin/v1/';
+                this.BASE_URL = value + '/admin/';
+                this.BASE_URL_V1 = value + '/admin/v1/';
+                this.BASE_URL_V2 = value + '/admin/v2/';
+
                 this.DATASET_URL = value.replace('/uci') + '/dataset/v1/';
+            }
+        });
+        this.globalService.nlBaseUrl$.subscribe(value => {
+            if (value) {
+                this.NL_BASE_URL = value + '/';
             }
         });
     }
 
     fetchConversation(params): Observable<any> {
-        return this.getRequest(this.BASE_URL + 'bot/get', params, {asset: 'bot'});
+        return this.getRequest(this.BASE_URL + 'bot/search', params, {asset: 'bot'});
     }
 
     searchConversation(params): Observable<any> {
@@ -51,7 +63,7 @@ export class UciService extends BaseService {
     }
 
     botCreate(data) {
-        return this.postRequest(this.BASE_URL + 'bot/create', data, {asset: 'bot'});
+        return this.postRequest(this.BASE_URL + 'bot', data, {asset: 'bot'});
     }
 
     botUpdate(id, data) {
@@ -68,7 +80,7 @@ export class UciService extends BaseService {
     }
 
     createUserSegment(data) {
-        return this.postRequest(this.BASE_URL + 'userSegment/create', data, {asset: 'userSegment'});
+        return this.postSegmentRequest(this.BASE_URL + 'user-segment', data, {asset: 'userSegment'});
     }
 
     userSegmentQueryBuilder(data) {
@@ -77,20 +89,20 @@ export class UciService extends BaseService {
 
     // Conversation APIs
     createLogic(data) {
-        return this.postRequest(this.BASE_URL + 'conversationLogic/create', data, {asset: 'conversationLogic'});
+        return this.postRequest(this.BASE_URL + 'conversationLogic', data, {asset: 'conversationLogic'});
     }
 
     updateLogic(id, data) {
-        return this.postRequest(this.BASE_URL + `conversationLogic/update/${id}`, data, {asset: 'conversationLogic'});
+        return this.patchRequest(this.BASE_URL + `conversationLogic/${id}`, data, {asset: 'conversationLogic'});
     }
 
     deleteLogic(id) {
-        return this.getRequest(this.BASE_URL + `conversationLogic/delete/${id}`, {}, {asset: 'conversationLogic'});
+        return this.deleteRequest(this.BASE_URL + `conversationLogic/${id}`, {asset: 'conversationLogic'});
     }
 
     // Mis APIs
     uploadFile(obj): Observable<any> {
-        return this.postRequest(this.BASE_URL + 'forms/upload', this.toFormData(obj));
+        return this.postRequest(this.BASE_URL + 'form/upload', this.toFormData(obj));
     }
 
     readForm(data) {
@@ -108,5 +120,13 @@ export class UciService extends BaseService {
 
     submitExhaust(data) {
         return this.postRequest(this.DATASET_URL + `request/submit`, data, {asset: 'conversationLogic'});
+    }
+
+    nlSegmentBotMapping(data) {
+        return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
+    }
+
+    submitSegmentData(data) {
+        return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
     }
 }

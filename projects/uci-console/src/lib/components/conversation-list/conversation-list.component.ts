@@ -53,14 +53,10 @@ export class ConversationListComponent implements OnInit {
 
         if (this.search) {
             param.name = this.search;
-            this.uciService.searchConversation(param).subscribe(
-                data => this.parseConversations(data)
-            );
-        } else {
-            this.uciService.fetchConversation(param).subscribe(
-                data => this.parseConversations(data)
-            );
         }
+        this.uciService.searchConversation(param).subscribe(
+          data => this.parseConversations(data)
+        );
 
     }
 
@@ -70,10 +66,10 @@ export class ConversationListComponent implements OnInit {
             const obj = {...bot, segmentText: '', userCount: 0, status: bot.status || 'Draft'};
             obj.status = bot.status === 'enabled' ? 'Live' : bot.status === 'disabled' ? 'Disabled' : 'Draft';
             const segmentNames = [];
-            bot.userSegments.forEach(userSegment => {
-                segmentNames.push(userSegment.name);
-                obj.userCount += (userSegment.count || 0);
-            });
+            // bot.userSegments.forEach(userSegment => {
+            //     segmentNames.push(userSegment.name);
+            //     obj.userCount += (userSegment.count || 0);
+            // });
             obj.segmentText = segmentNames.join(', ');
 
             obj.url = Helper.makBotUrl(bot.startingMessage || '', this.globalService.getBotPhoneNumber());
@@ -81,7 +77,7 @@ export class ConversationListComponent implements OnInit {
 
             this.chatBots.push(obj);
         });
-        this.pager.totalItems = data.total;
+        this.pager.totalItems = data.totalCount;
     }
 
     sortColumns(column) {

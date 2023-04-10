@@ -73,7 +73,7 @@ export class AddLogicComponent {
         this.isModalLoaderShow = true;
         this.uciService.uploadFile(obj).subscribe((fileInfo: any) => {
                 if (fileInfo.data) {
-                    this.logicForm.patchValue({formId: fileInfo.data});
+                    this.logicForm.patchValue({formId: fileInfo?.data?.formID});
                 }
                 this.isModalLoaderShow = false;
                 this.odkFileAlreadyExist = false;

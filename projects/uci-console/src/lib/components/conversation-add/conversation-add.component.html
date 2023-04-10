@@ -20,8 +20,8 @@
                             <lib-conversation-setup
                                     [conversationForm]="conversationForm"
                                     [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                    [isStartingMessageExist]="isStartingMessageExist"
-                                    (starringMessageChange)="onStarringMessageChange()"
+                                    [isStartingMessageExist]="duplicateValues"
+                                    (starringMessageChange)="checkForDuplicateValue($event)"
                                     (userSegmentDelete)="onUserSegmentDelete($event)"
                             >
                             </lib-conversation-setup>
@@ -42,7 +42,7 @@
                             {{resourceService.frmelmnts?.btn?.cancel}}
                         </button>
                         <button mat-raised-button class="uci-action-button"
-                                [disabled]="conversationForm.invalid || isStartingMessageExist"
+                                [disabled]="conversationForm.invalid"
                                 (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                         </button>
                     </div>
@@ -65,7 +65,7 @@
                         <ng-template #submitBtn1>
                             <button mat-raised-button class="uci-action-button"
                                     [disabled]="!isCheckedTermCondition || !botLogics.length"
-                                    (click)="this.conversationId ? onSubmit(true) : openItemsVerifyModal(true)">
+                                    (click)="onSubmit(true)">
                                 {{conversationId ? resourceService.frmelmnts?.btn?.update : resourceService.frmelmnts?.btn?.submit}}
                             </button>
                         </ng-template>
@@ -73,10 +73,8 @@
                     <div class="pt-0">
                         <mat-checkbox name="isCheckedTermCondition" [color]="'primary'"
                                       [(ngModel)]="isCheckedTermCondition">
-                            <mat-label class="font-weight-normal t-and-c-title">
-                                <a class="tc-tag" href="https://diksha.gov.in/term-of-use.html" target="_blank">
-                                    {{resourceService.frmelmnts?.lbl?.aggreeTc}}
-                                </a>
+                            <mat-label class="font-weight-normal">
+                                {{resourceService.frmelmnts?.lbl?.aggreeTc}}
                             </mat-label>
                         </mat-checkbox>
                     </div>
@@ -91,8 +89,8 @@
                         <lib-conversation-setup
                                 [conversationForm]="conversationForm"
                                 [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                [isStartingMessageExist]="isStartingMessageExist"
-                                (starringMessageChange)="onStarringMessageChange()"
+                                [isStartingMessageExist]="duplicateValues"
+                                (starringMessageChange)="checkForDuplicateValue($event)"
                                 (userSegmentDelete)="onUserSegmentDelete($event)"
                         >
                         </lib-conversation-setup>
@@ -104,7 +102,7 @@
                                 {{resourceService.frmelmnts?.btn?.cancel}}
                             </button>
                             <button mat-raised-button class="uci-action-button"
-                                    [disabled]="conversationForm.invalid || isStartingMessageExist"
+                                    [disabled]="conversationForm.invalid"
                                     (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                             </button>
                         </div>
@@ -112,7 +110,7 @@
                 </mat-step>
                 <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationFlow}}">
                     <div class="step2-wrapper" *ngIf="stepIndex === 2">
-                        <lib-logic-list [botLogics]="botLogics" (modify)="onBotLogicModify($event)">
+                        <lib-logic-list [botLogics]="botLogics" [notificationBotLogics]="broadcastBotLogics" (modify)="onBotLogicModify($event)">
                         </lib-logic-list>
                     </div>
                     <div *ngIf="stepIndex === 2">
@@ -142,7 +140,7 @@
                             <mat-checkbox name="isCheckedTermCondition" [color]="'primary'"
                                           [(ngModel)]="isCheckedTermCondition">
                                 <mat-label class="font-weight-normal t-and-c-title">
-                                    <a class="tc-tag" href="https://diksha.gov.in/term-of-use.html" target="_blank">
+                                    <a class="tc-tag" href="https://Nipun Lakshya App Chatbot.gov.in/term-of-use.html" target="_blank">
                                         {{resourceService.frmelmnts?.lbl?.aggreeTc}}
                                     </a>
                                 </mat-label>

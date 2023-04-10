@@ -14,10 +14,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {UciModule} from '../../projects/uci-console/src/lib/uci.module';
+import { LoginComponent } from './login/login.component';
+import {AuthGuard} from './shared/guards/auth-guard.service';
+import { MainComponent } from './main/main.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -32,9 +37,12 @@ import {UciModule} from '../../projects/uci-console/src/lib/uci.module';
     FormsModule,
     MatListModule,
     MatInputModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatToolbarModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

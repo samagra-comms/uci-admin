@@ -17,9 +17,12 @@ import {GlobalService} from '../../services/global.service';
 export class LibEntryComponent implements OnInit {
     @Input() user;
     @Input() baseUrl;
+    @Input() nlBaseUrl;
     @Input() blobUrl;
     @Input() botPhoneNumber;
     @Input() resourceService;
+    @Input() adapterId;
+    @Input() broadcastAdapterId;
 
     constructor(
         public activatedRoute: ActivatedRoute,
@@ -40,6 +43,9 @@ export class LibEntryComponent implements OnInit {
         if (this.baseUrl) {
             this.globalService.setBaseUrl(this.baseUrl);
         }
+        if (this.nlBaseUrl) {
+            this.globalService.setNlBaseUrl(this.nlBaseUrl);
+        }
         if (this.blobUrl) {
             this.globalService.setBlobUrl(this.blobUrl);
         }
@@ -48,6 +54,12 @@ export class LibEntryComponent implements OnInit {
         }
         if (this.resourceService) {
             this.globalService.setResourceService(this.resourceService);
+        }
+        if (this.adapterId) {
+            this.globalService.setAdapterId(this.adapterId);
+        }
+        if (this.broadcastAdapterId) {
+            this.globalService.setBroadcastAdapterId(this.broadcastAdapterId);
         }
         if (this.router.url === '/uci-admin') {
             this.router.navigate(['uci-admin/home'], { skipLocationChange: true });

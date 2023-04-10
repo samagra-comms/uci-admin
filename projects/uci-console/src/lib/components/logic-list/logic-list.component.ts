@@ -12,6 +12,7 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 export class LogicListComponent implements OnInit {
     @Input() botLogics = [];
+    @Input() notificationBotLogics = [];
     @Output() modify = new EventEmitter<any>();
     datasource = new MatTableDataSource<any>([]);
     logicFormRequest = {};
@@ -63,18 +64,34 @@ export class LogicListComponent implements OnInit {
     }
 
     onLogicAdd(logicFormData) {
-        const reqData = {
-            ...logicFormData,
+        const reqData: any = {
+            id: logicFormData.id,
+            name: logicFormData.name,
+            description: logicFormData.description,
             transformers: [
                 {
-                    id: 'bbf56981-b8c9-40e9-8067-468c2c753659',
+                    id: '774cd134-6657-4688-85f6-6338e2323dde',
                     meta: {
                         form: 'https://hosted.my.form.here.com',
-                        formID: logicFormData.formId
+                        formID: logicFormData.formId,
+                        title: logicFormData.name,
+                        body: logicFormData.description,
+                        serviceClass: "SurveyService",
+                        hiddenFields: [
+                            {
+                                name: "mobilePhone",
+                                path: "mobilePhone",
+                                type: "param",
+                                config: {
+                                    dataObjName: "user"
+                                }
+                            }
+                        ],
+                        templateType: 'JS_TEMPLATE_LITERALS'
                     }
                 }
             ],
-            adapter: '44a9df72-3d7a-4ece-94c5-98cf26307324'
+            adapter: this.globalService.getAdapterId()
         };
 
         this.isModalLoaderShow = true;
@@ -97,7 +114,7 @@ export class LogicListComponent implements OnInit {
                     const existingLogic = reqData;
                     delete existingLogic.id;
                     this.botLogics.push({
-                        id: data.data.id,
+                        id: data.id,
                         ...existingLogic,
                     });
                     this.onModify();

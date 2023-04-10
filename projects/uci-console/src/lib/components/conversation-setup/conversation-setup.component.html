@@ -6,7 +6,7 @@
     </mat-grid-list>
 
     <form [formGroup]="conversationForm">
-        <mat-form-field class="w-100" appearance="outline">
+        <mat-form-field class="w-100" appearance="outline" [ngClass]="{'custom-error': isStartingMessageExist.name}">
             <mat-label>{{resourceService.frmelmnts?.lbl?.conversationName}}
                 <sup><i class="asterisk icon asterisk-color"></i></sup>
             </mat-label>
@@ -14,6 +14,11 @@
                    placeholder="{{resourceService.frmelmnts?.lbl?.enterName}}"
                    formControlName="name">
         </mat-form-field>
+        <span *ngIf="isStartingMessageExist.name">
+            <span class="has-error">
+                {{resourceService.frmelmnts?.lbl?.nameError}}
+            </span>
+        </span>
         <mat-form-field class="w-100" appearance="outline">
             <mat-label>{{resourceService.frmelmnts?.lbl?.conversationDescription}}</mat-label>
             <textarea matInput rows="5" name="description"
@@ -32,16 +37,51 @@
                    formControlName="purpose">
         </mat-form-field>
 
-        <mat-form-field class="w-100" appearance="outline">
+        <mat-form-field class="w-100" appearance="outline" [ngClass]="{'custom-error': isStartingMessageExist.startingMessage}">
             <mat-label>{{resourceService.frmelmnts?.lbl?.startMessage}} <sup><i
                     class="asterisk icon asterisk-color"></i></sup></mat-label>
             <input matInput type="text" name="startingMessage"
                    placeholder="{{resourceService.frmelmnts?.lbl?.enterMessage}}"
                    formControlName="startingMessage">
-            <mat-error *ngIf="isStartingMessageExist">
-                {{resourceService.frmelmnts?.lbl?.startMessageError}}
-            </mat-error>
+<!--          {{isStartingMessageExist}}-->
+<!--          {{conversationForm.invalid}}-->
         </mat-form-field>
+        <span *ngIf="isStartingMessageExist.startingMessage">
+            <span class="has-error">
+                {{resourceService.frmelmnts?.lbl?.startMessageError}}
+            </span>
+        </span>
+
+        <input type="checkbox" id="segmentIdCheckbox" checked
+        formControlName="isBroadcastBotEnabled"
+        (change)="disableField()">
+        <label for="segmentIdCheckbox">
+            Create Broadcast bot
+        </label>
+        <mat-form-field class="w-100" appearance="outline">
+        <mat-label>{{resourceService.frmelmnts?.lbl?.segmentId}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <input matInput type="text" name="segmentId"
+                  placeholder="{{resourceService.frmelmnts?.lbl?.enterSegmentId}}"
+                  formControlName="segmentId">
+        </mat-form-field>
+
+        <!--<mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.notificationTitle}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <input matInput type="text" name="notificationTitle"
+                  placeholder="{{resourceService.frmelmnts?.lbl?.enterTitle}}"
+                  formControlName="notificationTitle">
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{resourceService.frmelmnts?.lbl?.notificationDescription}} <sup><i
+                    class="asterisk icon asterisk-color"></i></sup></mat-label>
+            <textarea matInput rows="5" name="notificationDescription"
+                    placeholder="{{resourceService.frmelmnts?.lbl?.enterDescription}}"
+                    formControlName="notificationDescription">
+            </textarea>
+        </mat-form-field>-->
 
         <mat-grid-list [cols]="matDateBreakpoint" rowHeight="6rem">
             <mat-grid-tile>
