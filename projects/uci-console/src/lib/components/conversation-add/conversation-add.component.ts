@@ -185,10 +185,15 @@ export class ConversationAddComponent implements OnInit {
           } else {
             this.closeVerifyModal();
             this.isLoaderShow = false;
-            if (isNavigateToEnd) {
-              this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
+
+            if(this.conversationForm.value.isBroadcastBotEnabled){
+              if (isNavigateToEnd) {
+                this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
+              } else {
+                this.createSegment();
+              }
             } else {
-              this.createSegment();
+              this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: data.id}});
             }
           }
 
@@ -287,11 +292,17 @@ export class ConversationAddComponent implements OnInit {
       data => {
         this.isLoaderShow = false;
         this.closeVerifyModal();
-        if (isNavigateToEnd) {
-          this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
-        } else {
-          this.createSegment();
+        if(this.conversationForm.value.isBroadcastBotEnabled){
+          if (isNavigateToEnd) {
+            this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
+          } else {
+            this.createSegment();
+          }
         }
+        else{
+          this.router.navigate(['uci-admin/success']);
+        }
+
       }, error => {
         this.verifyAllItemsModal = true;
         this.allChecked = false;

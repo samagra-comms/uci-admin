@@ -21,35 +21,53 @@
                               formControlName="description"></textarea>
                 </mat-form-field>
 
-                <div>
-                    <mat-grid-list [cols]="breakpoint" rowHeight="3rem" (window:resize)="onResize($event)">
-                        <mat-grid-tile colspan="1" class="font-1-2">
-                            <div class="w-100 text-left">
-                                {{resourceService.frmelmnts?.lbl?.uploadOdkForm}}
-                                <sup><i class="asterisk icon asterisk-color"></i></sup>
+                <div class="d-flex flex-column">
+                    <div>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="3rem" (window:resize)="onResize($event)">
+                            <mat-grid-tile colspan="1" class="font-1-2">
+                                <div class="w-100 text-left">
+                                    {{resourceService.frmelmnts?.lbl?.uploadOdkForm}}
+                                    <sup><i class="asterisk icon asterisk-color"></i></sup>
+                                </div>
+                            </mat-grid-tile>
+                            <mat-grid-tile *ngIf="breakpoint === 3" colspan="2" class="font-1-2 computer only">
+                                <div class="w-100 text-right">
+                                    <a class="mx-5 sample-download" (click)="manualDownload()"
+                                    matTooltip="{{resourceService.frmelmnts?.lbl?.instructionManual}}">
+                                        {{resourceService.frmelmnts?.lbl?.instructionManual}}
+                                    </a>
+                                    <a class="ml-1 sample-download" (click)="sampleODKDownload()"
+                                    matTooltip="{{resourceService.frmelmnts?.lbl?.sampleOdkForm}}">
+                                        {{resourceService.frmelmnts?.lbl?.sampleOdkForm}}
+                                    </a>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <input type="file" name="file" (change)="onFileUpload($event)" accept=".xml" class="uci-file-input">
+                            <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
+                            <div class="mobile only field text-right p-0">
+                                <a class="mr-5 sample-download"
+                                (click)="manualDownload()">{{resourceService.frmelmnts?.lbl?.instructionManual}}</a>
+                                <a class="sample-download"
+                                (click)="sampleODKDownload()">{{resourceService.frmelmnts?.lbl?.sampleOdkForm}}</a>
                             </div>
-                        </mat-grid-tile>
-                        <mat-grid-tile *ngIf="breakpoint === 3" colspan="2" class="font-1-2 computer only">
-                            <div class="w-100 text-right">
-                                <a class="mx-5 sample-download" (click)="manualDownload()"
-                                   matTooltip="{{resourceService.frmelmnts?.lbl?.instructionManual}}">
-                                    {{resourceService.frmelmnts?.lbl?.instructionManual}}
-                                </a>
-                                <a class="ml-1 sample-download" (click)="sampleODKDownload()"
-                                   matTooltip="{{resourceService.frmelmnts?.lbl?.sampleOdkForm}}">
-                                    {{resourceService.frmelmnts?.lbl?.sampleOdkForm}}
-                                </a>
-                            </div>
-                        </mat-grid-tile>
-                    </mat-grid-list>
-                    <input type="file" name="file" (change)="onFileUpload($event)" accept=".xml" class="uci-file-input">
-                    <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
-                    <div class="mobile only field text-right p-0">
-                        <a class="mr-5 sample-download"
-                           (click)="manualDownload()">{{resourceService.frmelmnts?.lbl?.instructionManual}}</a>
-                        <a class="sample-download"
-                           (click)="sampleODKDownload()">{{resourceService.frmelmnts?.lbl?.sampleOdkForm}}</a>
                     </div>
+
+                    <div>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="3rem" (window:resize)="onResize($event)">
+                            <mat-grid-tile colspan="1" class="font-1-2">
+                                <div class="w-100 text-left">
+                                    {{resourceService.frmelmnts?.lbl?.uploadMedia}}
+                                    <sup><i class="asterisk icon asterisk-color"></i></sup>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <input type="file" name="file" (change)="onFileUpload($event)" accept=".xml" class="uci-file-input">
+                        <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
+                        <div class="mobile only field text-right p-0">
+                        </div>
+                    </div>
+
                 </div>
 
             </form>

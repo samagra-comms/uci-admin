@@ -42,7 +42,8 @@
                             {{resourceService.frmelmnts?.btn?.cancel}}
                         </button>
                         <button mat-raised-button class="uci-action-button"
-                                [disabled]="conversationForm.invalid"
+                                [disabled]="conversationForm.invalid || duplicateValues.name ||
+                                duplicateValues.startingMessage"
                                 (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                         </button>
                     </div>

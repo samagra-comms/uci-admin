@@ -1304,6 +1304,7 @@
       "enterTitle": "Enter title",
       "enterSegmentId": "Enter segment Id",
       "uploadOdkForm": "Upload ODK Form (.xml)",
+      "uploadMedia": "Upload Media",
       "sampleOdkForm": "Sample ODK Form (.xlsx)",
       "browseXmlFile": "Browse XML File",
       "instructionManual": "Instruction Manual",

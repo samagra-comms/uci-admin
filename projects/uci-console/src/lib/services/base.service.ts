@@ -111,7 +111,7 @@ export class BaseService {
 
     public handleError(error: HttpErrorResponse) {
         if (error instanceof ErrorEvent) {
-            return throwError(error.error.message);
+            return throwError(error);
         }
         console.log('=====', error, error.error);
         // this.toasterService.error(this.resourceService.messages.fmsg.m0091);

@@ -73,6 +73,7 @@ export class ConversationSetupComponent implements OnInit {
             this.conversationForm.controls['segmentId'].enable();
         } else{
             this.conversationForm.controls['segmentId'].disable();
+            this.conversationForm.patchValue({segmentId: ''})
         }
     }
 }
