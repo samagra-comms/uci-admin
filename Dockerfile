@@ -4,7 +4,6 @@ COPY package.json .
 RUN npm install
 
 FROM node:14-alpine as build
-
 # These vars will be sourced during build time
 ARG NG_APP_url
 ARG NG_APP_nl_url
@@ -18,7 +17,6 @@ ARG NG_APP_broadcastAdapterId
 ARG NG_APP_userId
 ARG NG_APP_orgId
 ARG NG_APP_token
-
 
 ENV NG_APP_url $NG_APP_url
 ENV NG_APP_nl_url $NG_APP_nl_url
