@@ -9,7 +9,7 @@
                 {{resourceService.frmelmnts?.lbl?.botSuccess}}
             </div>
 
-            <div class="text-center p-5">
+            <!-- <div class="text-center p-5">
                 {{resourceService.frmelmnts?.lbl?.botUrlMessage}} :
                 <strong><span id="copyUrl">{{url}}</span></strong>
             </div>
@@ -17,17 +17,17 @@
             <div class="text-center p-5" *ngIf="botId">
                 {{resourceService.frmelmnts?.lbl?.botIdMessage}}:
                 <strong><span id="copyId">{{botId}}</span></strong>
-            </div>
+            </div> -->
 
             <div class="mt-20">
-                <button mat-raised-button class="uci-action-button mr-10" (click)="onCopy('copyUrl')">
+                <!-- <button mat-raised-button class="uci-action-button mr-10" (click)="onCopy('copyUrl')">
                     {{resourceService.frmelmnts?.btn?.copyUrl}}
                 </button>
                 <button mat-raised-button class="uci-action-button mr-10" (click)="onCopy('copyId')">
                     {{resourceService.frmelmnts?.btn?.copyId}}
-                </button>
+                </button> -->
                 <button mat-raised-button class="" (click)="onClose()">
-                    {{resourceService.frmelmnts?.btn?.close}}
+                    {{resourceService.frmelmnts?.btn?.list}}
                 </button>
             </div>
         </div>
