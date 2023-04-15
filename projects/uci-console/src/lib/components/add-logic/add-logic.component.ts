@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {GlobalService} from '../../services/global.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {UciService} from '../../services/uci.service';
 import {ToasterService} from '../../services/toaster.service';
 
@@ -13,14 +13,14 @@ import {ToasterService} from '../../services/toaster.service';
 export class AddLogicComponent {
     resourceService;
     isModalLoaderShow = false;
-    logicForm: FormGroup;
+    logicForm: UntypedFormGroup;
     odkFileAlreadyExist = false;
     fileErrorStatus;
     breakpoint;
 
     constructor(
         private uciService: UciService,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private toasterService: ToasterService,
         private globalService: GlobalService,
         public dialogRef: MatDialogRef<AddLogicComponent>,

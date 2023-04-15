@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../shared/http-services/login.service';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {StorageService} from '../shared/services/storage.service';
 import {environment} from '../../environments/environment';
 
@@ -11,11 +11,11 @@ import {environment} from '../../environments/environment';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup | any;
+  loginForm: UntypedFormGroup | any;
 
 
   constructor(private loginService: LoginService,
-              private fb: FormBuilder,
+              private fb: UntypedFormBuilder,
               private router: Router) {
   }
 

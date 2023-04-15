@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UciService} from '../../services/uci.service';
 import {GlobalService} from '../../services/global.service';
 import {MatDialog} from '@angular/material/dialog';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import * as moment from 'moment';
 import {debounceTime} from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import {debounceTime} from 'rxjs/operators';
     styleUrls: ['./conversation-setup.component.scss']
 })
 export class ConversationSetupComponent implements OnInit {
-    @Input() conversationForm: FormGroup;
+    @Input() conversationForm: UntypedFormGroup;
     @Input() isStartingMessageExist;
     @Input() startMinDate;
     @Input() userSegments;
@@ -23,7 +23,7 @@ export class ConversationSetupComponent implements OnInit {
     resourceService;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private uciService: UciService,
         private globalService: GlobalService,
         public dialog: MatDialog,

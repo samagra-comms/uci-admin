@@ -6,6 +6,7 @@ import {BehaviorSubject} from 'rxjs';
 })
 export class GlobalService {
     private user: BehaviorSubject<any> = new BehaviorSubject(undefined);
+    private authToken: BehaviorSubject<any> = new BehaviorSubject(undefined);
     public readonly user$ = this.user.asObservable();
     private baseUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
     private nlBaseUrl: BehaviorSubject<any> = new BehaviorSubject(undefined);
@@ -79,6 +80,14 @@ export class GlobalService {
 
     setAdapterId(broadcastAdapterId) {
         this.adapterId.next(broadcastAdapterId);
+    }
+
+    getAuthToken() {
+        return this.authToken.value;
+    }
+
+    setAuthToken(authToken) {
+        this.authToken.next(authToken);
     }
 
     getAdapterId() {

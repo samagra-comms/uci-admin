@@ -23,6 +23,7 @@ export class LibEntryComponent implements OnInit {
     @Input() resourceService;
     @Input() adapterId;
     @Input() broadcastAdapterId;
+    @Input() authToken;
 
     constructor(
         public activatedRoute: ActivatedRoute,
@@ -60,6 +61,9 @@ export class LibEntryComponent implements OnInit {
         }
         if (this.broadcastAdapterId) {
             this.globalService.setBroadcastAdapterId(this.broadcastAdapterId);
+        }
+        if (this.authToken) {
+            this.globalService.setAuthToken(this.authToken);
         }
         if (this.router.url === '/uci-admin') {
             this.router.navigate(['uci-admin/home'], { skipLocationChange: true });

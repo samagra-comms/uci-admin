@@ -1,6 +1,6 @@
-FROM node:14-alpine as dependencies
+FROM node:16-alpine as dependencies
 WORKDIR /app
-COPY package.json . 
+COPY package.json .
 RUN npm install
 
 FROM node:14-alpine as build
