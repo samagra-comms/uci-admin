@@ -92,12 +92,7 @@ import {ExhaustReportComponent} from './exhaust-report/exhaust-report.component'
         {
             provide: MatPaginatorIntl, useClass: PaginatorIntl
         }
-    ],
-    entryComponents: [
-        AddLogicComponent,
-        TermsConditionsComponent,
-        TermsConditionConfirmComponent
-    ],
+    ]
 })
 export class ComponentsModule {
 }

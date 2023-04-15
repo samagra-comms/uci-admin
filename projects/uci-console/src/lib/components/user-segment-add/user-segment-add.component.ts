@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UciService} from '../../services/uci.service';
 import {UciGraphQlService} from '../../services/uci-graph-ql.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import {GlobalService} from '../../services/global.service';
 
 @Component({
@@ -23,12 +23,12 @@ export class UserSegmentAddComponent implements OnInit {
     boards = [];
     grade = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
     subjects = [];
-    userSegmentForm: FormGroup;
+    userSegmentForm: UntypedFormGroup;
     state = 'Haryana';
     resourceService;
 
     constructor(private uciService: UciService,
-                private fb: FormBuilder,
+                private fb: UntypedFormBuilder,
                 private uciGraphQlService: UciGraphQlService,
                 private globalService: GlobalService) {
     }

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GlobalService} from '../../services/global.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {UciService} from '../../services/uci.service';
 import {ToasterService} from '../../services/toaster.service';
 import {v4 as uuidv4} from 'uuid';
@@ -19,7 +19,7 @@ export class ExhaustReportComponent implements OnInit {
         {name: 'Response Exhaust', value: 'uci-response-exhaust'},
         {name: 'Private Exhaust', value: 'uci-private-exhaust'},
     ];
-    filterForm: FormGroup;
+    filterForm: UntypedFormGroup;
     filters = {
         startDate: null,
         endDate: null,
@@ -52,7 +52,7 @@ export class ExhaustReportComponent implements OnInit {
     ];
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private uciService: UciService,
         private router: Router,
         private activatedRoute: ActivatedRoute,

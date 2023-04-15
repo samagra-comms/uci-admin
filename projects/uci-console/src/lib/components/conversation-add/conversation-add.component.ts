@@ -1,6 +1,6 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 
 import {GlobalService} from '../../services/global.service';
 import {UciService} from '../../services/uci.service';
@@ -35,7 +35,7 @@ export class ConversationAddComponent implements OnInit {
   isModalLoaderShow = false;
   logicFormRequest = {};
   isCheckedTermCondition = false;
-  conversationForm: FormGroup;
+  conversationForm: UntypedFormGroup;
   termsAndConditionModal = false;
   verifyAllItemsModal = false;
   conversationId;
@@ -54,7 +54,7 @@ export class ConversationAddComponent implements OnInit {
     private uciService: UciService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private globalService: GlobalService,
     private toasterService: ToasterService,
     public dialog: MatDialog,
