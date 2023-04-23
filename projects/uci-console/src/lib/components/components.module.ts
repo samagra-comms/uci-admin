@@ -10,7 +10,6 @@ import {ConversationListComponent} from './conversation-list/conversation-list.c
 import {ConversationAddComponent} from './conversation-add/conversation-add.component';
 import {UserSegmentListComponent} from './user-segment-list/user-segment-list.component';
 import {UserSegmentAddComponent} from './user-segment-add/user-segment-add.component';
-import {SuiModule} from 'ng2-semantic-ui-v9';
 import {ConversationSuccessComponent} from './conversation-success/conversation-success.component';
 import {UciGraphQlService} from '../services/uci-graph-ql.service';
 import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
@@ -39,6 +38,7 @@ import {PaginatorIntl} from '../services/paginator-intl.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {ExhaustReportComponent} from './exhaust-report/exhaust-report.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
     declarations: [
@@ -61,7 +61,6 @@ import {ExhaustReportComponent} from './exhaust-report/exhaust-report.component'
         FormsModule,
         ReactiveFormsModule,
         PipesModule,
-        SuiModule,
         MatButtonModule,
         MatInputModule,
         MatGridListModule,
@@ -79,6 +78,7 @@ import {ExhaustReportComponent} from './exhaust-report/exhaust-report.component'
         MatTooltipModule,
         MatSelectModule,
         MatFormFieldModule,
+        MatTabsModule
     ],
     exports: [
         SidePanelComponent,

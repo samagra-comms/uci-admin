@@ -38,28 +38,31 @@
                 <div class="field">
                     <label>District</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="district" multiple>
+                              <mat-option *ngFor="let option of districts" [value]="option.district">{{option.district}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                        <!-- <sui-multi-select class="selection w-100"
                                           formControlName="district"
                                           [options]="districts"
                                           #multiSelectDistrict>
                             <sui-select-option *ngFor="let option of multiSelectDistrict.filteredOptions"
                                                [value]="option.district">
                             </sui-select-option>
-                        </sui-multi-select>
+                        </sui-multi-select> -->
                     </div>
 
                 </div>
                 <div class="field">
                     <label>Block</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="block"
-                                          [options]="blocks"
-                                          #multiSelectBlock>
-                            <sui-select-option *ngFor="let option of multiSelectBlock.filteredOptions"
-                                               [value]="option.block">
-                            </sui-select-option>
-                        </sui-multi-select>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="block" multiple>
+                              <mat-option *ngFor="let option of blocks" [value]="option.block">{{option.block}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
                 </div>
             </div>
@@ -67,27 +70,23 @@
                 <div class="field" *ngIf="clusters.length">
                     <label>Cluster</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="cluster"
-                                          [options]="clusters"
-                                          #multiSelectCluster>
-                            <sui-select-option *ngFor="let option of multiSelectCluster.filteredOptions"
-                                               [value]="option.cluster">
-                            </sui-select-option>
-                        </sui-multi-select>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="cluster" multiple>
+                              <mat-option *ngFor="let option of clusters" [value]="option.cluster">{{option.cluster}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
                 </div>
                 <div class="field">
                     <label>School</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="school"
-                                          [options]="schools"
-                                          #multiSelectSchool>
-                            <sui-select-option *ngFor="let option of multiSelectSchool.filteredOptions"
-                                               [value]="option.school">
-                            </sui-select-option>
-                        </sui-multi-select>
+
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="school" multiple>
+                              <mat-option *ngFor="let option of schools" [value]="option.school">{{option.school}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
                     </div>
                 </div>
             </div>
@@ -95,27 +94,21 @@
                 <div class="field">
                     <label>Role</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="role"
-                                          [options]="roles"
-                                          #multiSelectRole>
-                            <sui-select-option *ngFor="let option of multiSelectRole.filteredOptions"
-                                               [value]="option.name">
-                            </sui-select-option>
-                        </sui-multi-select>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="role" multiple>
+                              <mat-option *ngFor="let option of roles" [value]="option.role">{{option.role}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
                 </div>
                 <div class="field">
                     <label>Board</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="board"
-                                          [options]="boards"
-                                          #multiSelectBoard>
-                            <sui-select-option *ngFor="let option of multiSelectBoard.filteredOptions"
-                                               [value]="option.name">
-                            </sui-select-option>
-                        </sui-multi-select>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="board" multiple>
+                              <mat-option *ngFor="let option of boards" [value]="option.board">{{option.board}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
                 </div>
             </div>
@@ -123,14 +116,11 @@
                 <div class="field">
                     <label>Grade</label>
                     <div class="ui segment p-0">
-                        <sui-multi-select class="selection w-100"
-                                          formControlName="grade"
-                                          [options]="grade"
-                                          #multiSelectGrade>
-                            <sui-select-option *ngFor="let option of multiSelectGrade.filteredOptions"
-                                               [value]="option">
-                            </sui-select-option>
-                        </sui-multi-select>
+                        <mat-form-field appearance="fill">
+                            <mat-select formControlName="grade" multiple>
+                              <mat-option *ngFor="let option of grade" [value]="option.grade">{{option.grade}}</mat-option>
+                            </mat-select>
+                          </mat-form-field>
                     </div>
                 </div>
             </div>

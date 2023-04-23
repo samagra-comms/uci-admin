@@ -77,18 +77,25 @@
                                 <mat-grid-tile colspan="3" class="overflow-visible">
                                     <div class="w-100 d-flex justify-between align-middle">
                                         <h5>{{botLogic.name}}</h5>
-                                        <div class="ui dropdown" suiDropdown>
-                                            <button mat-icon-button>
+                                        <div>
+                                            <button mat-button [matMenuTriggerFor]="menuMobile">
                                                 <mat-icon>more_vert</mat-icon>
                                             </button>
-                                            <div class="menu" suiDropdownMenu>
+                                            <mat-menu #menuMobile="matMenu" class="uci-list-menu menu">
+                                                <button mat-menu-item (click)="openModel(botLogic, i)">
+                                                    {{resourceService.frmelmnts?.lbl?.edit}} </button>
+                                                <button mat-menu-item (click)="onDelete(botLogic, i)">
+                                                    {{resourceService.frmelmnts?.lbl?.delete}} </button>
+                                            </mat-menu>
+
+                                            <!-- <div class="menu" suiDropdownMenu>
                                                 <div class="item" (click)="openModel(botLogic, i)">
                                                     {{resourceService.frmelmnts?.lbl?.edit}}
                                                 </div>
                                                 <div class="item" (click)="onDelete(botLogic, i)">
                                                     {{resourceService.frmelmnts?.lbl?.delete}}
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </mat-grid-tile>

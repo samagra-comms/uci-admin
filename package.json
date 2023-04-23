@@ -26,7 +26,6 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.20",
     "moment": "^2.22.1",
-    "ng2-semantic-ui-v9": "0.0.6",
     "ngx-chips": "3.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

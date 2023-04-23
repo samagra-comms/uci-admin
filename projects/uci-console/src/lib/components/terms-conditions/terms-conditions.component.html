@@ -4,18 +4,11 @@
     </h1>
 
     <div mat-dialog-content class="tabs-content-wrapper mb-40">
-        <sui-tabset>
-            <div class="ui secondary menu">
-                <a class="item" suiTabHeader="1">Terms of Use</a>
-                <a class="item" suiTabHeader="2">Privacy Policy </a>
-                <a class="item" suiTabHeader="3">Content Policy </a>
-                <!--            <a class="item" suiTabHeader="4">Group Guidelines </a>-->
-                <!--            <a class="item" suiTabHeader="5">Course Guidelines </a>-->
-                <a class="item" suiTabHeader="6">Administrator Guidelines </a>
-            </div>
-
-            <!--    terms and use start here-->
-            <div class="ui segment" suiTabContent="1">
+        <mat-tab-group #tabRef>
+            <mat-tab label="Terms of Use">
+                <ng-template matTabContent>
+                   <!--    terms and use start here-->
+            <div class="ui segment">
                 <div id="termsOfUse" aria-labelledby="terms-of-use-tab">
                     <h4><strong>Terms of Use</strong></h4>
                     <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
@@ -542,9 +535,12 @@
                 </div>
             </div>
             <!--    terms and use end here-->
-
-            <!--    Privacy Policy start here-->
-            <div class="ui segment" suiTabContent="2">
+                </ng-template>
+            </mat-tab>
+            <mat-tab label="Privacy Policy">
+                <ng-template matTabContent>
+                        <!--    Privacy Policy start here-->
+            <div class="ui segment">
                 <div id="privacyPolicy" aria-labelledby="privacy-policy-tab">
                     <h4><strong>Privacy Policy of Nipun Lakshya App Chatbot</strong></h4>
                     <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
@@ -1261,9 +1257,13 @@
                 </div>
             </div>
             <!--    Privacy Policy end here-->
+                </ng-template>
+            </mat-tab>
 
-            <!--    Content Policy start here-->
-            <div class="ui segment" suiTabContent="3">
+            <mat-tab label="Content Policy">
+                <ng-template matTabContent>
+                   <!--    Content Policy start here-->
+            <div class="ui segment">
                 <div id="contentPolicy" aria-labelledby="content-policy-tab">
                     <h4><strong>Content Policy of Nipun Lakshya App Chatbot</strong></h4>
                     <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
@@ -1899,389 +1899,402 @@
             </div>
             <!--    Content Policy end here-->
 
-            <!--    Group Guidelines start here-->
-            <div class="ui segment" suiTabContent="4">
-                <div class="tab-pane fade" id="groupGuidelines" role="tabpanel" aria-labelledby="group-guidelines-tab">
-                    <h4><strong>Nipun Lakshya App Chatbot Group Guidelines</strong></h4>
-                    <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
-                    <p>
-                        These Group Guidelines specify the rights and responsibilities of
-                        Registered Users who use and participate in Groups. These Group
-                        Guidelines should be read in conjunction with the
-                        <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms of
-                            Use</b></a>,
-                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                            Policy</b></a>
-                        and
-                        <a class="TermsOfUseClick" tabtoshow="privacy-policy-tab" tabpanetoshow="privacyPolicy"><b>Privacy
-                            Policy</b></a>. Defined terms used but not defined herein shall have the meaning
-                        ascribed to them in the
-                        <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms of
-                            Use</b></a>.
-                    </p>
-                    <ol class="arrow-list" type="1">
+                </ng-template>
+            </mat-tab>
 
-                        <h4 class="sub-heading">What is a Group?
-                            <ol class="arrow-list" type="a">
-                                <li>A Group is a set of Registered Users</li>
-                                <li>
-                                    A Group can be created by a Group Admin and comprises Group
-                                    Members
-                                </li>
-                                <li>
-                                    Groups are only visible to the Group Admin who has created the
-                                    Group and the Group Members assigned to the Group. Groups are not
-                                    searchable.
-                                </li>
-                                <li>
-                                    Group Admins can assign activities on Nipun Lakshya App Chatbot to the Group Members
-                                    (visible on the Group).
-                                </li>
+            <!-- <mat-tab label="Group Guidelines">
+                <ng-template matTabContent>
+                    Group Guidelines start here
+                    <div ngIf="tabRef.selectedIndex === 3" class="ui segment">
+                        <div class="tab-pane fade" id="groupGuidelines" role="tabpanel" aria-labelledby="group-guidelines-tab">
+                            <h4><strong>Nipun Lakshya App Chatbot Group Guidelines</strong></h4>
+                            <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
+                            <p>
+                                These Group Guidelines specify the rights and responsibilities of
+                                Registered Users who use and participate in Groups. These Group
+                                Guidelines should be read in conjunction with the
+                                <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms of
+                                    Use</b></a>,
+                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                    Policy</b></a>
+                                and
+                                <a class="TermsOfUseClick" tabtoshow="privacy-policy-tab" tabpanetoshow="privacyPolicy"><b>Privacy
+                                    Policy</b></a>. Defined terms used but not defined herein shall have the meaning
+                                ascribed to them in the
+                                <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms of
+                                    Use</b></a>.
+                            </p>
+                            <ol class="arrow-list" type="1">
+
+                                <h4 class="sub-heading">What is a Group?
+                                    <ol class="arrow-list" type="a">
+                                        <li>A Group is a set of Registered Users</li>
+                                        <li>
+                                            A Group can be created by a Group Admin and comprises Group
+                                            Members
+                                        </li>
+                                        <li>
+                                            Groups are only visible to the Group Admin who has created the
+                                            Group and the Group Members assigned to the Group. Groups are not
+                                            searchable.
+                                        </li>
+                                        <li>
+                                            Group Admins can assign activities on Nipun Lakshya App Chatbot to the Group Members
+                                            (visible on the Group).
+                                        </li>
+                                    </ol>
+
+
+                                </h4>
+                                <h4 class="sub-heading">Who is a Group Admin?</h4>
+                                <p>
+                                    A Registered User who has created a Group or has been assigned to be
+                                    a Group Admin by another Group Admin
+                                </p>
+
+
+                                <h4 class="sub-heading">Who is a Group Member?</h4>
+                                <p>
+                                    A Registered User who has been added to Group as a Group Member by a
+                                    Group Admin.
+                                </p>
+
+                                <h4 class="sub-heading">What can a Group Admin do on Nipun Lakshya App Chatbot?</h4>
+                                <ol class="arrow-list" type="a">
+                                    <li>Create a Group</li>
+                                    <li>Add / Remove Group Members</li>
+                                    <li>Mark another Group Member as a Group Admin</li>
+                                    <li>View, search and suggest activities on Nipun Lakshya App Chatbot to the Group</li>
+                                    <li>
+                                        View the progress of individual Group Members in relation to
+                                        activities of the Group
+                                    </li>
+                                    <li>
+                                        Communicate with the Group Members (as a Group and individually)
+                                    </li>
+                                    <li>Delete the Group</li>
+                                </ol>
+
+
+                                <h4 class="sub-heading">What Registered User data does the Group Admin have access to?</h4>
+                                <ol class="arrow-list" type="a">
+                                    <li>Name</li>
+                                    <li>
+                                        Progress and milestones achieved by Group Members in relation to
+                                        the activities of the Group
+                                    </li>
+                                </ol>
+
+
+                                <h4 class="sub-heading">What are the responsibilities of the Group Admin?</h4>
+                                <ol class="arrow-list" type="a">
+                                    <li>
+                                        To ensure that activities of the Group are in line with the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>, and accordingly meet the Accuracy and Appropriateness
+                                        standards.
+                                    </li>
+                                    <li>
+                                        To use the data and information of Registered Users only for the
+                                        purposes of tracking the progress of Group Members, and for no
+                                        other purpose.
+                                    </li>
+                                    <li>
+                                        To ensure that any communication with Group Members is relevant to
+                                        the purpose of the Group and meets the Appropriateness standards
+                                        set out in the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>.
+                                    </li>
+                                    <li>
+                                        To refrain from using the Group for any of the Prohibited Uses set
+                                        out in the
+                                        <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
+                                            of Use</b></a>.
+                                    </li>
+                                </ol>
+
+
+                                <h4 class="sub-heading">What can a Group Member do once assigned to a Group?</h4>
+                                <ol class="arrow-list" type="a">
+                                    <li>
+                                        View, participate and communicate in relation to the activities of
+                                        the Group on Nipun Lakshya App Chatbot
+                                    </li>
+                                    <li>
+                                        View their own progress in relation to the activities of the Group
+                                        on Nipun Lakshya App Chatbot
+                                    </li>
+                                    <li>View a list of other Group Members</li>
+                                    <li>Opt out of any Group</li>
+                                </ol>
+
+
+                                <h4 class="sub-heading">What are the responsibilities of the Group Member?</h4>
+                                <ol class="arrow-list" type="a">
+                                    <li>
+                                        To ensure that any communication with other Group Members or the
+                                        Group Admin is relevant to the purpose of the Group and meet the
+                                        Appropriateness standards set out in the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>.
+                                    </li>
+                                    <li>
+                                        To refrain from using the Group for any of the Prohibited Uses set
+                                        out in the
+                                        <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
+                                            of Use</b></a>.
+                                    </li>
+                                </ol>
+
                             </ol>
+                                           <div class="text-left">
+                                   <span class="text-left">
+                                     <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><i class="fas fa-chevron-left"></i> Read Content Policy of
+                                       Nipun Lakshya App Chatbot</a>
+                                   </span>
+                                               <span class="text-right pull-right">
+                                     <a class="TermsOfUseClick" tabtoshow="course-guidelines-tab" tabpanetoshow="courseGuidelines">Read Course Guidelines of Nipun Lakshya App Chatbot <i class="fa fa-chevron-right"></i></a>
+                                   </span>
+                                           </div>
+                        </div>
+                    </div>
+                       Group Guidelines end here
+                </ng-template>
+            </mat-tab> -->
 
+            <!-- <mat-tab label="Course Guidelines">
+                <ng-template matTabContent> -->
+                    <!-- Course Guidelines start here
+                    <div class="ui segment">
+                        <div id="courseGuidelines" aria-labelledby="course-guidelines-tab">
+                            <h4><strong>Nipun Lakshya App Chatbot Course Terms</strong></h4>
+                            <label class="tagLine"><em> ( Last updated on <b>28-04-2021</b> )</em></label>
+                            <p>
+                                These Course Terms specify the rights and responsibilities of Registered
+                                Users who choose to join a course on Nipun Lakshya App Chatbot and Administrators of
+                                courses on Nipun Lakshya App Chatbot. Administrators of a course are Registered Users
+                                authorised by Institutional Users to offer courses on Nipun Lakshya App Chatbot.
+                            </p>
+                            <h4 class="sub-heading">For Registered Users </h4>
+                            <ol class="arrow-list" type="1">
 
-                        </h4>
-                        <h4 class="sub-heading">Who is a Group Admin?</h4>
-                        <p>
-                            A Registered User who has created a Group or has been assigned to be
-                            a Group Admin by another Group Admin
-                        </p>
-
-
-                        <h4 class="sub-heading">Who is a Group Member?</h4>
-                        <p>
-                            A Registered User who has been added to Group as a Group Member by a
-                            Group Admin.
-                        </p>
-
-                        <h4 class="sub-heading">What can a Group Admin do on Nipun Lakshya App Chatbot?</h4>
-                        <ol class="arrow-list" type="a">
-                            <li>Create a Group</li>
-                            <li>Add / Remove Group Members</li>
-                            <li>Mark another Group Member as a Group Admin</li>
-                            <li>View, search and suggest activities on Nipun Lakshya App Chatbot to the Group</li>
-                            <li>
-                                View the progress of individual Group Members in relation to
-                                activities of the Group
-                            </li>
-                            <li>
-                                Communicate with the Group Members (as a Group and individually)
-                            </li>
-                            <li>Delete the Group</li>
-                        </ol>
-
-
-                        <h4 class="sub-heading">What Registered User data does the Group Admin have access to?</h4>
-                        <ol class="arrow-list" type="a">
-                            <li>Name</li>
-                            <li>
-                                Progress and milestones achieved by Group Members in relation to
-                                the activities of the Group
-                            </li>
-                        </ol>
-
-
-                        <h4 class="sub-heading">What are the responsibilities of the Group Admin?</h4>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                To ensure that activities of the Group are in line with the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>, and accordingly meet the Accuracy and Appropriateness
-                                standards.
-                            </li>
-                            <li>
-                                To use the data and information of Registered Users only for the
-                                purposes of tracking the progress of Group Members, and for no
-                                other purpose.
-                            </li>
-                            <li>
-                                To ensure that any communication with Group Members is relevant to
-                                the purpose of the Group and meets the Appropriateness standards
-                                set out in the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>.
-                            </li>
-                            <li>
-                                To refrain from using the Group for any of the Prohibited Uses set
-                                out in the
-                                <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
-                                    of Use</b></a>.
-                            </li>
-                        </ol>
-
-
-                        <h4 class="sub-heading">What can a Group Member do once assigned to a Group?</h4>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                View, participate and communicate in relation to the activities of
-                                the Group on Nipun Lakshya App Chatbot
-                            </li>
-                            <li>
-                                View their own progress in relation to the activities of the Group
-                                on Nipun Lakshya App Chatbot
-                            </li>
-                            <li>View a list of other Group Members</li>
-                            <li>Opt out of any Group</li>
-                        </ol>
-
-
-                        <h4 class="sub-heading">What are the responsibilities of the Group Member?</h4>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                To ensure that any communication with other Group Members or the
-                                Group Admin is relevant to the purpose of the Group and meet the
-                                Appropriateness standards set out in the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>.
-                            </li>
-                            <li>
-                                To refrain from using the Group for any of the Prohibited Uses set
-                                out in the
-                                <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
-                                    of Use</b></a>.
-                            </li>
-                        </ol>
-
-                    </ol>
-                    <!--                <div class="text-left">-->
-                    <!--        <span class="text-left">-->
-                    <!--          <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><i class="fas fa-chevron-left"></i> Read Content Policy of-->
-                    <!--            Nipun Lakshya App Chatbot</a>-->
-                    <!--        </span>-->
-                    <!--                    <span class="text-right pull-right">-->
-                    <!--          <a class="TermsOfUseClick" tabtoshow="course-guidelines-tab" tabpanetoshow="courseGuidelines">Read Course Guidelines of Nipun Lakshya App Chatbot <i class="fa fa-chevron-right"></i></a>-->
-                    <!--        </span>-->
-                    <!--                </div>-->
-                </div>
-            </div>
-            <!--    Group Guidelines end here-->
-
-            <!--    Course Guidelines start here-->
-            <div class="ui segment" suiTabContent="5">
-                <div id="courseGuidelines" aria-labelledby="course-guidelines-tab">
-                    <h4><strong>Nipun Lakshya App Chatbot Course Terms</strong></h4>
-                    <label class="tagLine"><em> ( Last updated on <b>28-04-2021</b> )</em></label>
-                    <p>
-                        These Course Terms specify the rights and responsibilities of Registered
-                        Users who choose to join a course on Nipun Lakshya App Chatbot and Administrators of
-                        courses on Nipun Lakshya App Chatbot. Administrators of a course are Registered Users
-                        authorised by Institutional Users to offer courses on Nipun Lakshya App Chatbot.
-                    </p>
-                    <h4 class="sub-heading">For Registered Users </h4>
-                    <ol class="arrow-list" type="1">
-
-                        <strong>A Registered User that chooses to join a course on Nipun Lakshya App Chatbot
-                            can:</strong>
-                        <ol class="arrow-list" type="a">
-                            <li>Access the course and its Content</li>
-                            <li>View their own progress</li>
-                            <li>
-                                Access and download any certificates received on achieving
-                                milestones in the course
-                            </li>
-                            <li>Opt out of the course at any time</li>
-                            <li>
-                                Provide consent for sharing personal information with
-                                Administrators of a course
-                            </li>
-                            <li>
-                                Revoke consent for sharing personal information with
-                                Administrators of a course
-                            </li>
-                        </ol>
-
-                        <strong>Access and Revocation of access to data and information of
-                            Registered User:
-                        </strong>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                By choosing to join a course, the Registered User agrees to give
-                                the Administrators of the course access to their Name, State,
-                                District, progress in the course and milestones achieved for the
-                                purposes of analysing usage of Content to improve content and
-                                other offerings.
-                            </li>
-                            <li>
-                                Upon joining a course, a Registered User has the option to provide
-                                their explicit consent to give the Administrators of the course
-                                access to the following additional information, namely: (i) User
-                                ID (Teacher ID) (ii) Block (iii) School U-DISE code / Organisation
-                                ID or number (iv) School/Organisation name (v) mobile number and
-                                (vi) email address. This consent can be given either when prompted
-                                by a pop-up or by changing their data sharing settings. This
-                                additional information can only be used by the Administrators of
-                                the course for the purpose of:
-                                <ol class="arrow-list" type="i">
-                                    <li>tracking progress of the Registered User ;</li>
+                                <strong>A Registered User that chooses to join a course on Nipun Lakshya App Chatbot
+                                    can:</strong>
+                                <ol class="arrow-list" type="a">
+                                    <li>Access the course and its Content</li>
+                                    <li>View their own progress</li>
                                     <li>
-                                        analysing usage to improve the course, Content and other
-                                        offerings;
+                                        Access and download any certificates received on achieving
+                                        milestones in the course
                                     </li>
-                                    <li>validating contact details;</li>
-                                    <li>issuing certificates; and</li>
+                                    <li>Opt out of the course at any time</li>
                                     <li>
-                                        contacting Registered Users to send relevant information or
-                                        seek feedback.
+                                        Provide consent for sharing personal information with
+                                        Administrators of a course
+                                    </li>
+                                    <li>
+                                        Revoke consent for sharing personal information with
+                                        Administrators of a course
                                     </li>
                                 </ol>
-                            </li>
-                            <li>
-                                Registered Users can revoke their consent to sharing additional
-                                information at any time by changing their data sharing settings.
-                            </li>
-                        </ol>
 
-
-                        <strong>Responsibilities of Registered Users: </strong>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                To ensure that any of their communication is relevant to the
-                                purpose of the course and meet the Appropriateness standards set
-                                out in the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>.
-                            </li>
-                            <li>
-                                To ensure that their use of courses does not violate any of the
-                                Prohibited Uses set out in the <strong>Terms of Use</strong>.
-                            </li>
-                        </ol>
-
-                        <h4 class="sub-heading">For Administrators of the course</h4>
-
-                        <strong>Administrators of a course on Nipun Lakshya App Chatbot can: </strong>
-                        <ol class="arrow-list" type="a">
-                            <li>Create, review or publish courses on Nipun Lakshya App Chatbot</li>
-                            <li>
-                                Access data and information of courses created by or assigned to
-                                them, which contain:
-                                <ol class="arrow-list" type="i">
+                                <strong>Access and Revocation of access to data and information of
+                                    Registered User:
+                                </strong>
+                                <ol class="arrow-list" type="a">
                                     <li>
-                                        Name, State, District and progress data of the Registered
-                                        Users who have chosen to join the course,
+                                        By choosing to join a course, the Registered User agrees to give
+                                        the Administrators of the course access to their Name, State,
+                                        District, progress in the course and milestones achieved for the
+                                        purposes of analysing usage of Content to improve content and
+                                        other offerings.
                                     </li>
                                     <li>
-                                        User ID (Teacher ID), Block, School U-DISE code / Organisation
-                                        ID or number, School/Organisation name, mobile number, and
-                                        email address of Registered Users, only if the Registered
-                                        Users have given their explicit consent,
+                                        Upon joining a course, a Registered User has the option to provide
+                                        their explicit consent to give the Administrators of the course
+                                        access to the following additional information, namely: (i) User
+                                        ID (Teacher ID) (ii) Block (iii) School U-DISE code / Organisation
+                                        ID or number (iv) School/Organisation name (v) mobile number and
+                                        (vi) email address. This consent can be given either when prompted
+                                        by a pop-up or by changing their data sharing settings. This
+                                        additional information can only be used by the Administrators of
+                                        the course for the purpose of:
+                                        <ol class="arrow-list" type="i">
+                                            <li>tracking progress of the Registered User ;</li>
+                                            <li>
+                                                analysing usage to improve the course, Content and other
+                                                offerings;
+                                            </li>
+                                            <li>validating contact details;</li>
+                                            <li>issuing certificates; and</li>
+                                            <li>
+                                                contacting Registered Users to send relevant information or
+                                                seek feedback.
+                                            </li>
+                                        </ol>
                                     </li>
                                     <li>
-                                        Course usage data such as progress and completion details and
-                                        other related matters
+                                        Registered Users can revoke their consent to sharing additional
+                                        information at any time by changing their data sharing settings.
                                     </li>
                                 </ol>
-                            </li>
-                            <li>
-                                View and use such data and information. Reports with this
-                                additional information will be available only for a limited period
-                                of time and will expire in 15 days.
-                            </li>
-                            <li>
-                                Use the data and information of the Registered Users only for the
-                                purposes of:
-                                <ol class="arrow-list" type="i">
-                                    <li>tracking their progress;</li>
+
+
+                                <strong>Responsibilities of Registered Users: </strong>
+                                <ol class="arrow-list" type="a">
                                     <li>
-                                        analysing usage of Content to improve content and other
-                                        offerings;
+                                        To ensure that any of their communication is relevant to the
+                                        purpose of the course and meet the Appropriateness standards set
+                                        out in the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>.
                                     </li>
-                                    <li>validating contact details;</li>
-                                    <li>issuing certificates; and</li>
                                     <li>
-                                        contacting Registered Users to send relevant information or
-                                        seek feedback.
+                                        To ensure that their use of courses does not violate any of the
+                                        Prohibited Uses set out in the <strong>Terms of Use</strong>.
                                     </li>
                                 </ol>
-                            </li>
-                            <li>
-                                Create and issue certificates for Registered Users who have
-                                achieved milestones in the course.
-                            </li>
-                        </ol>
+
+                                <h4 class="sub-heading">For Administrators of the course</h4>
+
+                                <strong>Administrators of a course on Nipun Lakshya App Chatbot can: </strong>
+                                <ol class="arrow-list" type="a">
+                                    <li>Create, review or publish courses on Nipun Lakshya App Chatbot</li>
+                                    <li>
+                                        Access data and information of courses created by or assigned to
+                                        them, which contain:
+                                        <ol class="arrow-list" type="i">
+                                            <li>
+                                                Name, State, District and progress data of the Registered
+                                                Users who have chosen to join the course,
+                                            </li>
+                                            <li>
+                                                User ID (Teacher ID), Block, School U-DISE code / Organisation
+                                                ID or number, School/Organisation name, mobile number, and
+                                                email address of Registered Users, only if the Registered
+                                                Users have given their explicit consent,
+                                            </li>
+                                            <li>
+                                                Course usage data such as progress and completion details and
+                                                other related matters
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        View and use such data and information. Reports with this
+                                        additional information will be available only for a limited period
+                                        of time and will expire in 15 days.
+                                    </li>
+                                    <li>
+                                        Use the data and information of the Registered Users only for the
+                                        purposes of:
+                                        <ol class="arrow-list" type="i">
+                                            <li>tracking their progress;</li>
+                                            <li>
+                                                analysing usage of Content to improve content and other
+                                                offerings;
+                                            </li>
+                                            <li>validating contact details;</li>
+                                            <li>issuing certificates; and</li>
+                                            <li>
+                                                contacting Registered Users to send relevant information or
+                                                seek feedback.
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        Create and issue certificates for Registered Users who have
+                                        achieved milestones in the course.
+                                    </li>
+                                </ol>
 
 
-                        <strong>Responsibilities of Administrators of a course: </strong>
-                        <ol class="arrow-list" type="a">
-                            <li>
-                                To ensure that the courses created, reviewed or published by them
-                                are in line with the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>, and accordingly meet the Accuracy and Appropriateness
-                                standards.
-                            </li>
-                            <li>
-                                To respect the privacy and data protection rights of Registered
-                                Users.
-                            </li>
-                            <li>
-                                To ensure the security of and use of data (especially personal
-                                data) shared by Registered Users is limited solely to the purposes
-                                mentioned here.
-                            </li>
-                            <li>
-                                To know that any use of data for purposes outside of the proper
-                                use shall be considered violation of the terms of the policies of
-                                Nipun Lakshya App Chatbot as well as applicable laws and policies of India and they
-                                shall be responsible and liable for such actions and for any loss
-                                or damage arising from failure to comply with this obligation.
-                            </li>
-                            <li>
-                                To ensure that their communication (if any) with Registered Users
-                                is explicitly limited and relevant to the purpose of the course
-                                and meets the Appropriateness standards set out in the
-                                <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
-                                    Policy of Nipun Lakshya App Chatbot</b></a>. The email address and phone number of Registered Users
-                                shall
-                                only be used to share information in connection with the course
-                                and shall not under any circumstance be used for any other
-                                matters.
-                            </li>
-                            <li>
-                                To ensure that their courses are not used for any of the
-                                Prohibited Uses set out in the
-                                <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
-                                    of Use of Nipun Lakshya App Chatbot</b></a>.
-                            </li>
-                        </ol>
+                                <strong>Responsibilities of Administrators of a course: </strong>
+                                <ol class="arrow-list" type="a">
+                                    <li>
+                                        To ensure that the courses created, reviewed or published by them
+                                        are in line with the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>, and accordingly meet the Accuracy and Appropriateness
+                                        standards.
+                                    </li>
+                                    <li>
+                                        To respect the privacy and data protection rights of Registered
+                                        Users.
+                                    </li>
+                                    <li>
+                                        To ensure the security of and use of data (especially personal
+                                        data) shared by Registered Users is limited solely to the purposes
+                                        mentioned here.
+                                    </li>
+                                    <li>
+                                        To know that any use of data for purposes outside of the proper
+                                        use shall be considered violation of the terms of the policies of
+                                        Nipun Lakshya App Chatbot as well as applicable laws and policies of India and they
+                                        shall be responsible and liable for such actions and for any loss
+                                        or damage arising from failure to comply with this obligation.
+                                    </li>
+                                    <li>
+                                        To ensure that their communication (if any) with Registered Users
+                                        is explicitly limited and relevant to the purpose of the course
+                                        and meets the Appropriateness standards set out in the
+                                        <a class="TermsOfUseClick" tabtoshow="content-policy-tab" tabpanetoshow="contentPolicy"><b>Content
+                                            Policy of Nipun Lakshya App Chatbot</b></a>. The email address and phone number of Registered Users
+                                        shall
+                                        only be used to share information in connection with the course
+                                        and shall not under any circumstance be used for any other
+                                        matters.
+                                    </li>
+                                    <li>
+                                        To ensure that their courses are not used for any of the
+                                        Prohibited Uses set out in the
+                                        <a class="TermsOfUseClick" tabtoshow="terms-of-use-tab" tabpanetoshow="termsOfUse"><b>Terms
+                                            of Use of Nipun Lakshya App Chatbot</b></a>.
+                                    </li>
+                                </ol>
 
-                    </ol>
-                    <p>
-                        <em>These Course Guidelines should be read in conjunction with the
-                            policies and guidelines of Nipun Lakshya App Chatbot, including the </em><strong><em><a class="TermsOfUseClick"
-                                                                                                 tabtoshow="terms-of-use-tab"
-                                                                                                 tabpanetoshow="termsOfUse"><b>Terms
-                        of Use</b></a></em></strong><em>, </em><strong><em><a class="TermsOfUseClick"
-                                                                              tabtoshow="content-policy-tab"
-                                                                              tabpanetoshow="contentPolicy"><b>Content
-                        Policy</b></a></em></strong><em> and </em><strong><em><a class="TermsOfUseClick"
-                                                                                 tabtoshow="privacy-policy-tab"
-                                                                                 tabpanetoshow="privacyPolicy"><b>Privacy
-                        Policy</b></a></em></strong><em>. Defined terms used but not defined herein shall have the
-                        meaning
-                        ascribed to them in the </em><strong><em><a class="TermsOfUseClick" tabtoshow="terms-of-use-tab"
-                                                                    tabpanetoshow="termsOfUse"><b>Terms of
-                        Use</b></a></em></strong><em>. </em>
-                    </p>
-                    <!--                <div class="text-left">-->
-                    <!--        <span class="text-left">-->
-                    <!--          <a class="TermsOfUseClick" tabtoshow="group-guidelines-tab" tabpanetoshow="groupGuidelines">-->
-                    <!--            <i class="fas fa-chevron-left"></i> Read Group Guidelines of Nipun Lakshya App Chatbot-->
-                    <!--          </a>-->
-                    <!--        </span>-->
-                    <!--                    <span class="text-right pull-right">-->
-                    <!--          <a class="TermsOfUseClick" tabtoshow="administrator-guidelines-tab" tabpanetoshow="administratorGuidelines">-->
-                    <!--            Read Administrator Guidelines of Nipun Lakshya App Chatbot-->
-                    <!--            <i class="fa fa-chevron-right"></i>-->
-                    <!--          </a>-->
-                    <!--        </span>-->
-                    <!--                </div>-->
-                </div>
-            </div>
-            <!--    Course Guidelines end here-->
+                            </ol>
+                            <p>
+                                <em>These Course Guidelines should be read in conjunction with the
+                                    policies and guidelines of Nipun Lakshya App Chatbot, including the </em><strong><em><a class="TermsOfUseClick"
+                                                                                                         tabtoshow="terms-of-use-tab"
+                                                                                                         tabpanetoshow="termsOfUse"><b>Terms
+                                of Use</b></a></em></strong><em>, </em><strong><em><a class="TermsOfUseClick"
+                                                                                      tabtoshow="content-policy-tab"
+                                                                                      tabpanetoshow="contentPolicy"><b>Content
+                                Policy</b></a></em></strong><em> and </em><strong><em><a class="TermsOfUseClick"
+                                                                                         tabtoshow="privacy-policy-tab"
+                                                                                         tabpanetoshow="privacyPolicy"><b>Privacy
+                                Policy</b></a></em></strong><em>. Defined terms used but not defined herein shall have the
+                                meaning
+                                ascribed to them in the </em><strong><em><a class="TermsOfUseClick" tabtoshow="terms-of-use-tab"
+                                                                            tabpanetoshow="termsOfUse"><b>Terms of
+                                Use</b></a></em></strong><em>. </em>
+                            </p>
+                                           <div class="text-left">
+                                   <span class="text-left">
+                                     <a class="TermsOfUseClick" tabtoshow="group-guidelines-tab" tabpanetoshow="groupGuidelines">
+                                       <i class="fas fa-chevron-left"></i> Read Group Guidelines of Nipun Lakshya App Chatbot
+                                     </a>
+                                   </span>
+                                               <span class="text-right pull-right">
+                                     <a class="TermsOfUseClick" tabtoshow="administrator-guidelines-tab" tabpanetoshow="administratorGuidelines">
+                                       Read Administrator Guidelines of Nipun Lakshya App Chatbot
+                                       <i class="fa fa-chevron-right"></i>
+                                     </a>
+                                   </span>
+                                           </div>
+                        </div>
+                    </div>
+                       Course Guidelines end here   -->
+                <!-- </ng-template>
+            </mat-tab> -->
 
-            <!--    Administrator Guidelines start here-->
-            <div class="ui segment" suiTabContent="6">
+            <mat-tab label="Administrator Guidelines">
+                <ng-template matTabContent>
+                   <!--    Administrator Guidelines start here-->
+            <div ngIf="tabRef.selectedIndex === 5" class="ui segment">
                 <div id="administratorGuidelines" aria-labelledby="administrator-guidelines-tab">
                     <h4><strong>Administrator Guidelines</strong></h4>
                     <label class="tagLine"><em>( Last updated on <b>28-04-2021</b> )</em></label>
@@ -2472,7 +2485,10 @@
                 </div>
             </div>
             <!--    Administrator Guidelines end here-->
-        </sui-tabset>
+
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 
     <mat-dialog-actions align="end">

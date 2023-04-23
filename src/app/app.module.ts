@@ -17,6 +17,7 @@ import {UciModule} from '../../projects/uci-console/src/lib/uci.module';
 import {AuthGuard} from './shared/guards/auth-guard.service';
 import {MainComponent} from './main/main.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatTabsModule} from '@angular/material/tabs'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatListModule,
     MatInputModule,
     MatDatepickerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTabsModule
   ],
   providers: [
     AuthGuard

@@ -23,11 +23,10 @@
                         </mat-form-field>-->
                     <div class="ui left icon input">
                         <i class="calendar icon"></i>
-                        <input suiDatepicker
-                               placeholder="Start Date"
-                               formControlName="startDate"
-                               [pickerMode]="'date'"
-                               [pickerUseNativeOnMobile]="false">
+                        <input matInput [matDatepicker]="picker" formControlName="startDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+
                     </div>
                 </div>
             </mat-grid-tile>
@@ -41,11 +40,9 @@
                     </mat-form-field>-->
                     <div class="ui left icon input">
                         <i class="calendar icon"></i>
-                        <input suiDatepicker
-                               placeholder="End Date"
-                               formControlName="endDate"
-                               [pickerMode]="'date'"
-                               [pickerUseNativeOnMobile]="false">
+                        <input matInput [matDatepicker]="endPicker" formControlName="endDate">
+                        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
                     </div>
                 </div>
             </mat-grid-tile>
