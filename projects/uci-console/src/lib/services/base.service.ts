@@ -28,7 +28,7 @@ export class BaseService {
         return headers;
     }
 
-    public getRequest(url, params: any = {}, headers: any = {}) {
+    public getRequest(url, params: any = {}, headers: any = {}, config: any = {}) {
         headers = {
             ...headers,
             ...this.getDefaultHeaders()
@@ -36,7 +36,7 @@ export class BaseService {
 
         return this.http.get(url, {params, headers}).pipe(
             map((res: any) => {
-                return res.result;
+                return config.isBaseResponse ? res : res.result;
             }),
             catchError(err => {
                 return this.handleError(err);
