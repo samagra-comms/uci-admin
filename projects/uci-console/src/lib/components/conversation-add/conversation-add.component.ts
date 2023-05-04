@@ -244,7 +244,7 @@ export class ConversationAddComponent implements OnInit {
           url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${this.conversationBot.botId}`,
           type: 'GET',
           cadence: {
-            perPage: 5,
+            perPage: 100,
             retries: 5,
             timeout: 60,
             concurrent: true,
