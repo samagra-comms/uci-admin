@@ -126,6 +126,10 @@ export class UciService extends BaseService {
         return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
     }
 
+    nlSegmentCount(segmentId) {
+        return this.getRequest(this.NL_BASE_URL + `segments/${segmentId}/mentors/count`, {}, {}, {isBaseResponse: true});
+    }
+
     submitSegmentData(data) {
         return this.postRequest(this.NL_BASE_URL + `segment-bot-mapping`, data);
     }

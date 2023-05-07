@@ -1,6 +1,6 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, UntypedFormBuilder, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 
 import {GlobalService} from '../../services/global.service';
 import {UciService} from '../../services/uci.service';
@@ -9,8 +9,6 @@ import {ToasterService} from '../../services/toaster.service';
 import {MatDialog} from '@angular/material/dialog';
 import {TermsConditionsComponent} from '../terms-conditions/terms-conditions.component';
 import {TermsConditionConfirmComponent} from '../terms-condition-confirm/terms-condition-confirm.component';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, first, map, switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'lib-conversation-add',
@@ -49,6 +47,7 @@ export class ConversationAddComponent implements OnInit {
   fileErrorStatus;
   user;
   resourceService;
+  totalRecords = 1000;
 
   constructor(
     private uciService: UciService,
@@ -119,7 +118,21 @@ export class ConversationAddComponent implements OnInit {
       this.horizontalStepper.next();
       this.verticalStepper.next();
       this.stepIndex = 2;
+      this.fetchSegmentCount();
     }
+  }
+
+  fetchSegmentCount() {
+    if (!this.conversationForm.value.segmentId) {
+      return;
+    }
+    this.uciService.nlSegmentCount(this.conversationForm.value.segmentId).subscribe(
+      data => {
+        if (data.totalCount) {
+          this.totalRecords = data.totalCount;
+        }
+      }
+    );
   }
 
   backToStepOne() {
@@ -186,7 +199,7 @@ export class ConversationAddComponent implements OnInit {
             this.closeVerifyModal();
             this.isLoaderShow = false;
 
-            if(this.conversationForm.value.isBroadcastBotEnabled){
+            if (this.conversationForm.value.isBroadcastBotEnabled) {
               if (isNavigateToEnd) {
                 this.afterBotSubmit({queryParams: {text: reqObj.startingMessage, botId: data.id}});
               } else {
@@ -231,7 +244,7 @@ export class ConversationAddComponent implements OnInit {
           url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${this.conversationBot.botId}`,
           type: 'GET',
           cadence: {
-            perPage: 5,
+            perPage: 100,
             retries: 5,
             timeout: 60,
             concurrent: true,
@@ -241,7 +254,7 @@ export class ConversationAddComponent implements OnInit {
           },
           pageParam: 'page',
           credentials: {},
-          totalRecords: 200000
+          totalRecords: this.totalRecords
         }
       },
       byID: {},
@@ -292,14 +305,13 @@ export class ConversationAddComponent implements OnInit {
       data => {
         this.isLoaderShow = false;
         this.closeVerifyModal();
-        if(this.conversationForm.value.isBroadcastBotEnabled){
+        if (this.conversationForm.value.isBroadcastBotEnabled) {
           if (isNavigateToEnd) {
             this.afterBotSubmit({queryParams: {text: this.conversationForm.value.startingMessage, botId: bot.id}});
           } else {
             this.createSegment();
           }
-        }
-        else{
+        } else {
           this.router.navigate(['uci-admin/success']);
         }
 
