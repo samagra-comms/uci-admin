@@ -62,7 +62,7 @@
                                 </div>
                             </mat-grid-tile>
                         </mat-grid-list>
-                        <input type="file" name="file" (change)="onFileUpload($event)" accept=".xml" class="uci-file-input">
+                        <input type="file" name="file" (change)="onFileUpload($event)" class="uci-file-input">
                         <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
                         <div class="mobile only field text-right p-0">
                         </div>

@@ -1,7 +1,7 @@
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-
+import {HttpClient} from '@angular/common/http';
+import {UntypedFormBuilder, UntypedFormGroup, Validators,FormControl} from '@angular/forms';
 import {GlobalService} from '../../services/global.service';
 import {UciService} from '../../services/uci.service';
 import * as moment from 'moment';
@@ -48,8 +48,12 @@ export class ConversationAddComponent implements OnInit {
   user;
   resourceService;
   totalRecords = 1000;
+  display: FormControl = new FormControl("", Validators.required);
+  file: any;
+  file_list: Array<string> = [];
 
   constructor(
+    public http: HttpClient,
     private uciService: UciService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -60,7 +64,7 @@ export class ConversationAddComponent implements OnInit {
   ) {
     this.endMinDate = new Date(moment().add(1, 'days').format('YYYY-MM-DD'));
   }
-
+  
   ngOnInit() {
     this.user = this.globalService.getUser();
     this.resourceService = this.globalService.getResourceService();
@@ -86,6 +90,13 @@ export class ConversationAddComponent implements OnInit {
       this.getBotDetails();
     }
   }
+
+
+  handleFileInputChange(event): void {
+    this.file=event.target.files[0];
+  }
+
+
 
   userSegment() {
     this.currentViewState = 'SELECT_SEGMENT';
@@ -135,6 +146,8 @@ export class ConversationAddComponent implements OnInit {
     );
   }
 
+  
+
   backToStepOne() {
     if (this.stepIndex === 2) {
       this.stepIndex = 1;
@@ -146,7 +159,21 @@ export class ConversationAddComponent implements OnInit {
   onAddCancel() {
     this.router.navigate(['uci-admin']);
   }
+  public toFormData<T>(formValue: T) {
+   
+    const formData = new FormData();
 
+    // for (const key of Object.keys(formValue)) {
+    //     const value = formValue[key];
+    //     formData.append(key, value);
+    // }
+    // let formDatad: any = new FormData();  
+          Object.keys(formValue).forEach(formControlName => {       
+              formData.append(formControlName,  formValue[formControlName]);    
+    }); 
+   
+    return formData;
+}
   onSubmit(isTriggerBot = false, isNavigateToEnd = false) {
     const reqObj = {
       ...this.conversationForm.getRawValue(),
@@ -188,7 +215,12 @@ export class ConversationAddComponent implements OnInit {
         }
       );
     } else {
-      this.uciService.botCreate({data: reqObj}).subscribe(
+
+      var formdata = new FormData();
+      formdata.append("botImage", this.file, `${this.file?.name}`);
+      formdata.append("data", JSON.stringify({ data: reqObj }));
+     
+      this.uciService.botCreate(formdata).subscribe(
         (data: any) => {
           if (!isNavigateToEnd) {
             this.conversationBot = {text: reqObj.startingMessage, botId: data.id};
@@ -196,6 +228,7 @@ export class ConversationAddComponent implements OnInit {
           if (isTriggerBot) {
             this.startConversation(data, isNavigateToEnd);
           } else {
+            
             this.closeVerifyModal();
             this.isLoaderShow = false;
 
@@ -236,6 +269,7 @@ export class ConversationAddComponent implements OnInit {
   }
 
   createSegment() {
+    console.log("createSegment")
     const segData = {
       name: this.conversationForm.getRawValue().name,
       all: {

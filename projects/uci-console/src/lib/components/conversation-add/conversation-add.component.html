@@ -17,15 +17,23 @@
                 <mat-horizontal-stepper [linear]="true" #horizontalStepper class="background-transparent">
                     <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationSetup}}">
                         <div class="step1-wrapper" *ngIf="stepIndex === 1">
-                            <lib-conversation-setup
-                                    [conversationForm]="conversationForm"
-                                    [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                    [isStartingMessageExist]="duplicateValues"
-                                    (starringMessageChange)="checkForDuplicateValue($event)"
-                                    (userSegmentDelete)="onUserSegmentDelete($event)"
-                            >
+                            <lib-conversation-setup [conversationForm]="conversationForm" [startMinDate]="startMinDate"
+                                [userSegments]="userSegments" [isStartingMessageExist]="duplicateValues"
+                                (starringMessageChange)="checkForDuplicateValue($event)"
+                                (userSegmentDelete)="onUserSegmentDelete($event)">
                             </lib-conversation-setup>
+                            <div class="uci-container">
+                                <div>Upload Bot Icon</div>
+                                <div [ngStyle]="{'background': 'white','padding':'14px 8px','margin-top':'5px'}">
+                                    <input type="file" name="file" (change)="handleFileInputChange($event)"
+                                        class="uci-file-input">
+                                </div>
+
+
+
+                            </div>
                         </div>
+
                     </mat-step>
                     <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationFlow}}">
                         <div class="step2-wrapper" *ngIf="stepIndex === 2">
@@ -41,21 +49,20 @@
                         <button mat-raised-button class="mr-10" (click)="onAddCancel()">
                             {{resourceService.frmelmnts?.btn?.cancel}}
                         </button>
-                        <button mat-raised-button class="uci-action-button"
-                                [disabled]="conversationForm.invalid || duplicateValues.name ||
-                                duplicateValues.startingMessage"
-                                (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
+                        <button mat-raised-button class="uci-action-button" [disabled]="conversationForm.invalid || duplicateValues.name ||
+                                duplicateValues.startingMessage" (click)="nextStep()">
+                            {{resourceService.frmelmnts?.btn?.next}}
                         </button>
                     </div>
                 </ng-container>
                 <ng-template #stp2_btn>
                     <div class="pt-0">
-                        <button mat-raised-button class="mr-10" *ngIf="!isLoaderShow"
-                                (click)="backToStepOne()"> {{resourceService.frmelmnts?.btn?.back}}
+                        <button mat-raised-button class="mr-10" *ngIf="!isLoaderShow" (click)="backToStepOne()">
+                            {{resourceService.frmelmnts?.btn?.back}}
                         </button>
                         <button mat-raised-button class="mr-10 primary" *ngIf="!isLoaderShow"
-                                (click)="openItemsVerifyModal(false)"
-                                [disabled]="!isCheckedTermCondition || !botLogics.length">
+                            (click)="openItemsVerifyModal(false)"
+                            [disabled]="!isCheckedTermCondition || !botLogics.length">
                             {{resourceService.frmelmnts?.btn?.save}}
                         </button>
                         <ng-container *ngIf="isLoaderShow; else submitBtn1">
@@ -65,15 +72,15 @@
                         </ng-container>
                         <ng-template #submitBtn1>
                             <button mat-raised-button class="uci-action-button"
-                                    [disabled]="!isCheckedTermCondition || !botLogics.length"
-                                    (click)="onSubmit(true)">
-                                {{conversationId ? resourceService.frmelmnts?.btn?.update : resourceService.frmelmnts?.btn?.submit}}
+                                [disabled]="!isCheckedTermCondition || !botLogics.length" (click)="onSubmit(false)">
+                                {{conversationId ? resourceService.frmelmnts?.btn?.update :
+                                resourceService.frmelmnts?.btn?.submit}}
                             </button>
                         </ng-template>
                     </div>
                     <div class="pt-0">
                         <mat-checkbox name="isCheckedTermCondition" [color]="'primary'"
-                                      [(ngModel)]="isCheckedTermCondition">
+                            [(ngModel)]="isCheckedTermCondition">
                             <mat-label class="font-weight-normal">
                                 {{resourceService.frmelmnts?.lbl?.aggreeTc}}
                             </mat-label>
@@ -87,13 +94,10 @@
             <mat-vertical-stepper [linear]="true" #verticalStepper class="background-transparent">
                 <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationSetup}}">
                     <div class="step1-wrapper" *ngIf="stepIndex === 1">
-                        <lib-conversation-setup
-                                [conversationForm]="conversationForm"
-                                [startMinDate]="startMinDate" [userSegments]="userSegments"
-                                [isStartingMessageExist]="duplicateValues"
-                                (starringMessageChange)="checkForDuplicateValue($event)"
-                                (userSegmentDelete)="onUserSegmentDelete($event)"
-                        >
+                        <lib-conversation-setup [conversationForm]="conversationForm" [startMinDate]="startMinDate"
+                            [userSegments]="userSegments" [isStartingMessageExist]="duplicateValues"
+                            (starringMessageChange)="checkForDuplicateValue($event)"
+                            (userSegmentDelete)="onUserSegmentDelete($event)">
                         </lib-conversation-setup>
                     </div>
 
@@ -102,26 +106,26 @@
                             <button mat-raised-button class="mr-10" (click)="onAddCancel()">
                                 {{resourceService.frmelmnts?.btn?.cancel}}
                             </button>
-                            <button mat-raised-button class="uci-action-button"
-                                    [disabled]="conversationForm.invalid"
-                                    (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
+                            <button mat-raised-button class="uci-action-button" [disabled]="conversationForm.invalid"
+                                (click)="nextStep()"> {{resourceService.frmelmnts?.btn?.next}}
                             </button>
                         </div>
                     </div>
                 </mat-step>
                 <mat-step label="{{resourceService.frmelmnts?.lbl?.conversationFlow}}">
                     <div class="step2-wrapper" *ngIf="stepIndex === 2">
-                        <lib-logic-list [botLogics]="botLogics" [notificationBotLogics]="broadcastBotLogics" (modify)="onBotLogicModify($event)">
+                        <lib-logic-list [botLogics]="botLogics" [notificationBotLogics]="broadcastBotLogics"
+                            (modify)="onBotLogicModify($event)">
                         </lib-logic-list>
                     </div>
                     <div *ngIf="stepIndex === 2">
                         <div class="pt-0">
-                            <button mat-raised-button class="mr-10" *ngIf="!isLoaderShow"
-                                    (click)="backToStepOne()"> {{resourceService.frmelmnts?.btn?.back}}
+                            <button mat-raised-button class="mr-10" *ngIf="!isLoaderShow" (click)="backToStepOne()">
+                                {{resourceService.frmelmnts?.btn?.back}}
                             </button>
                             <button mat-raised-button class="mr-10 primary" *ngIf="!isLoaderShow"
-                                    (click)="openItemsVerifyModal(false)"
-                                    [disabled]="!isCheckedTermCondition || !botLogics.length">
+                                (click)="openItemsVerifyModal(false)"
+                                [disabled]="!isCheckedTermCondition || !botLogics.length">
                                 {{resourceService.frmelmnts?.btn?.save}}
                             </button>
                             <ng-container *ngIf="isLoaderShow; else submitBtn1">
@@ -131,17 +135,19 @@
                             </ng-container>
                             <ng-template #submitBtn1>
                                 <button mat-raised-button class="uci-action-button"
-                                        [disabled]="!isCheckedTermCondition || !botLogics.length"
-                                        (click)="this.conversationId ? onSubmit(true) : openItemsVerifyModal(true)">
-                                    {{conversationId ? resourceService.frmelmnts?.btn?.update : resourceService.frmelmnts?.btn?.submit}}
+                                    [disabled]="!isCheckedTermCondition || !botLogics.length"
+                                    (click)="this.conversationId ? onSubmit(true) : openItemsVerifyModal(true)">
+                                    {{conversationId ? resourceService.frmelmnts?.btn?.update :
+                                    resourceService.frmelmnts?.btn?.submit}}
                                 </button>
                             </ng-template>
                         </div>
                         <div class="pt-0">
                             <mat-checkbox name="isCheckedTermCondition" [color]="'primary'"
-                                          [(ngModel)]="isCheckedTermCondition">
+                                [(ngModel)]="isCheckedTermCondition">
                                 <mat-label class="font-weight-normal t-and-c-title">
-                                    <a class="tc-tag" href="https://Nipun Lakshya App Chatbot.gov.in/term-of-use.html" target="_blank">
+                                    <a class="tc-tag" href="https://Nipun Lakshya App Chatbot.gov.in/term-of-use.html"
+                                        target="_blank">
                                         {{resourceService.frmelmnts?.lbl?.aggreeTc}}
                                     </a>
                                 </mat-label>

@@ -1,8 +1,0 @@
-import { EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
-export declare class UciEventsService {
-    telemetryEvent: Subject<any>;
-    actionEvent: EventEmitter<any>;
-    constructor();
-    emitTelemetry(event: any): void;
-}

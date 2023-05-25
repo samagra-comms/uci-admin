@@ -63,7 +63,7 @@ export class UciService extends BaseService {
     }
 
     botCreate(data) {
-        return this.postRequest(this.BASE_URL + 'bot', data, {asset: 'bot'});
+        return this.postRequest(this.BASE_URL + 'bot', data , {asset: 'bot'});
     }
 
     botUpdate(id, data) {
