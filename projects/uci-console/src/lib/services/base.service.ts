@@ -54,9 +54,9 @@ export class BaseService {
             map((res: any) => {
                 return res.result;
             }),
-            catchError(err => {
-                return this.handleError(err);
-            })
+            // catchError(err => {
+            //     return this.handleError(err);
+            // })
         );
     }
 
