@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   url: process.env.NG_APP_url,
   nlUrl: process.env.NG_APP_nl_url,
+  userSegemtUrl: process.env.NG_APP_user_segment_url,
   nlLoginUrl: process.env.NG_APP_nl_login_url,
   nlLoginToken: process.env.NG_APP_nl_login_token,
   nlApplicationId: process.env.NG_APP_nl_application_id,

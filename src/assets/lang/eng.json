@@ -232,6 +232,7 @@
       "viewCaps": "VIEW",
       "editCaps": "EDIT",
       "authorCaps": "AUTHOR",
+      "botIconRequired":"Bot Icon is required",
       "lastupdatedCaps": "Last Updated",
       "content": {
         "AUTHOR": "Author",

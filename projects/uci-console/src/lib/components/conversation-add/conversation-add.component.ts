@@ -9,6 +9,7 @@ import {ToasterService} from '../../services/toaster.service';
 import {MatDialog} from '@angular/material/dialog';
 import {TermsConditionsComponent} from '../terms-conditions/terms-conditions.component';
 import {TermsConditionConfirmComponent} from '../terms-condition-confirm/terms-condition-confirm.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'lib-conversation-add',
@@ -81,7 +82,8 @@ export class ConversationAddComponent implements OnInit {
       endDate: [null],
       isBroadcastBotEnabled: [true],
       segmentId: ['', Validators.required],
-      status: ['enabled']
+      status: ['enabled'],
+      // file:[null,Validators.required]
     });
 
     // Edit case
@@ -275,7 +277,7 @@ export class ConversationAddComponent implements OnInit {
       all: {
         type: 'get',
         config: {
-          url: `http://103.154.251.109:8070/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${this.conversationBot.botId}`,
+          url: `${environment?.userSegemtUrl}/segments/${this.conversationForm.getRawValue().segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${this.conversationBot.botId}`,
           type: 'GET',
           cadence: {
             perPage: 100,
