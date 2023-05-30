@@ -7,6 +7,7 @@ FROM node:14-alpine as build
 # These vars will be sourced during build time
 ARG NG_APP_url
 ARG NG_APP_nl_url
+ARG NG_APP_user_segment_url
 ARG NG_APP_nl_login_url
 ARG NG_APP_nl_login_token
 ARG NG_APP_nl_application_id
