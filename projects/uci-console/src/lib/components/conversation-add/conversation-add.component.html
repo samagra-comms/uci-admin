@@ -23,14 +23,17 @@
                                 (userSegmentDelete)="onUserSegmentDelete($event)">
                             </lib-conversation-setup>
                             <div class="uci-container">
-                                <div>Upload Bot Icon</div>
+                                <div>Upload Bot Icon *</div>
                                 <div [ngStyle]="{'background': 'white','padding':'14px 8px','margin-top':'5px'}">
                                     <input type="file" name="file" (change)="handleFileInputChange($event)"
                                         class="uci-file-input">
+                                        
                                 </div>
-
-
-
+                                <!-- <span *ngIf="true">
+                                    <span class="has-error">
+                                        {{resourceService.frmelmnts?.lbl?.botIconRequired}}
+                                    </span>
+                                </span> -->
                             </div>
                         </div>
 

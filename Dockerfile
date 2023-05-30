@@ -20,6 +20,7 @@ ARG NG_APP_token
 
 ENV NG_APP_url $NG_APP_url
 ENV NG_APP_nl_url $NG_APP_nl_url
+ENV NG_APP_user_segment_url $NG_APP_user_segment_url
 ENV NG_APP_nl_login_url $NG_APP_nl_login_url
 ENV NG_APP_nl_login_token $NG_APP_nl_login_token
 ENV NG_APP_nl_application_id $NG_APP_nl_application_id

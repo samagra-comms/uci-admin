@@ -11,6 +11,7 @@ import {StorageService} from '../shared/services/storage.service';
 export class UciAdminComponent implements OnInit {
   public url = environment.url;
   public nlUrl = environment.nlUrl;
+  public userSegemtUrl = environment.userSegemtUrl;
   public blobUrl = environment.blobUrl;
   public uciBotPhoneNumber = environment.botPhoneNumber;
   public resourceService = (langConfig as any).default;
