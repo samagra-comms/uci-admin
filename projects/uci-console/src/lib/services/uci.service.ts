@@ -102,7 +102,7 @@ export class UciService extends BaseService {
 
     // Mis APIs
     uploadFile(obj): Observable<any> {
-        return this.postRequest(this.BASE_URL + 'form/upload', this.toFormData(obj));
+        return this.postRequest(this.BASE_URL + 'form/upload', obj);
     }
 
     readForm(data) {
