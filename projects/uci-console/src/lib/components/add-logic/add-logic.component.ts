@@ -93,8 +93,7 @@ export class AddLogicComponent {
     }
 
    
-    console.log({ odk: this.odkFile, media: this.mediaFiles });
-    // const obj ={}
+
     this.logicForm.patchValue({formId: ''});
     this.isModalLoaderShow = true;
     this.uciService.uploadFile(formdata).subscribe((fileInfo: any) => {
