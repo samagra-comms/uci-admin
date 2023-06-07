@@ -51,6 +51,7 @@ export class ConversationAddComponent implements OnInit {
   totalRecords = 1000;
   display: FormControl = new FormControl("", Validators.required);
   file: any;
+  isBotIconAvailable =false;
   file_list: Array<string> = [];
 
   constructor(
@@ -83,7 +84,6 @@ export class ConversationAddComponent implements OnInit {
       isBroadcastBotEnabled: [true],
       segmentId: ['', Validators.required],
       status: ['enabled'],
-      // file:[null,Validators.required]
     });
 
     // Edit case
@@ -96,6 +96,7 @@ export class ConversationAddComponent implements OnInit {
 
   handleFileInputChange(event): void {
     this.file=event.target.files[0];
+    this.isBotIconAvailable =true
   }
 
 
@@ -159,6 +160,7 @@ export class ConversationAddComponent implements OnInit {
   }
 
   onAddCancel() {
+    this.isBotIconAvailable =false;
     this.router.navigate(['uci-admin']);
   }
   public toFormData<T>(formValue: T) {

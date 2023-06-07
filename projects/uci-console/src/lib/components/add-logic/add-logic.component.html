@@ -43,7 +43,7 @@
                                 </div>
                             </mat-grid-tile>
                         </mat-grid-list>
-                        <input type="file" name="file" (change)="onFileUpload($event)" accept=".xml" class="uci-file-input">
+                        <input type="file" name="file" (change)="onOdkFileChange($event)" accept=".xml" class="uci-file-input">
                             <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
                             <div class="mobile only field text-right p-0">
                                 <a class="mr-5 sample-download"
@@ -62,10 +62,31 @@
                                 </div>
                             </mat-grid-tile>
                         </mat-grid-list>
-                        <input type="file" name="file" (change)="onFileUpload($event)" class="uci-file-input">
+                        <input type="file" name="file" multiple (change)="onMediaChange($event)" accept="audio/*,video/*,image/*" class="uci-file-input">
                         <small *ngIf="odkFileAlreadyExist" class="text-danger">{{fileErrorStatus}}</small>
                         <div class="mobile only field text-right p-0">
                         </div>
+                    </div>
+
+                    <div>
+                        <mat-grid-list [cols]="breakpoint" rowHeight="3rem" (window:resize)="onResize($event)">
+                            <mat-grid-tile colspan="1" class="font-1-2">
+                                <div class="w-100 text-left">
+                                    <button mat-stroked-button class="action-button" (click)="onFileUpload()">
+                                        Upload Form & Media
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
+                            <!-- <mat-grid-tile colspan="4" class="font-1-2">
+                                <div class="w-100 text-right">
+                                    <button mat-stroked-button class="action-button" (click)="onFileUpload()">
+                                        Upload Form & Media
+                                    </button>
+                                </div>
+                            </mat-grid-tile> -->
+
+                        </mat-grid-list>
+                        
                     </div>
 
                 </div>

@@ -25,7 +25,7 @@
                             <div class="uci-container">
                                 <div>Upload Bot Icon *</div>
                                 <div [ngStyle]="{'background': 'white','padding':'14px 8px','margin-top':'5px'}">
-                                    <input type="file" name="file" (change)="handleFileInputChange($event)"
+                                    <input type="file" name="file" accept="image/png ,image/jpg, image/jpeg" required (change)="handleFileInputChange($event)"
                                         class="uci-file-input">
                                         
                                 </div>
@@ -53,7 +53,7 @@
                             {{resourceService.frmelmnts?.btn?.cancel}}
                         </button>
                         <button mat-raised-button class="uci-action-button" [disabled]="conversationForm.invalid || duplicateValues.name ||
-                                duplicateValues.startingMessage" (click)="nextStep()">
+                                duplicateValues.startingMessage || !isBotIconAvailable" (click)="nextStep()">
                             {{resourceService.frmelmnts?.btn?.next}}
                         </button>
                     </div>
@@ -63,11 +63,11 @@
                         <button mat-raised-button class="mr-10" *ngIf="!isLoaderShow" (click)="backToStepOne()">
                             {{resourceService.frmelmnts?.btn?.back}}
                         </button>
-                        <button mat-raised-button class="mr-10 primary" *ngIf="!isLoaderShow"
+                        <!-- <button mat-raised-button class="mr-10 primary" *ngIf="!isLoaderShow"
                             (click)="openItemsVerifyModal(false)"
                             [disabled]="!isCheckedTermCondition || !botLogics.length">
                             {{resourceService.frmelmnts?.btn?.save}}
-                        </button>
+                        </button> -->
                         <ng-container *ngIf="isLoaderShow; else submitBtn1">
                             <button class="action-button p-0">
                                 <div class="ui active tiny inline loader"></div>
