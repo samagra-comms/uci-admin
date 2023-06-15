@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-
 import { Toaster } from "react-hot-toast";
 
 import SidebarComponent from "./components/sidebar";
-import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
+import { MDBCol, MDBRow } from "mdb-react-ui-kit";
 import { useMemo, useState } from "react";
 import { AppContext } from "./provider/contextProvider";
 import { useAuthContext } from "./provider/authProvider";

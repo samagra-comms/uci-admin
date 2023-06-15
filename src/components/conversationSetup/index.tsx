@@ -12,8 +12,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useStore } from "../../store";
 
 
-const getBotBaseUrl = (name: string) => `https://cdn.samagra.io/pdf-make-outputs/${name}?X-Amz-Security-Token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJZSlo2S0dPOVJFRUNSV1FFTFBRTCIsImFwcGxpY2F0aW9uSWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImV4cCI6IjE2ODYyMjc3NDUiLCJpYXQiOjE2ODYyMjQxNDUsImlzcyI6ImFjbWUuY29tIiwianRpIjoiODE2MjJmN2QtMDFmMi00OTRlLTgzZDgtNWNkMDcyODk0NDdmIiwicG9saWN5IjoicGRmLW1ha2UiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwZGYtbWFrZS1jZG4iLCJyb2xlcyI6WyJwZGYtbWFrZSJdLCJzdWIiOiIyZjZjYjA1OC1mZjYzLTRjMmUtOGQyNC1jOTg5YWIyNjY0OTcifQ.yJFtgzK0zNK3SLvBhnvuj6TxWKroYXwdmQQTtWzCV3fUJNarxQV-tmuNcEXdY6QNJUXfLsZncOGRnXZZ9S5-7g&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YJZ6KGO9REECRWQELPQL%2F20230608%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230608T113547Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e22541eb0753f5b61121e817f7a526a886f42657cdd6ff9ed86194cb35fb9add`;
-
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore();
   

@@ -41,6 +41,8 @@ export const Dashboard = () => {
         store?.stopLoading();
         toast.error(err.message);
       });
+      
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, perPage, store.startLoading, store?.stopLoading,searchText]);
 
   

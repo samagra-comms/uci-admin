@@ -1,4 +1,4 @@
-import { Sidebar, Menu, MenuItem, SubMenu, menuClasses, MenuItemStyles } from 'react-pro-sidebar';
+import { Sidebar, Menu, MenuItem, menuClasses, MenuItemStyles } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import React, { useCallback } from 'react'
 // import { Switch } from './Switch';
