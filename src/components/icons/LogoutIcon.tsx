@@ -3,7 +3,7 @@ import React from 'react'
 import logout from '../../assets/images/logout2.png';
 const LogoutIcon = () => {
   return (
-    <img src={logout} alt="dashboard" height="28" />
+    <img src={logout} alt="dashboard" height="20" />
   )
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import add from '../../assets/images/add.png';
 const AddIcon = () => {
   return (
-    <img src={add} alt="dashboard" height="28" />
+    <img src={add} alt="dashboard" height="20" />
   )
 }
 

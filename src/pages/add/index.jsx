@@ -155,7 +155,7 @@ export const Add = () => {
     [errors, store?.state, store?.botIcon,store?.isBroadcastBot]
   );
   return (
-    <MDBContainer className="mt-3  p-2">
+    <MDBContainer style={{margin:0,height:'100vh',overflow:'scroll'}}>
       <MDBRow>
         <>
       

@@ -46,12 +46,13 @@ const StyledLogo = styled.div<{ rtl?: boolean }>`
       `}
 `;
 
+
 export const SidebarHeader: React.FC<SidebarHeaderProps> = ({ children, rtl, ...rest }) => {
   return (
     <StyledSidebarHeader {...rest}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <StyledLogo rtl={rtl}>UCI</StyledLogo>
-        <Typography variant="subtitle1" fontWeight={700} color="#0098e5">
+        <Typography variant="body1" fontWeight={700} color="#0098e5">
           Admin Dashboard
         </Typography>
       </div>

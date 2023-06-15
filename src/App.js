@@ -23,16 +23,26 @@ function App() {
  
   history.navigate = useNavigate();
   history.location = useLocation();
+  const background=useMemo(()=>store?.theme === 'dark' ? '#1b1d21' : '#f3f6f9',[store?.theme]);
+  const theme=useMemo(()=>{
+    if(store?.theme === 'dark') 
+    return {
+      background:'#1b1d21',
+      color:'white'
+    }
+    return {background:'#f3f6f9'}
+    
+  },[store?.theme]);
   return (
-    <div className="App">
+    <div style={{height:'100vh' ,overflow:'scroll',...theme}}>
       <AppContext.Provider value={values}>
         <>
           <Loader loading={showLoader} />
           <MDBRow>
-            <MDBCol size={2} className="p-0">
+           {user && <MDBCol size={2} className="p-0">
               <SidebarComponent />
-            </MDBCol>
-            <MDBCol size={10}>
+            </MDBCol>}
+            <MDBCol size={user ? 10 : 12}>
               <Routes>
                 {user ? (
                   <Route path="/login" element={<Navigate to={pathName} />} />

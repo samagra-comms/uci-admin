@@ -3,7 +3,7 @@ import React from 'react'
 import dashboard from '../../assets/images/dashboard.png';
 const DashobardIcon = () => {
   return (
-    <img src={dashboard} alt="dashboard" height="30" />
+    <img src={dashboard} alt="dashboard" height="25" />
   )
 }
 

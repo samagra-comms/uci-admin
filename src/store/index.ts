@@ -55,7 +55,9 @@ export const useStore = create((set) => ({
   setBroadcastBotLogics:(newValue)=>set({ broadcastBotLogics: newValue }),
   botList:[],
   setBotList:(newValue)=>set({botList:newValue}),
-  onReset:()=>set({...initialState})
+  onReset:()=>set({...initialState}),
+  theme:localStorage.getItem('theme') || 'light',
+  setTheme:(newValue)=>set({theme:newValue})
 }))
 
 

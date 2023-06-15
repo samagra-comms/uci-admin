@@ -1,7 +1,7 @@
-import { Sidebar, Menu, MenuItem, menuClasses, MenuItemStyles } from 'react-pro-sidebar';
+import { Sidebar, Menu, MenuItem, menuClasses, MenuItemStyles, SubMenu } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
 import React, { useCallback } from 'react'
-// import { Switch } from './Switch';
+ import { Switch } from './Switch';
 // import { PackageBadges } from './PackageBadges';
 // import { Typography } from './Typography';
 import { SidebarFooter } from './SidebarFooter';
@@ -10,6 +10,9 @@ import DashobardIcon from '../icons/Dashobard';
 import AddIcon from '../icons/AddIcon';
 import LogoutIcon from '../icons/LogoutIcon';
 import { useAuth } from '../../hooks/useAuth';
+import ThemeIcon from '../icons/ThemeIcon';
+import { useStore } from '../../store';
+import { ShoppingCart } from '../icons/ShoppingCart';
 // import { Badge } from './Badge';
 
 type Theme = 'light' | 'dark';
@@ -17,8 +20,10 @@ type Theme = 'light' | 'dark';
 const themes = {
   light: {
     sidebar: {
-      backgroundColor: '#ffffff',
-      color: '#607489',
+      // backgroundColor: '#ffffff',
+      backgroundColor: '#0b2948',
+      // color: '#607489',
+      color: '#8ba1b7',
     },
     menu: {
       menuContent: '#fbfcfd',
@@ -34,8 +39,10 @@ const themes = {
   },
   dark: {
     sidebar: {
-      backgroundColor: '#0b2948',
-      color: '#8ba1b7',
+      // backgroundColor: '#0b2948',
+      backgroundColor: '#24292d',
+      // color: '#8ba1b7',
+      color: 'white',
     },
     menu: {
       menuContent: '#082440',
@@ -62,13 +69,14 @@ const hexToRgba = (hex: string, alpha: number) => {
 
 const SidebarComponent = () => {
 
+  const store:any=useStore();
     const [collapsed, setCollapsed] = React.useState(false);
     const [toggled, setToggled] = React.useState(false);
     const [broken, setBroken] = React.useState(false);
     const [rtl, setRtl] = React.useState(false);
     const [hasImage, setHasImage] = React.useState(true);
-    const [theme, setTheme] = React.useState<Theme>('dark');
-    const {signOut} =useAuth();
+    const [theme, setTheme] = React.useState<Theme>(store?.theme);
+    const {signOut,user} =useAuth();
     // handle on RTL change event
     const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setRtl(e.target.checked);
@@ -77,6 +85,8 @@ const SidebarComponent = () => {
     // handle on theme change event
     const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setTheme(e.target.checked ? 'dark' : 'light');
+      store?.setTheme(store?.theme==="dark" ? 'light' : 'dark');
+      localStorage.setItem('theme',store?.theme==="dark" ? 'light' : 'dark')
     };
   
     // handle on image change event
@@ -86,7 +96,7 @@ const SidebarComponent = () => {
   
     const menuItemStyles: MenuItemStyles = {
       root: {
-        fontSize: '18px',
+        fontSize: '14px',
         fontWeight: 400,
       },
       icon: {
@@ -150,46 +160,20 @@ const SidebarComponent = () => {
               General
             </Typography>
           </div> */}
-          {/* <Menu menuItemStyles={menuItemStyles}>
+         
+        {/* <Menu menuItemStyles={menuItemStyles}>
             <SubMenu
               label="Charts"
-              icon={<Book />}
-              suffix={
-                <Badge variant="danger" shape="circle">
-                  6
-                </Badge>
-              }
+              icon={<ShoppingCart />}   
             >
-              <MenuItem> Pie charts</MenuItem>
-              <MenuItem> Line charts</MenuItem>
-              <MenuItem> Bar charts</MenuItem>
+              <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
+              Dashboard
+            </MenuItem>
+            <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
+            
             </SubMenu>
-            <SubMenu label="Maps" icon={<Book />}>
-              <MenuItem> Google maps</MenuItem>
-              <MenuItem> Open street maps</MenuItem>
-            </SubMenu>
-            <SubMenu label="Theme" icon={<Book />}>
-              <MenuItem> Dark</MenuItem>
-              <MenuItem> Light</MenuItem>
-            </SubMenu>
-            <SubMenu label="Components" icon={<Book />}>
-              <MenuItem> Grid</MenuItem>
-              <MenuItem> Layout</MenuItem>
-              <SubMenu label="Forms">
-                <MenuItem> Input</MenuItem>
-                <MenuItem> Select</MenuItem>
-                <SubMenu label="More">
-                  <MenuItem> CheckBox</MenuItem>
-                  <MenuItem> Radio</MenuItem>
-                </SubMenu>
-              </SubMenu>
-            </SubMenu>
-            <SubMenu label="E-commerce" icon={<Book />}>
-              <MenuItem> Product</MenuItem>
-              <MenuItem> Orders</MenuItem>
-              <MenuItem> Credit card</MenuItem>
-            </SubMenu>
-          </Menu> */}
+           
+          </Menu>  */}
 
           {/* <div style={{ padding: '0 24px', marginBottom: '8px', marginTop: '32px' }}>
             <Typography
@@ -202,10 +186,20 @@ const SidebarComponent = () => {
           </div> */}
 
           <Menu menuItemStyles={menuItemStyles}>
+          <MenuItem icon={<ThemeIcon />} >
+            <Switch
+              id="theme"
+              checked={theme === 'dark'}
+              onChange={handleThemeChange}
+              label="Dark theme"
+            />
+            </MenuItem>
             <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
               Dashboard
             </MenuItem>
             <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
+           
+           
             <MenuItem icon={<LogoutIcon />} onClick={onLogout}>Log Out</MenuItem>
           </Menu>
         </div>
