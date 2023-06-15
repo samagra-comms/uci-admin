@@ -1,13 +1,16 @@
 import { Sidebar, Menu, MenuItem, SubMenu, menuClasses, MenuItemStyles } from 'react-pro-sidebar';
 import { Link } from 'react-router-dom';
-import React from 'react'
-import { Switch } from './Switch';
-import { PackageBadges } from './PackageBadges';
-import { Typography } from './Typography';
+import React, { useCallback } from 'react'
+// import { Switch } from './Switch';
+// import { PackageBadges } from './PackageBadges';
+// import { Typography } from './Typography';
 import { SidebarFooter } from './SidebarFooter';
-import { Book } from '../icons/Book';
 import { SidebarHeader } from './SidebarHeader';
-import { Badge } from './Badge';
+import DashobardIcon from '../icons/Dashobard';
+import AddIcon from '../icons/AddIcon';
+import LogoutIcon from '../icons/LogoutIcon';
+import { useAuth } from '../../hooks/useAuth';
+// import { Badge } from './Badge';
 
 type Theme = 'light' | 'dark';
 
@@ -65,7 +68,7 @@ const SidebarComponent = () => {
     const [rtl, setRtl] = React.useState(false);
     const [hasImage, setHasImage] = React.useState(true);
     const [theme, setTheme] = React.useState<Theme>('dark');
-  
+    const {signOut} =useAuth();
     // handle on RTL change event
     const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setRtl(e.target.checked);
@@ -114,6 +117,11 @@ const SidebarComponent = () => {
         fontWeight: open ? 600 : undefined,
       }),
     };
+
+    const onLogout =useCallback(()=>{
+      alert("un comment the code")
+    //  signOut();
+    },[signOut])
   return (
     <div style={{ display: 'flex', height: '100vh',width:'100%' ,direction: rtl ? 'rtl' : 'ltr' }}>
     <Sidebar
@@ -194,10 +202,11 @@ const SidebarComponent = () => {
           </div> */}
 
           <Menu menuItemStyles={menuItemStyles}>
-            <MenuItem icon={<Book />} component={<Link to="/" />}>
+            <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
               Dashboard
             </MenuItem>
-            <MenuItem icon={<Book />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
+            <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
+            <MenuItem icon={<LogoutIcon />} onClick={onLogout}>Log Out</MenuItem>
           </Menu>
         </div>
         <SidebarFooter collapsed={collapsed} />

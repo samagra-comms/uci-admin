@@ -9,20 +9,19 @@ import {
 import React, { FC, useCallback } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useStore } from "../../store";
 
 
-const getBotBaseUrl=(name:string)=>`https://cdn.samagra.io/pdf-make-outputs/${name}?X-Amz-Security-Token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJZSlo2S0dPOVJFRUNSV1FFTFBRTCIsImFwcGxpY2F0aW9uSWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImV4cCI6IjE2ODYyMjc3NDUiLCJpYXQiOjE2ODYyMjQxNDUsImlzcyI6ImFjbWUuY29tIiwianRpIjoiODE2MjJmN2QtMDFmMi00OTRlLTgzZDgtNWNkMDcyODk0NDdmIiwicG9saWN5IjoicGRmLW1ha2UiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwZGYtbWFrZS1jZG4iLCJyb2xlcyI6WyJwZGYtbWFrZSJdLCJzdWIiOiIyZjZjYjA1OC1mZjYzLTRjMmUtOGQyNC1jOTg5YWIyNjY0OTcifQ.yJFtgzK0zNK3SLvBhnvuj6TxWKroYXwdmQQTtWzCV3fUJNarxQV-tmuNcEXdY6QNJUXfLsZncOGRnXZZ9S5-7g&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YJZ6KGO9REECRWQELPQL%2F20230608%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230608T113547Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e22541eb0753f5b61121e817f7a526a886f42657cdd6ff9ed86194cb35fb9add`;
+const getBotBaseUrl = (name: string) => `https://cdn.samagra.io/pdf-make-outputs/${name}?X-Amz-Security-Token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJZSlo2S0dPOVJFRUNSV1FFTFBRTCIsImFwcGxpY2F0aW9uSWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImV4cCI6IjE2ODYyMjc3NDUiLCJpYXQiOjE2ODYyMjQxNDUsImlzcyI6ImFjbWUuY29tIiwianRpIjoiODE2MjJmN2QtMDFmMi00OTRlLTgzZDgtNWNkMDcyODk0NDdmIiwicG9saWN5IjoicGRmLW1ha2UiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwZGYtbWFrZS1jZG4iLCJyb2xlcyI6WyJwZGYtbWFrZSJdLCJzdWIiOiIyZjZjYjA1OC1mZjYzLTRjMmUtOGQyNC1jOTg5YWIyNjY0OTcifQ.yJFtgzK0zNK3SLvBhnvuj6TxWKroYXwdmQQTtWzCV3fUJNarxQV-tmuNcEXdY6QNJUXfLsZncOGRnXZZ9S5-7g&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YJZ6KGO9REECRWQELPQL%2F20230608%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230608T113547Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e22541eb0753f5b61121e817f7a526a886f42657cdd6ff9ed86194cb35fb9add`;
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
+  const store: any = useStore();
+  
   const {
-    state,
     onChangeHandler,
-    errors,
-    isBroadcastBot,
-    setIsBroadcastBot,
-    setBotIcon,
+    errors
   } = compProps;
-
+ 
   const onDateChangeHandler = useCallback(
     (data) => {
       onChangeHandler({ target: data });
@@ -41,7 +40,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           onChange={onChangeHandler}
           name="name"
-          value={state?.name}
+          value={store?.state?.name}
           size='lg'
         />
         {errors.name && (
@@ -54,7 +53,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           //@ts-ignore
           onChange={onChangeHandler}
           name="description"
-          value={state?.description || ''}
+          value={store?.state?.description || ''}
           rows={4}
           size='lg'
         />
@@ -68,7 +67,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           onChange={onChangeHandler}
           name="purpose"
-          value={state?.purpose || ''}
+          value={store?.state?.purpose || ''}
           size='lg'
         />
         {/* <div className="form-text text-danger">
@@ -81,7 +80,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           onChange={onChangeHandler}
           name="startingMessage"
-          value={state?.startingMessage}
+          value={store?.state?.startingMessage}
           size='lg'
         />
         {errors?.startingMessage && (
@@ -93,8 +92,8 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <MDBCheckbox
           className="mb-2"
           name="flexCheck"
-          checked={isBroadcastBot}
-          onChange={(ev) => setIsBroadcastBot(ev.target.checked)}
+          checked={store?.isBroadcastBot}
+          onChange={(ev) => store?.setIsBroadcastBot(ev.target.checked)}
           id="flexCheckDefault"
           label="Create Broadcast bot"
           defaultChecked
@@ -105,8 +104,8 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           size='lg'
           onChange={onChangeHandler}
           name="segmentId"
-          value={state?.segmentId}
-          disabled={!isBroadcastBot}
+          value={store?.state?.segmentId}
+          disabled={!store?.isBroadcastBot}
         />
         {/* <div className="form-text text-danger">
         
@@ -117,7 +116,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <MDBCol className="p-0">
           <ReactDatePicker
             minDate={new Date()}
-            selected={state.startDate}
+            selected={store?.state.startDate}
             className="w-100"
             onChange={(value) =>
               onDateChangeHandler({ name: "startDate", value })
@@ -128,7 +127,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <MDBCol className="p-0 ">
           <ReactDatePicker
             minDate={new Date()}
-            selected={state.endDate}
+            selected={store?.state.endDate}
             onChange={(value) =>
               onDateChangeHandler({ name: "endDate", value })
             }
@@ -144,10 +143,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           // size="sm"
           id="formFileSm"
           size='lg'
-          onChange={(ev) => setBotIcon(ev.target?.files?.[0])}
+          onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
         />
       </MDBRow>
-     {/* {state.botImage && <MDBRow className="text-center">
+      {/* {state.botImage && <MDBRow className="text-center">
         <img className="mx-auto" style={{height:'100px' ,width:'150px'}} src={'https://cdn.samagra.io/pdf-make-outputs/cba36091-581b-40a5-963e-957b552f6139.png?X-Amz-Security-Token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJZSlo2S0dPOVJFRUNSV1FFTFBRTCIsImFwcGxpY2F0aW9uSWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdWQiOiIyMDExYTZjOS03ZmI3LTQzMDYtOGM2ZC1jOTZjYjA3Yzc4NTkiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImV4cCI6IjE2ODYyMjc3NDUiLCJpYXQiOjE2ODYyMjQxNDUsImlzcyI6ImFjbWUuY29tIiwianRpIjoiODE2MjJmN2QtMDFmMi00OTRlLTgzZDgtNWNkMDcyODk0NDdmIiwicG9saWN5IjoicGRmLW1ha2UiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwZGYtbWFrZS1jZG4iLCJyb2xlcyI6WyJwZGYtbWFrZSJdLCJzdWIiOiIyZjZjYjA1OC1mZjYzLTRjMmUtOGQyNC1jOTg5YWIyNjY0OTcifQ.yJFtgzK0zNK3SLvBhnvuj6TxWKroYXwdmQQTtWzCV3fUJNarxQV-tmuNcEXdY6QNJUXfLsZncOGRnXZZ9S5-7g&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=YJZ6KGO9REECRWQELPQL%2F20230608%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230608T113547Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=e22541eb0753f5b61121e817f7a526a886f42657cdd6ff9ed86194cb35fb9add'} alt="bot-icon"/>
       </MDBRow>} */}
     </MDBRow>

@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "formik": "^2.4.1",
     "localforage": "^1.10.0",
+    "lodash": "^4.17.21",
     "match-sorter": "^6.3.1",
     "mdb-react-ui-kit": "^6.1.0",
     "moment": "^2.29.4",
@@ -30,10 +31,12 @@
     "sort-by": "^1.2.0",
     "typescript": "^5.0.4",
     "web-vitals": "^2.1.4",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "zustand": "^4.3.8"
   },
   "scripts": {
     "start": "react-scripts start",
+    "kill": "kill -9 $(lsof -ti:3000)",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

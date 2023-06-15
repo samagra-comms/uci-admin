@@ -11,7 +11,5 @@ export const createBot = (data: any) => {
     },
   };
 
- 
-
   return axios.post(createBotUrl, data, config);
 };

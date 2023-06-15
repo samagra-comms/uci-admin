@@ -18,7 +18,7 @@ import {
 import { toast } from "react-hot-toast";
 import { uploadForm } from "../../api/uploadForm";
 import { addLogic } from "../../api/addLogic";
-
+import { omitBy, isNull } from "lodash";
 const AddLogicModal: FC<any> = ({
   open,
   activeLogic = {},
@@ -30,7 +30,7 @@ const AddLogicModal: FC<any> = ({
   const [form, setForm] = useState(null);
   const [media, setMedia] = useState(null);
   const [formId, setFormId] = useState("");
-  const [modalState, setModalState] = useState<any>({  ...activeLogic });
+  const [modalState, setModalState] = useState<any>({ ...activeLogic });
 
   const onSubmitHandler = useCallback(() => {}, []);
 
@@ -44,14 +44,19 @@ const AddLogicModal: FC<any> = ({
     []
   );
 
+  const onClose = useCallback(() => {
+    setModalState({});
+    onToggle();
+  }, [onToggle]);
+
   const onLogicAdd = useCallback(() => {
     const data = {
       ...modalState,
       transformers: [
         {
-          id: "774cd134-6657-4688-85f6-6338e2323dde",
+          id: process.env.REACT_APP_LOGIC_TRANSFORMER_ID,
           meta: {
-            form: "https://hosted.my.form.here.com",
+            form: process.env.REACT_APP_HOSTED_FORM_URL,
             formID: formId,
             title: modalState.name,
             body: modalState.description,
@@ -63,7 +68,6 @@ const AddLogicModal: FC<any> = ({
 
     addLogic({ data })
       .then((res) => {
-        console.log({ res });
         const newLogic = [...logics, { ...res.data.result }];
         setLogics(newLogic);
         setConversationLogic(newLogic);
@@ -73,13 +77,9 @@ const AddLogicModal: FC<any> = ({
         console.log({ err });
         toast.error(err.message);
       });
-    // const newLogics = [...logics, modalState];
-    //@ts-ignore
-    // setLogics(newLogic);
-    // setConversationLogic(newLogic);
-    // setModalState({ name: "", description: "",id:'' });
-    onToggle();
-  }, [formId, logics, modalState, onToggle, setConversationLogic]);
+
+    onClose();
+  }, [formId, logics, modalState, onClose, setConversationLogic]);
 
   const onOdkFormChange = useCallback((event: any) => {
     if (!event.target.files.length) {
@@ -99,7 +99,7 @@ const AddLogicModal: FC<any> = ({
     (ev: any) => {
       ev.preventDefault();
       setIsLoading(true);
-      uploadForm({ form, media })
+      uploadForm(omitBy({ form, media }, isNull))
         .then((res) => {
           setFormId(res?.data?.result?.data?.formID);
           toast.success("Succesfully Uploaded");
@@ -114,8 +114,17 @@ const AddLogicModal: FC<any> = ({
     [form, media]
   );
 
-  const isSubmitDisabled =useMemo(()=> formId==="" || media===null || form === null || Object.values(modalState).some((v) =>  v === "" || v === undefined || v === null),[form, formId, media, modalState])
-  console.log({modalState})
+  const isSubmitDisabled = useMemo(
+    () =>
+      formId === "" ||
+      form === null ||
+      Object.values(modalState).some(
+        (v) => v === "" || v === undefined || v === null
+      ),
+    [form, formId, modalState]
+  );
+
+  if (!open) return null;
   return (
     <>
       <MDBModal show={open} tabIndex="-1">
@@ -127,7 +136,7 @@ const AddLogicModal: FC<any> = ({
                 <MDBBtn
                   className="btn-close"
                   color="none"
-                  onClick={onToggle}
+                  onClick={onClose}
                 ></MDBBtn>
               </MDBModalHeader>
               <MDBModalBody>
@@ -171,9 +180,17 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow>
                       <MDBCol></MDBCol>
                       <MDBCol className="d-flex justify-content-end">
-                        <MDBBtn size="sm" onClick={onFormUpload} disabled={form===null}>
+                        <MDBBtn
+                          size="sm"
+                          onClick={onFormUpload}
+                          disabled={form === null}
+                        >
                           {isLoading ? (
-                            <MDBSpinner className="mx-2" size="sm" color="secondary">
+                            <MDBSpinner
+                              className="mx-2"
+                              size="sm"
+                              color="secondary"
+                            >
                               <span className="visually-hidden">
                                 Loading...
                               </span>
@@ -189,10 +206,12 @@ const AddLogicModal: FC<any> = ({
               </MDBModalBody>
 
               <MDBModalFooter>
-                <MDBBtn color="secondary" onClick={onToggle}>
+                <MDBBtn color="secondary" onClick={onClose}>
                   Close
                 </MDBBtn>
-                <MDBBtn onClick={onLogicAdd} disabled={isSubmitDisabled}>Add</MDBBtn>
+                <MDBBtn onClick={onLogicAdd} disabled={isSubmitDisabled}>
+                  Add
+                </MDBBtn>
               </MDBModalFooter>
             </MDBModalContent>
           </MDBContainer>

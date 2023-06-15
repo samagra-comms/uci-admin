@@ -1,6 +1,7 @@
 import axios from "axios";
 import { searchBot } from "./urls";
 import { getDefaultHeaders } from "./utils";
+import {omitBy,isNull} from 'lodash';
 
 export const getBots = (data: any) => {
   const url = searchBot;
@@ -9,7 +10,7 @@ export const getBots = (data: any) => {
       ...getDefaultHeaders(),
       asset: "bot",
     },
-    params: { perPage: data.perPage, page: data.page },
+    params: omitBy({ perPage: data.perPage, page: data.page ,name: data.name },isNull) ,
   };
 
   return axios.get(url, config);

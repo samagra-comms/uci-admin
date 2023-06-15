@@ -13,6 +13,7 @@ import {
 import { toast } from "react-hot-toast";
 import { getBotUrl } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { startConversation } from "../../api/startConversation";
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const navigate = useNavigate();
@@ -33,6 +34,20 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       navigate("/add-bot?edit=true", { state: data });
     },
     [navigate]
+  );
+
+  const onEnable = useCallback(
+    (data) => {
+      console.log("util:",{data})
+     startConversation(data).then(res=>{
+      console.log("util:",{res})
+      toast.success("Bot Enabled")
+     }).catch(err=>{
+      console.log("util:",{err})
+      toast.error(err.message)
+     })
+    },
+    []
   );
 
   return (
@@ -128,7 +143,12 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                       Edit
                     </MDBDropdownItem>
                     <MDBDropdownItem link>Delete</MDBDropdownItem>
-                    <MDBDropdownItem link>Enable</MDBDropdownItem>
+                    <MDBDropdownItem link             
+                      childTag="button"
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        onEnable(record);
+                      }}>Enable</MDBDropdownItem>
                     <MDBDropdownItem link>Report</MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
