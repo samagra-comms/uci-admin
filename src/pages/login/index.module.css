@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700,900');
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+
+.loginContainer {
+    background: #fff;
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    border-left: 1px solid rgba(0, 0, 30, 0.2);
+}
+
+.cardHeader {
+    color: #173575;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+    font-family: 'Poppins';
+    padding: 0rem 0rem;
+    margin-bottom: -1rem;
+}
+
+.cardHeader>div {
+    margin-top: 0.5rem;
+}
+
+.loginVector {
+    position: relative;
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginVector>img {
+    height: auto;
+    width: 100%;
+}
+
+.logoContainer {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+}
+
+.logoContainer p:nth-child(1) {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: 'Poppins';
+    opacity: 0.75;
+}
+
+.logoContainer p:nth-child(2) {
+    font-size: 2.5rem;
+    margin-top: -3rem;
+    opacity: 0.75;
+    font-family: 'Poppins';
+}
+
+.logoContainer img {
+    height: 7rem;
+}
+
+.logoContainer img:nth-child(1) {
+    margin-right: 3rem;
+}
+
+.logoContainer img:nth-child(2) {
+    margin-right: 3rem;
+}
+
+@keyframes AnimateBG {
+    0% {
+        background-position: 0% 50%
+    }
+
+    50% {
+        background-position: 100% 50%
+    }
+
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+
+    .cardHeader {
+        margin-top: -2rem;
+    }
+
+    .loginVector {
+        width: 100%;
+        height: 20rem;
+        justify-content: flex-start;
+    }
+
+    .loginVector>img:nth-child(1) {
+        width: 50rem;
+    }
+
+    .loginContainer {
+        width: 85%;
+        height: 100%;
+        margin-top: 3rem;
+        z-index: 2;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .logoContainer {
+        top: 10%;
+        left: 0;
+    }
+
+    .logoContainer p:nth-child(2) {
+        font-size: 2rem;
+        padding: 0rem 1rem;
+        text-align: center;
+        font-weight: bold;
+        font-family: 'Poppins';
+        opacity: 0.75;
+    }
+
+    .logoContainer p:nth-child(3) {
+        padding: 0rem 1rem;
+        font-size: 1.5rem;
+        text-align: center;
+        margin-top: -2rem;
+        opacity: 0.75;
+        font-family: 'Poppins';
+    }
+
+    .logoContainer img {
+        height: 4rem;
+    }
+
+    .logoContainer img:nth-child(1) {
+        margin-right: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .logoContainer img:nth-child(2) {
+        margin-right: 2rem;
+    }
+
+    .logoImages {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+.avatar {
+    
+}

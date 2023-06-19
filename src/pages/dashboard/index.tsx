@@ -48,7 +48,7 @@ export const Dashboard = () => {
   
   
   return (
-    <MDBContainer className="mt-5">
+    <MDBContainer className="mt-5 px-5">
       <MDBRow className="my-3">
         <MDBCol>
           <form className="d-flex input-group w-auto">
@@ -75,7 +75,7 @@ export const Dashboard = () => {
           
         </MDBCol>
       </MDBRow>
-      <div style={{ maxHeight: "85vh", overflow: "scroll" }}>
+      <div style={{ maxHeight: "80vh", overflow: "scroll" }} >
         <Table data={botList} />
       </div>
       <Pagination

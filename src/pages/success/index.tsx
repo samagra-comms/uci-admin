@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const SuccessScreen = () => {
   const navigate =useNavigate();
   return (
-    <div className="text-center success-container m-0 p-0">
+    <div className="text-center success-container m-0 p-0" style={{background:'#ffffff'}}>
       <img src={bot} style={{ height: "60vh" }} alt="bot" />
       <div>
         <img src={check} alt="check" />

@@ -51,28 +51,28 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   );
 
   return (
-    <MDBTable align="middle">
+    <MDBTable align="middle" small>
       <MDBTableHead>
         <tr>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Name
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Status
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Description
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Starting Message
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Bot URL
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Bot ID
           </th>
-          <th scope="col" className="fw-bold mb-1">
+          <th scope="col" className="fw-bold ">
             Action
           </th>
         </tr>
@@ -82,7 +82,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
           return (
             <tr key={record?.id}>
               <td>
-                <p className="fw-bold mb-1">{record?.name}</p>
+                <p className="fw-bold ">{record?.name}</p>
               </td>
               <td>
                 <MDBBadge
@@ -90,17 +90,17 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                   pill
                 >
                   {record?.status === "ENABLED" ? "Active" : "DRAFT"}
-                </MDBBadge>{" "}
+                </MDBBadge>
               </td>
               <td>
-                {" "}
-                <p className="mb-1">
+                
+                <p className="">
                   {record?.description || "No Description Provided"}
-                </p>{" "}
+                </p>
               </td>
               <td>
-                {" "}
-                <p className="mb-1">{record?.startingMessage}</p>{" "}
+                
+                <p className="">{record?.startingMessage}</p>
               </td>
 
               <td>
@@ -139,17 +139,21 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                         ev.preventDefault();
                         onEdit(record);
                       }}
+                      disabled
                     >
                       Edit
                     </MDBDropdownItem>
-                    <MDBDropdownItem link>Delete</MDBDropdownItem>
+                    <MDBDropdownItem link
+                     disabled
+                    >Delete</MDBDropdownItem>
                     <MDBDropdownItem link             
                       childTag="button"
+                      disabled
                       onClick={(ev) => {
                         ev.preventDefault();
                         onEnable(record);
                       }}>Enable</MDBDropdownItem>
-                    <MDBDropdownItem link>Report</MDBDropdownItem>
+                 
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </td>

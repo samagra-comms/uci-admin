@@ -19,6 +19,7 @@ import { toast } from "react-hot-toast";
 import { uploadForm } from "../../api/uploadForm";
 import { addLogic } from "../../api/addLogic";
 import { omitBy, isNull } from "lodash";
+import { getUploadErrorMsg } from "../../utils";
 const AddLogicModal: FC<any> = ({
   open,
   activeLogic = {},
@@ -101,8 +102,13 @@ const AddLogicModal: FC<any> = ({
       setIsLoading(true);
       uploadForm(omitBy({ form, media }, isNull))
         .then((res) => {
-          setFormId(res?.data?.result?.data?.formID);
-          toast.success("Succesfully Uploaded");
+          if(res?.data?.result?.status==='ERROR'){
+           toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`) 
+          }else{
+            setFormId(res?.data?.result?.data?.formID);
+            toast.success("Succesfully Uploaded");
+            
+          }
           setIsLoading(false);
         })
         .catch((err) => {
@@ -183,7 +189,7 @@ const AddLogicModal: FC<any> = ({
                         <MDBBtn
                           size="sm"
                           onClick={onFormUpload}
-                          disabled={form === null}
+                          disabled={form === null || isLoading}
                         >
                           {isLoading ? (
                             <MDBSpinner

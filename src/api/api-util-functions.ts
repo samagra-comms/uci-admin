@@ -12,15 +12,15 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
   console.log("util: onBotCreate", { isTriggerBot, isNavigateToEnd });
 
   const store: any = useStore.getState();
-
-  const userSegments = [];
+store.startLoading();
+ 
   const reqObj = {
     ...store?.state,
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
   };
-  userSegments.forEach((userSegment) => {
+  store?.userSegments.forEach((userSegment) => {
     reqObj.users.push(userSegment.id);
   });
   store?.conversationLogic.forEach((logic) => {
@@ -45,7 +45,7 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
 
   createBot(formdata)
     .then((res) => {
-      store?.stopLoading();
+      
       console.log("botCreate", { res });
       if (!isNavigateToEnd) {
         store?.setConversationBot({
@@ -55,9 +55,9 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
         });
       }
       if (isTriggerBot) {
-        onStartConversation(res?.data?.result, isNavigateToEnd);
+       onStartConversation(res?.data?.result, isNavigateToEnd);
       } else {
-        // this.closeVerifyModal();
+     
 
         if (store?.isBroadcastBot) {
           console.log("util: isBroadcastBot");
@@ -123,6 +123,8 @@ export const onSegmentCreate = () => {
       onCreateBroadcastBotLogic();
     })
     .catch((err) => {
+      store?.stopLoading();
+      toast.error(`Error occured in creating segment: ${err.message}`)
       console.log({ err });
     });
 };
@@ -158,6 +160,7 @@ export const onStartConversation = (bot, isNavigateToEnd = false) => {
       }
     })
     .catch((err) => {
+      store?.stopLoading();
       toast.error(`Error Occured in Starting bot: ${err.message}`);
     });
 };
@@ -165,17 +168,23 @@ export const onStartConversation = (bot, isNavigateToEnd = false) => {
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState();
   console.log("util: onAfter");
-  const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
-    botId: store?.conversationBot?.botId,
-  };
+  store.stopLoading();
+  store.onReset();
+  history.navigate("/success");
+ 
+  // const mappingData = {
+  //   segmentId: parseInt(store?.state?.segmentId, 10),
+  //   botId: store?.conversationBot?.botId,
+  // };
 
-  mapToSegment(mappingData).then((data) => {
-    console.log("util: mapToSegment resp:", { data });
-    alert("success after botSubmit");
-    store.onReset();
-    history.navigate("/success");
-  });
+  // mapToSegment(mappingData).then((data) => {
+  //   console.log("util: mapToSegment resp:", { data });
+  //   alert("success after botSubmit");
+  //  // onStartConversation(extras?.bot, true)
+  //   store.onReset();
+  //   history.navigate("/success");
+
+  // });
 };
 
 export const onCreateBroadcastBotLogic = () => {
@@ -199,7 +208,6 @@ export const onCreateBroadcastBotLogic = () => {
       .then((res) => {
         console.log("util: onCreateBroadcastBotLogic addLogic");
         console.log("onCreateBroadcastBotLogic", { res });
-        store?.stopLoading();
         const existingLogic = botLogic;
         delete existingLogic.id;
         store?.setBroadcastBotLogics([
@@ -231,6 +239,8 @@ export const onCreateBroadcastBotLogic = () => {
       })
       .catch((err) => {
         console.log({ err });
+        toast.error(`Error occured in creating broadcast bot logic: ${err.message}`)
+        store?.stopLoading();
       });
   }
 };
