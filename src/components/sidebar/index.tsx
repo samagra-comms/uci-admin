@@ -6,7 +6,7 @@ import {
   MenuItemStyles,
   SubMenu,
 } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useCallback } from "react";
 import { Switch } from "./Switch";
 // import { PackageBadges } from './PackageBadges';
@@ -16,7 +16,6 @@ import { SidebarHeader } from "./SidebarHeader";
 import DashobardIcon from "../icons/Dashobard";
 import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
-import { useAuth } from "../../hooks/useAuth";
 import ThemeIcon from "../icons/ThemeIcon";
 import { useStore } from "../../store";
 import { ShoppingCart } from "../icons/ShoppingCart";
@@ -81,7 +80,7 @@ const SidebarComponent = () => {
   const [rtl, setRtl] = React.useState(false);
   const [hasImage, setHasImage] = React.useState(true);
   const [theme, setTheme] = React.useState<Theme>(store?.theme);
-  const { signOut, user } = useAuth();
+
   // handle on RTL change event
   const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRtl(e.target.checked);
@@ -94,6 +93,7 @@ const SidebarComponent = () => {
     localStorage.setItem("theme", store?.theme === "dark" ? "light" : "dark");
   };
 
+  const navigate=useNavigate();
   // handle on image change event
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHasImage(e.target.checked);
@@ -140,8 +140,13 @@ const SidebarComponent = () => {
   };
 
   const onLogout = useCallback(() => {
-     signOut();
-  }, [signOut]);
+    
+     store?.setUser(null);
+     localStorage.clear();
+     setTimeout(()=>{
+       navigate("/login");
+     },10)
+  }, [navigate, store]);
   
   return (
     <div
@@ -217,14 +222,14 @@ const SidebarComponent = () => {
           </div> */}
 
             <Menu menuItemStyles={menuItemStyles}>
-              {/* <MenuItem icon={<ThemeIcon />} >
+              <MenuItem icon={<ThemeIcon />} >
             <Switch
               id="theme"
               checked={theme === 'dark'}
               onChange={handleThemeChange}
               label="Dark theme"
             />
-            </MenuItem> */}
+            </MenuItem>
               <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
                 Dashboard
               </MenuItem>

@@ -6,5 +6,5 @@ export const getDefaultHeaders =() => ({
     "admin-token": process.env.REACT_APP_token,
     ownerID: process.env.REACT_APP_userId,
     ownerOrgID: process.env.REACT_APP_orgId,
-    "Conversation-Authorization":''
+    "Conversation-Authorization": localStorage.getItem("accessToken")
   })

@@ -23,6 +23,8 @@ const initialState ={
 };
 
 export const useStore = create((set) => ({
+  user: localStorage.getItem('user')  || null,
+  setUser:(data)=>set((state)=>({user:data})),
   isLoading: false,
   startLoading:()=>set((state)=>({isLoading:true})),
   stopLoading:()=>set((state)=>({isLoading:false})),

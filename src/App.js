@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 
 import SidebarComponent from "./components/sidebar";
 import { MDBCol, MDBRow } from "mdb-react-ui-kit";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { AppContext } from "./provider/contextProvider";
 import { useAuthContext } from "./provider/authProvider";
 import RequireAuth from "./hoc/requireAuth";
@@ -11,16 +11,20 @@ import Loader from "./components/fullscreenLoader";
 import { useStore } from "./store";
 import { SuccessScreen, Dashboard, Login, Add } from "./pages";
 import { history } from "./utils/history";
+import { useAuth } from "./hooks/useAuth";
+import { AuthContext } from "./provider/authProvider";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const values = useMemo(() => ({ isLoading, setIsLoading }), [isLoading]);
-  const { user } = useAuthContext();
+  // const { user } = useAuth();
+  const context =useContext(AuthContext);
+  console.log({context})
   const store = useStore();
   const location = useLocation();
   const pathName = location.state?.from || "/";
   const showLoader = useMemo(() => store?.isLoading, [store?.isLoading]);
- 
+ console.log({pathName})
   history.navigate = useNavigate();
   history.location = useLocation();
   const background=useMemo(()=>store?.theme === 'dark' ? '#1b1d21' : '#f3f6f9',[store?.theme]);
@@ -33,6 +37,8 @@ function App() {
     return {background:'#f3f6f9'}
     
   },[store?.theme]);
+  const user=useMemo(()=>store.user,[store.user]);
+  console.log({user,store})
   return (
     <div style={{height:'100vh' ,overflow:'scroll',...theme}}>
       <AppContext.Provider value={values}>

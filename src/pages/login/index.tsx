@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from "react";
 import { MDBInput, MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";
-import { useAuth } from "../../hooks/useAuth";
+
 
 //@ts-ignore
 import loginBg from '../../assets/images/uci.svg';
 //@ts-ignore
 import uci_logo from '../../assets/images/uci.ico';
+import { login } from "../../api/login";
+import { toast } from "react-hot-toast";
+import { useStore } from "../../store";
+import { useNavigate } from "react-router-dom";
 export const Login = () => {
-  const { signIn } = useAuth();
+ 
   const [state, setState] = useState({ loginId: "", password: "" });
   const onChangeHandler = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,13 +19,44 @@ export const Login = () => {
     },
     []
   );
-
+const navigate=useNavigate();
+  const store:any =useStore();
   const onSubmitHandler = useCallback(
     (ev: React.SyntheticEvent) => {
       ev.preventDefault();
-      signIn(state);
+      store?.startLoading();
+      login(state)
+      .then((res) => {
+        store?.stopLoading();
+        console.log({ res });
+        if (res.data.responseCode === "FAILURE") {
+          toast.error(res?.data?.params?.errMsg || "Something Went Wrong");
+        }
+        if (res.data.responseCode === "OK") {
+          localStorage.setItem("accessToken", res.data.result.data.user.token);
+          localStorage.setItem(
+            "self",
+            JSON.stringify(res.data.result.data.user.user)
+          );
+          localStorage.setItem(
+            "user",
+            JSON.stringify(res.data.result.data.user)
+          );
+          store?.setUser(res.data.result.data.user);
+          // setUser(res.data.result.data.user);
+          setTimeout(()=>{
+            navigate("/")
+          },20)
+         
+        }
+      })
+      .catch((err) => {
+        store?.stopLoading();
+        console.log(err);
+        toast.error(err.message);
+      });
     },
-    [signIn, state]
+    [navigate, state, store]
   );
 
   return (

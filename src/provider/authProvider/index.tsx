@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import { useStore } from "../../store";
 
 type AuthContextType =
   | {
@@ -14,6 +14,6 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const auth = useAuth();
+  const auth = useStore();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
