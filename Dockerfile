@@ -1,4 +1,4 @@
-FROM node:16-alpine as dependencies
+FROM node:14-alpine as dependencies
 WORKDIR /app
 COPY package.json .
 RUN npm install
@@ -36,7 +36,7 @@ ENV NG_APP_token $NG_APP_token
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
-RUN npx ng build --prod
+RUN npx ng build
 
 FROM nginx:alpine
 COPY --from=build /app/dist/ui-uci /usr/share/nginx/html
