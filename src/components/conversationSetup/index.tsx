@@ -10,6 +10,7 @@ import React, { FC, useCallback } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useStore } from "../../store";
+import moment from "moment";
 
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
@@ -116,7 +117,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       </div>
       <div className="mb-3">
       <ReactDatePicker
-            minDate={new Date()}
+            minDate={new Date(moment().subtract(1,'days').valueOf())}
             selected={store?.state.startDate}
             className="w-100"
             onChange={(value) =>

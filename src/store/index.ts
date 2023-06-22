@@ -1,3 +1,4 @@
+import moment from "moment";
 import { create } from "zustand";
 
 const initialState = {
@@ -10,7 +11,7 @@ const initialState = {
     purpose: "",
     segmentId: "",
     status: "enabled",
-    startDate: new Date(),
+    startDate: new Date(moment().subtract(1,'days').valueOf()),
     endDate: null,
     startingMessage: "",
   },
@@ -42,7 +43,7 @@ export const useStore = create((set) => ({
     purpose: "",
     segmentId: "",
     status: "enabled",
-    startDate: new Date(),
+    startDate:new Date(moment().subtract(1,'days').valueOf()),
     endDate: null,
     startingMessage: "",
   },
