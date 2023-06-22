@@ -28,7 +28,6 @@ const navigate=useNavigate();
       login(state)
       .then((res) => {
         store?.stopLoading();
-        console.log({ res });
         if (res.data.responseCode === "FAILURE") {
           toast.error(res?.data?.params?.errMsg || "Something Went Wrong");
         }
@@ -52,7 +51,6 @@ const navigate=useNavigate();
       })
       .catch((err) => {
         store?.stopLoading();
-        console.log(err);
         toast.error(err.message);
       });
     },

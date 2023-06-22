@@ -28,7 +28,6 @@ export const Dashboard = () => {
     const data = searchText.length > 0 ? {name:searchText} : {perPage, page};
     getBots(data)
       .then((res) => {
-        console.log({ res });
         store?.stopLoading();
         setBotList(res?.data?.result?.data);
         setTotalRecords(res?.data?.result?.totalCount || 0);

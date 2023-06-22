@@ -30,7 +30,6 @@ export const toFormData = (data: any) => {
 
 
 export const getUploadErrorMsg =(errorCode:string)=>{
-    console.log("error:",`ODKUP-${errorCode}`)
    switch(errorCode){
     case 'ODKUP-CP-0' : return 'Media Files Upload Failed';
     case 'ODKUP-CP-1' : return 'Failed to Replace Media File Names';

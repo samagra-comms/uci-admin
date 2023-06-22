@@ -5,15 +5,14 @@ import { createSegment } from "./createSegment";
 import { startConversation } from "./startConversation";
 import { addLogic } from "./addLogic";
 import { toast } from "react-hot-toast";
-import { mapToSegment } from "./segment-mapping";
 import { history } from "../utils/history";
+import { updateBot } from "./updateBot";
 
 export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
-  console.log("util: onBotCreate", { isTriggerBot, isNavigateToEnd });
 
   const store: any = useStore.getState();
-store.startLoading();
- 
+  store.startLoading();
+
   const reqObj = {
     ...store?.state,
     isBroadcastBotEnabled: store?.isBroadcastBot,
@@ -45,8 +44,6 @@ store.startLoading();
 
   createBot(formdata)
     .then((res) => {
-      
-      console.log("botCreate", { res });
       if (!isNavigateToEnd) {
         store?.setConversationBot({
           ...res.data.result,
@@ -55,14 +52,10 @@ store.startLoading();
         });
       }
       if (isTriggerBot) {
-       onStartConversation(res?.data?.result, isNavigateToEnd);
+        onStartConversation(res?.data?.result, isNavigateToEnd);
       } else {
-     
-
         if (store?.isBroadcastBot) {
-          console.log("util: isBroadcastBot");
           if (isNavigateToEnd) {
-            console.log("util: isNavigateToEnd");
             onAfterBotSubmit({
               queryParams: {
                 text: reqObj.startingMessage,
@@ -70,20 +63,18 @@ store.startLoading();
               },
             });
           } else {
-            console.log("util: else onSegmentCreate");
             onSegmentCreate();
           }
         } else {
+          store?.stopLoading();
           store.onReset();
           history.navigate("/success");
-          //  this.router.navigate(['uci-admin/success'], {queryParams: {text: reqObj.startingMessage, botId: data.id}});
         }
       }
     })
     .catch((err) => {
       store?.stopLoading();
       toast.error(err?.response?.data?.message || err?.message);
-      console.log({ err });
     });
 };
 
@@ -117,15 +108,12 @@ export const onSegmentCreate = () => {
   segData.byPhone = segData.all;
   createSegment(segData)
     .then((res) => {
-      console.log("util: createSegment");
-      console.log("segmentCreate", { res });
       store?.setUserSegments([...store?.userSegments, res.data]);
       onCreateBroadcastBotLogic();
     })
     .catch((err) => {
       store?.stopLoading();
-      toast.error(`Error occured in creating segment: ${err.message}`)
-      console.log({ err });
+      toast.error(`Error occured in creating segment: ${err.message}`);
     });
 };
 
@@ -133,18 +121,15 @@ export const afterBroadcastBotLogic = () => {
   const store: any = useStore.getState();
   if (store?.conversationLogic.length <= store?.broadcastBotLogics.length) {
     store?.setConversationLogic(store?.broadcastBotLogics);
-    console.log("util:afterBroadcastBotLogic");
     onBotCreate(true, true);
   }
 };
-//const onBotCreate =useCallback((isTriggerBot = false,isNavigateToEnd=false,ev:any) => {
-//@ts-ignore
+
 
 export const onStartConversation = (bot, isNavigateToEnd = false) => {
   const store: any = useStore.getState();
   startConversation(bot)
     .then((res) => {
-      console.log("startConversation:", { res });
       if (store?.isBroadcastBot) {
         if (isNavigateToEnd) {
           onAfterBotSubmit({
@@ -156,7 +141,6 @@ export const onStartConversation = (bot, isNavigateToEnd = false) => {
       } else {
         store.onReset();
         history.navigate("/success");
-        // this.router.navigate(["uci-admin/success"]);
       }
     })
     .catch((err) => {
@@ -167,28 +151,12 @@ export const onStartConversation = (bot, isNavigateToEnd = false) => {
 
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState();
-  console.log("util: onAfter");
   store.stopLoading();
   store.onReset();
   history.navigate("/success");
- 
-  // const mappingData = {
-  //   segmentId: parseInt(store?.state?.segmentId, 10),
-  //   botId: store?.conversationBot?.botId,
-  // };
-
-  // mapToSegment(mappingData).then((data) => {
-  //   console.log("util: mapToSegment resp:", { data });
-  //   alert("success after botSubmit");
-  //  // onStartConversation(extras?.bot, true)
-  //   store.onReset();
-  //   history.navigate("/success");
-
-  // });
 };
 
 export const onCreateBroadcastBotLogic = () => {
-  console.log("util: onCreateBroadcastBotLogic");
   const store: any = useStore.getState();
   for (const botLogic of store?.conversationLogic) {
     const newBotLogic = {
@@ -206,31 +174,17 @@ export const onCreateBroadcastBotLogic = () => {
     // eslint-disable-next-line no-loop-func
     addLogic({ data: newBotLogic })
       .then((res) => {
-        console.log("util: onCreateBroadcastBotLogic addLogic");
-        console.log("onCreateBroadcastBotLogic", { res });
         const existingLogic = botLogic;
         delete existingLogic.id;
         store?.setBroadcastBotLogics([
           ...store?.broadcastBotLogics,
           { id: res.data.result.id, ...existingLogic },
         ]);
-        console.log("util:", { store });
+
         setTimeout(() => {
-          console.log("util broadLogic length:", {
-            conv: store?.conversationLogic,
-            broad: store?.broadcastBotLogics,
-          });
-          const tmp: any = useStore.getState();
-          console.log("util:", { tmp });
-          if (tmp?.conversationLogic.length <= tmp?.broadcastBotLogics.length) {
-            console.log("util: conversationLogic:", {
-              conversationLogic: store?.conversationLogic,
-              broadcast: store?.broadcastBotLogics,
-            });
-            tmp?.setConversationLogic(tmp?.broadcastBotLogics);
-            console.log(
-              "util: onCreateBroadcastBotLogic convLogic < broadcast"
-            );
+          const _store: any = useStore.getState();
+          if (_store?.conversationLogic.length <= _store?.broadcastBotLogics.length) {
+            _store?.setConversationLogic(_store?.broadcastBotLogics);
             setTimeout(() => {
               onBotCreate(true, true);
             }, 10);
@@ -238,9 +192,44 @@ export const onCreateBroadcastBotLogic = () => {
         }, 20);
       })
       .catch((err) => {
-        console.log({ err });
-        toast.error(`Error occured in creating broadcast bot logic: ${err.message}`)
+        toast.error(
+          `Error occured in creating broadcast bot logic: ${err.message}`
+        );
         store?.stopLoading();
       });
   }
+};
+
+export const onBotUpdate = () => {
+  const store: any = useStore.getState();
+  store?.startLoading();
+
+  const reqObj = {
+    ...store?.state,
+    isBroadcastBotEnabled: store?.isBroadcastBot,
+    users: [],
+    logic: [],
+  };
+  store?.userSegments.forEach((userSegment) => {
+    reqObj.users.push(userSegment.id);
+  });
+  store?.conversationLogic.forEach((logic) => {
+    reqObj.logic.push(logic.id);
+  });
+  if (reqObj.startDate) {
+    reqObj.startDate = moment(reqObj.startDate).format("YYYY-MM-DD");
+  }
+  if (reqObj.endDate) {
+    reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
+  }
+
+  store?.startLoading();
+  updateBot(reqObj)
+    .then((res) => {
+      store?.stopLoading();
+    })
+    .catch((err) => {
+      store?.stopLoading();
+      console.log({ err });
+    });
 };

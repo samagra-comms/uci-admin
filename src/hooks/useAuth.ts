@@ -13,7 +13,6 @@ export const useAuth = () => {
   const signIn = useCallback( async (data) => {
     login(data)
       .then((res) => {
-        console.log({ res });
         if (res.data.responseCode === "FAILURE") {
           toast.error(res?.data?.params?.errMsg || "Something Went Wrong");
         }
@@ -32,7 +31,6 @@ export const useAuth = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
         toast.error(err.message);
       });
   },[navigate, setUser, store]);

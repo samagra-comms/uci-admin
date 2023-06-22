@@ -14,9 +14,11 @@ import { toast } from "react-hot-toast";
 import { getBotUrl } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { startConversation } from "../../api/startConversation";
+import { useStore } from "../../store";
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const navigate = useNavigate();
+  const store: any = useStore();
   const [phoneNumber, setPhoneNumber] = useState(
     process.env.REACT_APP_botPhoneNumber || ""
   );
@@ -31,24 +33,22 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const onEdit = useCallback(
     (data) => {
       localStorage.setItem("botToEdit", JSON.stringify(data));
-      navigate("/add-bot?edit=true", { state: data });
+      store?.setBotToEdit(data);
+      store?.setConversationLogic(data?.logicIDs);
+      setTimeout(() => navigate("/add-bot?edit=true", { state: data }), 20);
     },
-    [navigate]
+    [navigate, store]
   );
 
-  const onEnable = useCallback(
-    (data) => {
-      console.log("util:",{data})
-     startConversation(data).then(res=>{
-      console.log("util:",{res})
-      toast.success("Bot Enabled")
-     }).catch(err=>{
-      console.log("util:",{err})
-      toast.error(err.message)
-     })
-    },
-    []
-  );
+  const onEnable = useCallback((data) => {
+    startConversation(data)
+      .then((res) => {
+        toast.success("Bot Enabled");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }, []);
 
   return (
     <MDBTable align="middle" small>
@@ -93,13 +93,11 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                 </MDBBadge>
               </td>
               <td>
-                
                 <p className="">
                   {record?.description || "No Description Provided"}
                 </p>
               </td>
               <td>
-                
                 <p className="">{record?.startingMessage}</p>
               </td>
 
@@ -137,13 +135,13 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                       childTag="button"
                       onClick={(ev) => {
                         ev.preventDefault();
-                        onEdit(record);
+                        // onEdit(record);
                       }}
                       disabled
                     >
                       Edit
                     </MDBDropdownItem>
-                    <MDBDropdownItem link
+                    {/* <MDBDropdownItem link
                      disabled
                     >Delete</MDBDropdownItem>
                     <MDBDropdownItem link             
@@ -152,8 +150,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                       onClick={(ev) => {
                         ev.preventDefault();
                         onEnable(record);
-                      }}>Enable</MDBDropdownItem>
-                 
+                      }}>Enable</MDBDropdownItem> */}
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </td>

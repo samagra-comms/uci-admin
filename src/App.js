@@ -17,17 +17,15 @@ import { AuthContext } from "./provider/authProvider";
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const values = useMemo(() => ({ isLoading, setIsLoading }), [isLoading]);
-  // const { user } = useAuth();
-  const context =useContext(AuthContext);
-  console.log({context})
+ 
+
   const store = useStore();
   const location = useLocation();
   const pathName = location.state?.from || "/";
   const showLoader = useMemo(() => store?.isLoading, [store?.isLoading]);
- console.log({pathName})
+
   history.navigate = useNavigate();
   history.location = useLocation();
-  const background=useMemo(()=>store?.theme === 'dark' ? '#1b1d21' : '#f3f6f9',[store?.theme]);
   const theme=useMemo(()=>{
     if(store?.theme === 'dark') 
     return {
@@ -38,7 +36,7 @@ function App() {
     
   },[store?.theme]);
   const user=useMemo(()=>store.user,[store.user]);
-  console.log({user,store})
+ 
   return (
     <div style={{height:'100vh' ,overflow:'scroll',...theme}}>
       <AppContext.Provider value={values}>
@@ -95,7 +93,6 @@ function App() {
                 background: "#363636",
                 color: "#fff",
               },
-
               // Default options for specific types
               success: {
                 duration: 3000,

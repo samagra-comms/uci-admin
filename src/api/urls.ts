@@ -8,6 +8,8 @@ export const getStartConversationUrl =(bot:string)=> `${process.env.REACT_APP_UC
 
 export const createBotUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot`;
 
+export const getUpdateBotUrl = (id:string) =>`${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
+
 export const segmentMappingUrl = `${process.env.REACT_APP_UCI_BASE_URL}/segment-bot-mapping`;
 
 export const createSegmentUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/user-segment`;

@@ -20,7 +20,7 @@ import { toast } from "react-hot-toast";
 import ConversationSetup from "../../components/conversationSetup";
 import ConversationFlow from "../../components/conversationFlow";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { onBotCreate } from "../../api/api-util-functions";
+import { onBotCreate, onBotUpdate } from "../../api/api-util-functions";
 import { useStore } from "../../store";
 
 export const Add = () => {
@@ -43,14 +43,18 @@ export const Add = () => {
     [store]
   );
 
-  const onSubmitHandler = useCallback((ev) => {
-    ev.preventDefault();
-  }, []);
-
   const isEditParamAvailable = useMemo(
     () => searchParams.get("edit") === "true",
     [searchParams]
   );
+  const onSubmitHandler = useCallback((ev) => {
+    ev.preventDefault();
+    if(isEditParamAvailable )
+     onBotUpdate();
+   else onBotCreate(false, false);
+  }, [isEditParamAvailable]);
+
+
 
   useEffect(() => {
     if (isEditParamAvailable && isFirstLoad) {
@@ -71,28 +75,31 @@ export const Add = () => {
       });
       setIsFirstLoad(false);
     }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditParamAvailable, location.state, store?.setState,isFirstLoad]);
 
+  
   const onCheckDuplicateName = useCallback(({ name }) => {
-    if (name !== "")
+    if (name !== "" && name!==store?.botToEdit?.name)
       checkDuplicateName({
         name,
       }).then((res) => {
-        console.log({ res });
+  
+      
         if (res?.data?.result?.data?.length > 0) {
           setErrors((prev) => ({ ...prev, name: "Name Not Available" }));
         } else {
           setErrors((prev) => ({ ...prev, name: null }));
         }
       });
-  }, []);
+  }, [store?.botToEdit?.name]);
 
   const onCheckDuplicateStartingMsg = useCallback(({ startingMessage }) => {
-    if (startingMessage !== "")
+    if (startingMessage !== "" && startingMessage!==store?.botToEdit?.startingMessage)
       checkDuplicateName({
         startingMessage,
       }).then((res) => {
-        console.log({ res });
         if (res?.data?.result?.data?.length > 0) {
           setErrors((prev) => ({
             ...prev,
@@ -102,7 +109,7 @@ export const Add = () => {
           setErrors((prev) => ({ ...prev, startingMessage: null }));
         }
       });
-  }, []);
+  }, [store?.botToEdit?.startingMessage]);
 
   useEffect(() => {
     onCheckDuplicateName({ name: store?.state.name });
@@ -127,6 +134,7 @@ export const Add = () => {
             err.message || "Something went wrong in fetching segment count"
           );
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store?.state.segmentId, store?.setSegmentCount]);
 
   const compProps = useMemo(
@@ -173,7 +181,7 @@ export const Add = () => {
           <MDBRow className="my-5">
             <MDBCol md="2"></MDBCol>
             <MDBCol md="8">
-              <form onSubmit={onSubmitHandler}>
+              <form onSubmit={(ev)=>ev.preventDefault()}>
                 {isStep1 && <ConversationSetup compProps={compProps} />}
                 {!isStep1 && <ConversationFlow compProps={step2CompProps} />}
 
@@ -193,13 +201,10 @@ export const Add = () => {
                   {!isStep1 && (
                     <MDBCol className="d-flex justify-content-end">
                       <MDBBtn
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                          onBotCreate(false, false);
-                        }}
+                        onClick={onSubmitHandler}
                         disabled={store?.conversationLogic.length === 0}
                       >
-                        Submit
+                       {isEditParamAvailable ? 'Update' : 'Submit'}
                       </MDBBtn>
                     </MDBCol>
                   )}

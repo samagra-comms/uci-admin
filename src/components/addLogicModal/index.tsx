@@ -75,7 +75,6 @@ const AddLogicModal: FC<any> = ({
         toast.success("Logic Added..");
       })
       .catch((err) => {
-        console.log({ err });
         toast.error(err.message);
       });
 
@@ -114,7 +113,6 @@ const AddLogicModal: FC<any> = ({
         .catch((err) => {
           setIsLoading(false);
           toast.error(err.message || "Something Went Wrong");
-          console.log({ err });
         });
     },
     [form, media]
