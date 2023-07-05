@@ -29,17 +29,16 @@ describe('Login page', () => {
     // Enter values in the user id and password inputs
     cy.get(
       '#root > div > div.row > div > div > div.col-4.p-5 > form > div:nth-child(1) > input'
-    ).type(Cypress.env('userid'));
+    ).type(Cypress.env('REACT_APP_USER_ID'));
     cy.get(
       '#root > div > div.row > div > div > div.col-4.p-5 > form > div:nth-child(2) > input'
-    ).type(Cypress.env('pass'));
-
+    ).type(Cypress.env('REACT_APP_USER_PASSWORD'));
     // Press the sign-in button
     cy.get(
       '#root > div > div.row > div > div > div.col-4.p-5 > form > button'
     ).click();
 
-    cy.wait(2000);
+    cy.wait(1000);
     cy.get(
       '#root > div > div.row > div.col-2.p-0 > div > aside > div > div > div.css-1vmkajq > div > p'
     ).should('exist'); // Assuming the UCI Dashboard text appears after logging in
