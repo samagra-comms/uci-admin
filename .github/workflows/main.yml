@@ -33,5 +33,5 @@ jobs:
         if: always()
         with:
           name: Test Video
-          path: /cypress/videos
+          path: cypress/videos
           retention-days: 7
