@@ -44,6 +44,8 @@ jobs:
           REACT_APP_token: ${{secrets.REACT_APP_token}}
           REACT_APP_LOGIC_TRANSFORMER_ID: ${{secrets.REACT_APP_LOGIC_TRANSFORMER_ID}}
           REACT_APP_HOSTED_FORM_URL: ${{secrets.REACT_APP_HOSTED_FORM_URL}}
+          REACT_APP_USER_ID: ${{secrets.REACT_APP_USER_ID}}
+          REACT_APP_USER_PASSWORD: ${{secrets.REACT_APP_USER_PASSWORD}}
         run: npm run start & sleep 10 && npm run test
       - name: Uploading Test Video (can be downloaded from Summary)
         uses: actions/upload-artifact@v3

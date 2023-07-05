@@ -39,7 +39,7 @@
     "start": "react-scripts start",
     "kill": "kill -9 $(lsof -ti:3000)",
     "build": "react-scripts build",
-    "test": "npx cypress run",
+    "test": "npx cypress run --env userid=$REACT_APP_USER_ID pass=$REACT_APP_USER_PASSWORD",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
