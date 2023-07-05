@@ -1,0 +1,37 @@
+name: E2E Testing
+
+on:
+  push:
+    branches: master
+  pull_request:
+    branches: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start the dev server and Cypress testing
+        run: npm run start & sleep 10 && npm run test
+      - name: Uploading Test Video (can be downloaded from Summary)
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test Video
+          path: videos
+          retention-days: 7
