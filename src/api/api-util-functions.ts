@@ -7,9 +7,9 @@ import { addLogic } from "./addLogic";
 import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
+import { mapToSegment } from "./segment-mapping";
 
 export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
-
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -125,7 +125,6 @@ export const afterBroadcastBotLogic = () => {
   }
 };
 
-
 export const onStartConversation = (bot, isNavigateToEnd = false) => {
   const store: any = useStore.getState();
   startConversation(bot)
@@ -151,41 +150,56 @@ export const onStartConversation = (bot, isNavigateToEnd = false) => {
 
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState();
-  store.stopLoading();
-  store.onReset();
-  history.navigate("/success");
+  const mappingData = {
+    segmentId: parseInt(store?.state?.segmentId, 10),
+    botId: store.conversationBot.botId,
+  };
+
+  mapToSegment(mappingData)
+    .then((res) => {
+      store.stopLoading();
+      store.onReset();
+      history.navigate("/success");
+    })
+    .catch((err) => {
+      toast.error(err?.message);
+      store.stopLoading();
+    });
 };
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
-  console.log({store})
+  console.log({ store });
   for (const botLogic of store?.conversationLogic) {
-    console.log({botLogic})
+    console.log({ botLogic });
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
       transformers: [
         {
-          "id": "774cd134-6657-4688-85f6-6338e2323dde",
+          id: "774cd134-6657-4688-85f6-6338e2323dde",
           meta: {
             type: "broadcast",
             data: { botId: store?.conversationBot.id },
             title: store?.conversationLogic?.[0]?.name,
-            body: store?.conversationLogic?.[0]?.description || store?.state?.description || "",
-            formID: localStorage.getItem('formID'),
-            "form": "https://hosted.my.form.here.com/",  
-            "serviceClass": "SurveyService",
-            "hiddenFields": [
-                {
-                    "name": "mobilePhone",
-                    "path": "mobilePhone",
-                    "type": "param",
-                    "config": {
-                        "dataObjName": "user"
-                    }
-                }
+            body:
+              store?.conversationLogic?.[0]?.description ||
+              store?.state?.description ||
+              "",
+            formID: localStorage.getItem("formID"),
+            form: "https://hosted.my.form.here.com/",
+            serviceClass: "SurveyService",
+            hiddenFields: [
+              {
+                name: "mobilePhone",
+                path: "mobilePhone",
+                type: "param",
+                config: {
+                  dataObjName: "user",
+                },
+              },
             ],
-            "templateType": "JS_TEMPLATE_LITERALS"
+            templateType: "JS_TEMPLATE_LITERALS",
           },
           
         },
@@ -205,7 +219,10 @@ export const onCreateBroadcastBotLogic = () => {
 
         setTimeout(() => {
           const _store: any = useStore.getState();
-          if (_store?.conversationLogic.length <= _store?.broadcastBotLogics.length) {
+          if (
+            _store?.conversationLogic.length <=
+            _store?.broadcastBotLogics.length
+          ) {
             _store?.setConversationLogic(_store?.broadcastBotLogics);
             setTimeout(() => {
               onBotCreate(true, true);
