@@ -7,7 +7,6 @@ import { addLogic } from "./addLogic";
 import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
-import { segmentMappingUrl } from "./urls";
 import { mapToSegment } from "./segment-mapping";
 
 export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
