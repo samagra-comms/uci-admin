@@ -158,7 +158,9 @@ export const onAfterBotSubmit = (extras) => {
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
+  console.log({store})
   for (const botLogic of store?.conversationLogic) {
+    console.log({botLogic})
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
@@ -168,9 +170,28 @@ export const onCreateBroadcastBotLogic = () => {
           meta: {
             type: "broadcast",
             data: { botId: store?.conversationBot.id },
+            title: store?.conversationLogic?.[0]?.name,
+            body: store?.conversationLogic?.[0]?.description || store?.state?.description || "",
+            formID: localStorage.getItem('formID'),
+            "form": "https://hosted.my.form.here.com/",  
+            "serviceClass": "SurveyService",
+            "hiddenFields": [
+                {
+                    "name": "mobilePhone",
+                    "path": "mobilePhone",
+                    "type": "param",
+                    "config": {
+                        "dataObjName": "user"
+                    }
+                }
+            ],
+            "templateType": "JS_TEMPLATE_LITERALS"
           },
+          
         },
       ],
+
+      
     };
     // eslint-disable-next-line no-loop-func
     addLogic({ data: newBotLogic })
