@@ -164,6 +164,7 @@ export const onCreateBroadcastBotLogic = () => {
       adapter: process.env.REACT_APP_broadcastAdapterId,
       transformers: [
         {
+          "id": "774cd134-6657-4688-85f6-6338e2323dde",
           meta: {
             type: "broadcast",
             data: { botId: store?.conversationBot.id },
