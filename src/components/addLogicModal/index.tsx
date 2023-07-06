@@ -104,6 +104,7 @@ const AddLogicModal: FC<any> = ({
           if(res?.data?.result?.status==='ERROR'){
            toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`) 
           }else{
+            localStorage.setItem("formID",res?.data?.result?.data?.formID)
             setFormId(res?.data?.result?.data?.formID);
             toast.success("Succesfully Uploaded");
             
