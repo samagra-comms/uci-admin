@@ -201,8 +201,11 @@ export const onCreateBroadcastBotLogic = () => {
             ],
             templateType: "JS_TEMPLATE_LITERALS",
           },
+          
         },
       ],
+
+      
     };
     // eslint-disable-next-line no-loop-func
     addLogic({ data: newBotLogic })
