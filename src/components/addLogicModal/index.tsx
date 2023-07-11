@@ -158,7 +158,7 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow className="mb-3">
                       <MDBInput
                         label="Description"
-                        name="description"
+                        name="description" 
                         value={modalState.description}
                         onChange={onChangeHandler}
                       />
