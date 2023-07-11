@@ -61,11 +61,24 @@ const AddLogicModal: FC<any> = ({
             formID: formId,
             title: modalState.name,
             body: modalState.description,
+            serviceClass: "SurveyService",
+            hiddenFields: [
+              {
+                name: "mobilePhone",
+                path: "mobilePhone",
+                type: "param",
+                config: {
+                  dataObjName: "user",
+                },
+              },
+            ],
+            templateType: "JS_TEMPLATE_LITERALS",
           },
         },
       ],
       adapter: process.env.REACT_APP_adapterId,
     };
+
 
     addLogic({ data })
       .then((res) => {
