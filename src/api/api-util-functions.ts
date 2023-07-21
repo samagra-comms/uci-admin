@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
-
+import { omitBy, isNull } from "lodash";
 export const onBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
@@ -31,10 +31,6 @@ export const onBotCreate = () => {
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
-  // if (isNavigateToEnd) {
-  //   reqObj.name += " Broadcast";
-  //   reqObj.startingMessage += " Broadcast";
-  // }
 
   store?.startLoading();
   var formdata = new FormData();
@@ -49,25 +45,27 @@ export const onBotCreate = () => {
         text: store?.state?.startingMessage,
         botId: res.data.result.id,
       });
-      onMappingBotToSegment({
-        queryParams: {
-          text: reqObj.startingMessage,
-          botId: res.data.result.id,
-        }
-      }).then((res) => {
-          if(store?.isBroadcastBot){
-            onSegmentCreate()
-          }
-          else {
-            store?.stopLoading();
-            store.onReset();
-            history.navigate("/success");
-          }
+      if (store?.isBroadcastBot) {
+        onMappingBotToSegment({
+          queryParams: {
+            text: reqObj.startingMessage,
+            botId: res.data.result.id,
+          },
         })
-        .catch((err) => {
-          toast.error(err?.message);
-          store.stopLoading();
-        });
+          .then((res) => {
+            if (store?.isBroadcastBot) {
+              onSegmentCreate();
+            } else {
+              store?.stopLoading();
+              store.onReset();
+              history.navigate("/success");
+            }
+          })
+          .catch((err) => {
+            toast.error(err?.message);
+            store.stopLoading();
+          });
+      }
     })
     .catch((err) => {
       store?.stopLoading();
@@ -114,47 +112,16 @@ export const onSegmentCreate = () => {
     });
 };
 
-export const afterBroadcastBotLogic = () => {
-  const store: any = useStore.getState();
-  if (store?.conversationLogic.length <= store?.broadcastBotLogics.length) {
-    store?.setConversationLogic(store?.broadcastBotLogics);
-    onBotCreate();
-  }
-};
-
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
-  toast.success('Notification Triggered');
-  startConversation(bot)
-    // .then((res) => {
-    //   store.stopLoading();
-    //   store.onReset();
-    //   history.navigate("/success");
-    //   // console.log("debug:12")
-    //   // if (store?.isBroadcastBot) {
-    //   //   console.log("debug:13")
-    //   //   if (isNavigateToEnd) {
-    //   //     console.log("debug:14")
-    //   //     onAfterBotSubmit({
-    //   //       queryParams: { text: store?.state?.startingMessage, botId: bot.id },
-    //   //     });
-    //   //   } else {
-    //   //     console.log("debug:15")
-    //   //     onSegmentCreate();
-    //   //   }
-    //   // } else {
-    //   //   console.log("debug:16")
-    //   //   store.onReset();
-    //   //   history.navigate("/success");
-    //   // }
-    // })
-    .catch((err) => {
-      store?.stopLoading();
-      toast.error(`Error Occured in Starting bot: ${err.message}`);
-    });
-    store.stopLoading();
-      store.onReset();
-      history.navigate("/success");
+  toast.success("Notification Triggered");
+  startConversation(bot).catch((err) => {
+    store?.stopLoading();
+    toast.error(`Error Occured in Starting bot: ${err.message}`);
+  });
+  store.stopLoading();
+  store.onReset();
+  history.navigate("/success");
 };
 
 export const onAfterBotSubmit = (extras) => {
@@ -182,16 +149,14 @@ export const onMappingBotToSegment = (extras) => {
     segmentId: parseInt(store?.state?.segmentId, 10),
     botId: store.conversationBot.botId,
   };
- return mapToSegment(mappingData)
-    
+  return mapToSegment(mappingData);
 };
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
-  console.log({ store });
-  console.log({state:store.state})
+ 
   for (const botLogic of store?.conversationLogic) {
-    console.log({ botLogic });
+    
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
@@ -221,11 +186,8 @@ export const onCreateBroadcastBotLogic = () => {
             ],
             templateType: "JS_TEMPLATE_LITERALS",
           },
-          
         },
       ],
-
-      
     };
     // eslint-disable-next-line no-loop-func
     addLogic({ data: newBotLogic })
@@ -259,8 +221,7 @@ export const onCreateBroadcastBotLogic = () => {
   }
 };
 
-
-export const onBroadcastBotCreate=()=>{
+export const onBroadcastBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -282,12 +243,11 @@ export const onBroadcastBotCreate=()=>{
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
- 
-    reqObj.name += " Broadcast";
-    reqObj.startingMessage += " Broadcast";
 
+  reqObj.name += " Broadcast";
+  reqObj.startingMessage += " Broadcast";
 
-  // store?.startLoading();
+  store?.startLoading();
   var formdata = new FormData();
   //@ts-ignore
   formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
@@ -301,38 +261,38 @@ export const onBroadcastBotCreate=()=>{
       store?.stopLoading();
       toast.error(err?.response?.data?.message || err?.message);
     });
-}
-
+};
 
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
   store?.startLoading();
 
   const reqObj = {
-    ...store?.state,
-    isBroadcastBotEnabled: store?.isBroadcastBot,
-    users: [],
-    logic: [],
+    ...store?.editState,
+    id: store.state.id,
   };
-  store?.userSegments.forEach((userSegment) => {
-    reqObj.users.push(userSegment.id);
-  });
-  store?.conversationLogic.forEach((logic) => {
-    reqObj.logic.push(logic.id);
-  });
+
+
   if (reqObj.startDate) {
     reqObj.startDate = moment(reqObj.startDate).format("YYYY-MM-DD");
   }
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
-
+  // const newData = omitBy(reqObj, isNull);
+  // console.log("bot update:", { reqObj, newData });
   store?.startLoading();
   updateBot(reqObj)
     .then((res) => {
+      console.log("bot update:", { res });
       store?.stopLoading();
+      toast.success("Bot Updated");
+      store.stopLoading();
+      store.onReset();
+      history.navigate("/success");
     })
     .catch((err) => {
+      console.log("bot update:", { err });
       store?.stopLoading();
       console.log({ err });
     });

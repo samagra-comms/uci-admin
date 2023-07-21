@@ -47,6 +47,9 @@ export const useStore = create((set) => ({
     endDate: null,
     startingMessage: "",
   },
+  editState:{
+  },
+  setEditState:(newValue)=>set({editState:newValue}),
   setState: (newValue) => set({ state: newValue }),
   segmentCount: 100,
   setSegmentCount: (newValue) => set({ segmentCount: newValue }),
