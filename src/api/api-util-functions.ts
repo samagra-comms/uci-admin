@@ -77,6 +77,7 @@ export const onBotCreate = () => {
 
 export const onSegmentCreate = () => {
   const store: any = useStore.getState();
+  console.log({perPage:store?.cadencePerPage})
   const segData = {
     name: store?.state.name,
     all: {
@@ -85,7 +86,7 @@ export const onSegmentCreate = () => {
         url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: "GET",
         cadence: {
-          perPage: 100,
+          perPage: store?.cadencePerPage || 100,
           retries: 5,
           timeout: 60,
           concurrent: true,
