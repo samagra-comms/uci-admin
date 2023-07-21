@@ -24,6 +24,7 @@ const initialState = {
 
 export const useStore = create((set) => ({
   user: localStorage.getItem("user") || null,
+  cadencePerPage:100,
   botToEdit: JSON.parse(localStorage.getItem("botToEdit") || "{}"),
   setBotToEdit: (data) => set((state) => ({ botToEdit: data })),
   setUser: (data) => set((state) => ({ user: data })),
@@ -48,6 +49,7 @@ export const useStore = create((set) => ({
     startingMessage: "",
   },
   setState: (newValue) => set({ state: newValue }),
+  setCadencePerPage:(newValue)=>set({cadencePerPage:newValue}),
   segmentCount: 100,
   setSegmentCount: (newValue) => set({ segmentCount: newValue }),
   activeLogic: {},

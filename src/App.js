@@ -3,22 +3,19 @@ import { Toaster } from "react-hot-toast";
 
 import SidebarComponent from "./components/sidebar";
 import { MDBCol, MDBRow } from "mdb-react-ui-kit";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AppContext } from "./provider/contextProvider";
-import { useAuthContext } from "./provider/authProvider";
 import RequireAuth from "./hoc/requireAuth";
 import Loader from "./components/fullscreenLoader";
 import { useStore } from "./store";
 import { SuccessScreen, Dashboard, Login, Add } from "./pages";
 import { history } from "./utils/history";
-import { useAuth } from "./hooks/useAuth";
-import { AuthContext } from "./provider/authProvider";
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const values = useMemo(() => ({ isLoading, setIsLoading }), [isLoading]);
  
-
   const store = useStore();
   const location = useLocation();
   const pathName = location.state?.from || "/";

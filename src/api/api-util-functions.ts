@@ -9,7 +9,7 @@ import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
 
-export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
+export const onBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -31,10 +31,10 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
-  if (isNavigateToEnd) {
-    reqObj.name += " Broadcast";
-    reqObj.startingMessage += " Broadcast";
-  }
+  // if (isNavigateToEnd) {
+  //   reqObj.name += " Broadcast";
+  //   reqObj.startingMessage += " Broadcast";
+  // }
 
   store?.startLoading();
   var formdata = new FormData();
@@ -44,33 +44,30 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
 
   createBot(formdata)
     .then((res) => {
-      if (!isNavigateToEnd) {
-        store?.setConversationBot({
-          ...res.data.result,
-          text: store?.state?.startingMessage,
+      store?.setConversationBot({
+        ...res.data.result,
+        text: store?.state?.startingMessage,
+        botId: res.data.result.id,
+      });
+      onMappingBotToSegment({
+        queryParams: {
+          text: reqObj.startingMessage,
           botId: res.data.result.id,
-        });
-      }
-      if (isTriggerBot) {
-        onStartConversation(res?.data?.result, isNavigateToEnd);
-      } else {
-        if (store?.isBroadcastBot) {
-          if (isNavigateToEnd) {
-            onAfterBotSubmit({
-              queryParams: {
-                text: reqObj.startingMessage,
-                botId: res.data.result.id,
-              },
-            });
-          } else {
-            onSegmentCreate();
-          }
-        } else {
-          store?.stopLoading();
-          store.onReset();
-          history.navigate("/success");
         }
-      }
+      }).then((res) => {
+          if(store?.isBroadcastBot){
+            onSegmentCreate()
+          }
+          else {
+            store?.stopLoading();
+            store.onReset();
+            history.navigate("/success");
+          }
+        })
+        .catch((err) => {
+          toast.error(err?.message);
+          store.stopLoading();
+        });
     })
     .catch((err) => {
       store?.stopLoading();
@@ -80,6 +77,7 @@ export const onBotCreate = (isTriggerBot = false, isNavigateToEnd = false) => {
 
 export const onSegmentCreate = () => {
   const store: any = useStore.getState();
+  console.log({perPage:store?.cadencePerPage})
   const segData = {
     name: store?.state.name,
     all: {
@@ -88,7 +86,7 @@ export const onSegmentCreate = () => {
         url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: "GET",
         cadence: {
-          perPage: 100,
+          perPage: store?.cadencePerPage || 100,
           retries: 5,
           timeout: 60,
           concurrent: true,
@@ -121,31 +119,43 @@ export const afterBroadcastBotLogic = () => {
   const store: any = useStore.getState();
   if (store?.conversationLogic.length <= store?.broadcastBotLogics.length) {
     store?.setConversationLogic(store?.broadcastBotLogics);
-    onBotCreate(true, true);
+    onBotCreate();
   }
 };
 
-export const onStartConversation = (bot, isNavigateToEnd = false) => {
+export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
+  toast.success('Notification Triggered');
   startConversation(bot)
-    .then((res) => {
-      if (store?.isBroadcastBot) {
-        if (isNavigateToEnd) {
-          onAfterBotSubmit({
-            queryParams: { text: store?.state?.startingMessage, botId: bot.id },
-          });
-        } else {
-          onSegmentCreate();
-        }
-      } else {
-        store.onReset();
-        history.navigate("/success");
-      }
-    })
+    // .then((res) => {
+    //   store.stopLoading();
+    //   store.onReset();
+    //   history.navigate("/success");
+    //   // console.log("debug:12")
+    //   // if (store?.isBroadcastBot) {
+    //   //   console.log("debug:13")
+    //   //   if (isNavigateToEnd) {
+    //   //     console.log("debug:14")
+    //   //     onAfterBotSubmit({
+    //   //       queryParams: { text: store?.state?.startingMessage, botId: bot.id },
+    //   //     });
+    //   //   } else {
+    //   //     console.log("debug:15")
+    //   //     onSegmentCreate();
+    //   //   }
+    //   // } else {
+    //   //   console.log("debug:16")
+    //   //   store.onReset();
+    //   //   history.navigate("/success");
+    //   // }
+    // })
     .catch((err) => {
       store?.stopLoading();
       toast.error(`Error Occured in Starting bot: ${err.message}`);
     });
+    store.stopLoading();
+      store.onReset();
+      history.navigate("/success");
 };
 
 export const onAfterBotSubmit = (extras) => {
@@ -167,9 +177,20 @@ export const onAfterBotSubmit = (extras) => {
     });
 };
 
+export const onMappingBotToSegment = (extras) => {
+  const store: any = useStore.getState();
+  const mappingData = {
+    segmentId: parseInt(store?.state?.segmentId, 10),
+    botId: store.conversationBot.botId,
+  };
+ return mapToSegment(mappingData)
+    
+};
+
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
   console.log({ store });
+  console.log({state:store.state})
   for (const botLogic of store?.conversationLogic) {
     console.log({ botLogic });
     const newBotLogic = {
@@ -225,7 +246,7 @@ export const onCreateBroadcastBotLogic = () => {
           ) {
             _store?.setConversationLogic(_store?.broadcastBotLogics);
             setTimeout(() => {
-              onBotCreate(true, true);
+              onBroadcastBotCreate();
             }, 10);
           }
         }, 20);
@@ -238,6 +259,51 @@ export const onCreateBroadcastBotLogic = () => {
       });
   }
 };
+
+
+export const onBroadcastBotCreate=()=>{
+  const store: any = useStore.getState();
+  store.startLoading();
+
+  const reqObj = {
+    ...store?.state,
+    isBroadcastBotEnabled: store?.isBroadcastBot,
+    users: [],
+    logic: [],
+  };
+  store?.userSegments.forEach((userSegment) => {
+    reqObj.users.push(userSegment.id);
+  });
+  store?.conversationLogic.forEach((logic) => {
+    reqObj.logic.push(logic.id);
+  });
+  if (reqObj.startDate) {
+    reqObj.startDate = moment(reqObj.startDate).format("YYYY-MM-DD");
+  }
+  if (reqObj.endDate) {
+    reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
+  }
+ 
+    reqObj.name += " Broadcast";
+    reqObj.startingMessage += " Broadcast";
+
+
+  // store?.startLoading();
+  var formdata = new FormData();
+  //@ts-ignore
+  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
+  formdata.append("data", JSON.stringify({ data: reqObj }));
+
+  createBot(formdata)
+    .then((res) => {
+      onStartConversation(res?.data?.result);
+    })
+    .catch((err) => {
+      store?.stopLoading();
+      toast.error(err?.response?.data?.message || err?.message);
+    });
+}
+
 
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
