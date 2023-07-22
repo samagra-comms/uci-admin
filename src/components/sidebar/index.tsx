@@ -18,8 +18,8 @@ import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
 import { useStore } from "../../store";
-import InsightsIcon from "@mui/icons-material/Insights";
-import CodeIcon from "@mui/icons-material/Code";
+import { MDBIcon } from "mdb-react-ui-kit";
+import { logsItemsConfig, monitoringItemsConfig } from "./Menu";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -127,10 +127,10 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
       backgroundColor:
         level === 0
           ? hexToRgba(
-              themes[theme].menu.menuContent,
-              hasImage && !collapsed ? 0.4 : 1
+              themes[theme].sidebar.backgroundColor,
+              hasImage && !collapsed ? 0.8 : 1
             )
-          : "transparent",
+          : "black",
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -248,70 +248,27 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
               <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>
                 Add Bot
               </MenuItem>
-              <SubMenu label="Monitoring" icon={<InsightsIcon />}>
-                <MenuItem component={<Link to="/monitoring/overview" />}>
-                  Overview
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/kafka-topics" />}>
-                  Kafka Topics
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/uci-api" />}>
-                  UCI-API
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/inbound" />}>
-                  Inbound
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/orchestrator" />}>
-                  Orchestrator
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/transformer" />}>
-                  Transformer
-                </MenuItem>
-                <MenuItem
-                  component={<Link to="/monitoring/broadcast-transformer" />}
-                >
-                  Broadcast-Transformer
-                </MenuItem>
-                <MenuItem component={<Link to="/monitoring/outbound" />}>
-                  Outbound
-                </MenuItem>
-                <MenuItem
-                  component={<Link to="/monitoring/transport-socket" />}
-                >
-                  Transport-Socket
-                </MenuItem>
-                <SubMenu label="Logs" icon={<CodeIcon />}>
-                  <MenuItem component={<Link to="/monitoring/logs/uci-api" />}>
-                    UCI-API
-                  </MenuItem>
-                  <MenuItem component={<Link to="/monitoring/logs/inbound" />}>
-                    Inbound
-                  </MenuItem>
+              <SubMenu
+                label="Monitoring"
+                icon={<MDBIcon far icon="chart-bar" />}
+              >
+                {monitoringItemsConfig.map((item) => (
                   <MenuItem
-                    component={<Link to="/monitoring/logs/orchestrator" />}
+                    key={item.label}
+                    component={<Link to={item.link} />}
                   >
-                    Orchestrator
+                    {item.label}
                   </MenuItem>
-                  <MenuItem
-                    component={<Link to="/monitoring/logs/transformer" />}
-                  >
-                    Transformer
-                  </MenuItem>
-                  <MenuItem
-                    component={
-                      <Link to="/monitoring/logs/broadcast-transformer" />
-                    }
-                  >
-                    Broadcast-Transformer
-                  </MenuItem>
-                  <MenuItem component={<Link to="/monitoring/logs/outbound" />}>
-                    Outbound
-                  </MenuItem>
-                  <MenuItem
-                    component={<Link to="/monitoring/logs/transport-socket" />}
-                  >
-                    Transport-Socket
-                  </MenuItem>
+                ))}
+                <SubMenu label="Logs" icon={<MDBIcon fas icon="code" />}>
+                  {logsItemsConfig.map((item) => (
+                    <MenuItem
+                      key={item.label}
+                      component={<Link to={item.link} />}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  ))}
                 </SubMenu>
               </SubMenu>
 
