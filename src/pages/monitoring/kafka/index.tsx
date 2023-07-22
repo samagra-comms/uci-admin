@@ -1,4 +1,4 @@
-import BarChart from "../../../components/visualisation/bar";
+import {BarChart} from "../../../components";
 import jsonData from '../dummy.json';
 
 const kafkaTopicsData = jsonData["Kafka Topics"];

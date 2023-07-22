@@ -13,7 +13,7 @@ import { Switch } from "./Switch";
 // import { Typography } from './Typography';
 import { SidebarFooter } from "./SidebarFooter";
 import { SidebarHeader } from "./SidebarHeader";
-import DashobardIcon from "../icons/Dashobard";
+import DashboardIcon from "../icons/Dashboard";
 import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
@@ -214,7 +214,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
               label="Charts"
               icon={<ShoppingCart />}   
             >
-              <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
+              <MenuItem icon={<DashboardIcon />} component={<Link to="/" />}>
               Dashboard
             </MenuItem>
             <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
@@ -242,7 +242,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                   label="Dark theme"
                 />
               </MenuItem>
-              <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
+              <MenuItem icon={<DashboardIcon />} component={<Link to="/" />}>
                 Dashboard
               </MenuItem>
               <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>
