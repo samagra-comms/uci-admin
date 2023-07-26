@@ -213,10 +213,11 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload Media"
-                        // accept="image/png, image/jpeg"
+                        accept="image/png, image/jpeg"
                         size="sm"
                         id="formFileSm"
                         onChange={onMediaChange}
+                        multiple
                       />
                     </MDBRow>
                     <MDBRow>
