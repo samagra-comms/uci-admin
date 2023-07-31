@@ -10,7 +10,16 @@ export const getBots = (data: any) => {
       ...getDefaultHeaders(),
       asset: "bot",
     },
-    params: omitBy({ perPage: data.perPage, page: data.page ,name: data.name },isNull) ,
+    params: omitBy(
+      {
+        perPage: data.perPage,
+        page: data.page,
+        name: data.name,
+        sortBy: data.sortBy,
+        orderBy: data.orderBy,
+      },
+      isNull
+    ),
   };
 
   return axios.get(url, config);
