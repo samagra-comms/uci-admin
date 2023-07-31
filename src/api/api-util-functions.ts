@@ -8,7 +8,8 @@ import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
-import { omitBy, isNull } from "lodash";
+
+
 export const onBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
@@ -31,6 +32,10 @@ export const onBotCreate = () => {
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
+  // if (isNavigateToEnd) {
+  //   reqObj.name += " Broadcast";
+  //   reqObj.startingMessage += " Broadcast";
+  // }
 
   store?.startLoading();
   var formdata = new FormData();
@@ -75,6 +80,7 @@ export const onBotCreate = () => {
 
 export const onSegmentCreate = () => {
   const store: any = useStore.getState();
+  console.log({perPage:store?.cadencePerPage})
   const segData = {
     name: store?.state.name,
     all: {
@@ -83,7 +89,7 @@ export const onSegmentCreate = () => {
         url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: "GET",
         cadence: {
-          perPage: 100,
+          perPage: store?.cadencePerPage || 100,
           retries: 5,
           timeout: 60,
           concurrent: true,
@@ -112,16 +118,40 @@ export const onSegmentCreate = () => {
     });
 };
 
+
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
-  toast.success("Notification Triggered");
-  startConversation(bot).catch((err) => {
-    store?.stopLoading();
-    toast.error(`Error Occured in Starting bot: ${err.message}`);
-  });
-  store.stopLoading();
-  store.onReset();
-  history.navigate("/success");
+  toast.success('Notification Triggered');
+  startConversation(bot)
+    // .then((res) => {
+    //   store.stopLoading();
+    //   store.onReset();
+    //   history.navigate("/success");
+    //   // console.log("debug:12")
+    //   // if (store?.isBroadcastBot) {
+    //   //   console.log("debug:13")
+    //   //   if (isNavigateToEnd) {
+    //   //     console.log("debug:14")
+    //   //     onAfterBotSubmit({
+    //   //       queryParams: { text: store?.state?.startingMessage, botId: bot.id },
+    //   //     });
+    //   //   } else {
+    //   //     console.log("debug:15")
+    //   //     onSegmentCreate();
+    //   //   }
+    //   // } else {
+    //   //   console.log("debug:16")
+    //   //   store.onReset();
+    //   //   history.navigate("/success");
+    //   // }
+    // })
+    .catch((err) => {
+      store?.stopLoading();
+      toast.error(`Error Occured in Starting bot: ${err.message}`);
+    });
+    store.stopLoading();
+      store.onReset();
+      history.navigate("/success");
 };
 
 export const onAfterBotSubmit = (extras) => {
@@ -149,12 +179,14 @@ export const onMappingBotToSegment = (extras) => {
     segmentId: parseInt(store?.state?.segmentId, 10),
     botId: store.conversationBot.botId,
   };
-  return mapToSegment(mappingData);
+ return mapToSegment(mappingData)
+    
 };
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
- 
+  console.log({ store });
+  console.log({state:store.state})
   for (const botLogic of store?.conversationLogic) {
     
     const newBotLogic = {
@@ -221,7 +253,8 @@ export const onCreateBroadcastBotLogic = () => {
   }
 };
 
-export const onBroadcastBotCreate = () => {
+
+export const onBroadcastBotCreate=()=>{
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -243,11 +276,12 @@ export const onBroadcastBotCreate = () => {
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
+ 
+    reqObj.name += " Broadcast";
+    reqObj.startingMessage += " Broadcast";
 
-  reqObj.name += " Broadcast";
-  reqObj.startingMessage += " Broadcast";
 
-  store?.startLoading();
+  // store?.startLoading();
   var formdata = new FormData();
   //@ts-ignore
   formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
@@ -261,7 +295,10 @@ export const onBroadcastBotCreate = () => {
       store?.stopLoading();
       toast.error(err?.response?.data?.message || err?.message);
     });
-};
+}
+
+
+
 
 export const onBotUpdate = () => {
   const store: any = useStore.getState();

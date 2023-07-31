@@ -20,6 +20,7 @@ import { uploadForm } from "../../api/uploadForm";
 import { addLogic } from "../../api/addLogic";
 import { omitBy, isNull } from "lodash";
 import { getUploadErrorMsg } from "../../utils";
+import { useStore } from "../../store";
 const AddLogicModal: FC<any> = ({
   open,
   activeLogic = {},
@@ -30,9 +31,10 @@ const AddLogicModal: FC<any> = ({
   const [logics, setLogics] = useState<any>([]);
   const [form, setForm] = useState(null);
   const [media, setMedia] = useState(null);
+  const [cadencePerPage, setCadencePerPage] = useState(100);
   const [formId, setFormId] = useState("");
   const [modalState, setModalState] = useState<any>({ ...activeLogic });
-
+  const store: any = useStore();
   const onSubmitHandler = useCallback(() => {}, []);
 
   const onChangeHandler = useCallback(
@@ -114,13 +116,12 @@ const AddLogicModal: FC<any> = ({
       setIsLoading(true);
       uploadForm(omitBy({ form, media }, isNull))
         .then((res) => {
-          if(res?.data?.result?.status==='ERROR'){
-           toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`) 
-          }else{
-            localStorage.setItem("formID",res?.data?.result?.data?.formID)
+          if (res?.data?.result?.status === "ERROR") {
+            toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`);
+          } else {
+            localStorage.setItem("formID", res?.data?.result?.data?.formID);
             setFormId(res?.data?.result?.data?.formID);
             toast.success("Succesfully Uploaded");
-            
           }
           setIsLoading(false);
         })
@@ -132,6 +133,14 @@ const AddLogicModal: FC<any> = ({
     [form, media]
   );
 
+  const onCadenceChange = useCallback(
+    (ev) => {
+      setCadencePerPage(Number(ev.target.value));
+      store?.setCadencePerPage(Number(ev.target.value));
+    },
+    [store]
+  );
+
   const isSubmitDisabled = useMemo(
     () =>
       formId === "" ||
@@ -141,6 +150,7 @@ const AddLogicModal: FC<any> = ({
       ),
     [form, formId, modalState]
   );
+  console.log("perpage_comp:",store?.cadencePerPage)
 
   if (!open) return null;
   return (
@@ -177,6 +187,21 @@ const AddLogicModal: FC<any> = ({
                       />
                     </MDBRow>
                     <MDBRow className="mb-3">
+                      <label className="text-muted label">
+                        Cadence Records Per Page
+                      </label>
+                      <select
+                        className="form-control"
+                        value={cadencePerPage}
+                        onChange={onCadenceChange}
+                      >
+                        <option value="100">100</option>
+                        <option value="1000">1000</option>
+                        {/* <option value="2000">2000</option>
+                      <option value="5000">5000</option> */}
+                      </select>
+                    </MDBRow>
+                    <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload ODK Form (.xml)"
                         accept=".xml"
@@ -189,10 +214,11 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload Media"
-                        // accept="image/png, image/jpeg"
+                        accept="image/png, image/jpeg"
                         size="sm"
                         id="formFileSm"
                         onChange={onMediaChange}
+                        multiple
                       />
                     </MDBRow>
                     <MDBRow>
