@@ -16,7 +16,7 @@ export const getBots = (data: any) => {
         page: data.page,
         name: data.name,
         sortBy: data.sortBy,
-        order: data.orderBy,
+        orderBy: data.orderBy,
       },
       isNull
     ),

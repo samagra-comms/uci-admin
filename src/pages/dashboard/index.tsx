@@ -21,7 +21,7 @@ const getSortTypeLabel = (value: string) => {
   switch (value) {
     case "status":
       return "Status";
-    case "createdDate":
+    case "createdAt":
       return "Date Created";
     case "endDate":
       return "Date Expired";
@@ -35,8 +35,8 @@ export const Dashboard = () => {
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [perPage, setPerPage] = useState(10);
-  const [sortBy, setSortBy] = useState("createdDate");
-  const [orderBy, setOrderBy] = useState("dsc");
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [orderBy, setOrderBy] = useState("desc");
   const [botList, setBotList] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export const Dashboard = () => {
 
   const sortLabel = useMemo(() => getSortTypeLabel(sortBy), [sortBy]);
   const orderByIcon = useMemo(
-    () => (orderBy === "dsc" ? "sort-amount-down" : "sort-amount-up"),
+    () => (orderBy === "desc" ? "sort-amount-down" : "sort-amount-up"),
     [orderBy]
   );
   return (
@@ -115,8 +115,8 @@ export const Dashboard = () => {
               </MDBDropdownItem>
               <MDBDropdownItem
                 link
-                disabled={sortBy === "createdDate"}
-                onClick={onSortChange("createdDate")}
+                disabled={sortBy === "createdAt"}
+                onClick={onSortChange("createdAt")}
               >
                 Date Created
               </MDBDropdownItem>
@@ -138,8 +138,8 @@ export const Dashboard = () => {
             <MDBDropdownMenu>
               <MDBDropdownItem
                 link
-                disabled={orderBy === "dsc"}
-                onClick={() => setOrderBy("dsc")}
+                disabled={orderBy === "desc"}
+                onClick={() => setOrderBy("desc")}
               >
                 Descending
               </MDBDropdownItem>
