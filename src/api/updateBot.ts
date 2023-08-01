@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getUpdateBotUrl } from "./urls";
 import { getDefaultHeaders } from "./utils";
+import {omit} from 'lodash'
 
 export const updateBot = (data: any) => {
   const url = getUpdateBotUrl(data?.id);
@@ -11,5 +12,5 @@ export const updateBot = (data: any) => {
     },
   };
 
-  return axios.patch(url, data, config);
+  return axios.patch(url,  omit (data,['id','segmentId']), config);
 };
