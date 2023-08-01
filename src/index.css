@@ -28,21 +28,3 @@ code {
 .form-label {
 
 }
-
-.fas .fa-ellipsis-v::before {
- 
-} 
-
-.dropend .dropdown-toggle::after {
-  vertical-align: 0;
-}
-.no-icon > .dropend .dropdown-toggle::after {
-  display: none !important;
-  margin-left: .255em;
-  vertical-align: .255em;
-  content: "";
-  border-top: .3em solid transparent;
-  border-right: 0;
-  border-bottom: .3em solid transparent;
-  border-left: .3em solid;
-}

@@ -48,9 +48,6 @@ export const useStore = create((set) => ({
     endDate: null,
     startingMessage: "",
   },
-  editState:{
-  },
-  setEditState:(newValue)=>set({editState:newValue}),
   setState: (newValue) => set({ state: newValue }),
   setCadencePerPage:(newValue)=>set({cadencePerPage:newValue}),
   segmentCount: 100,
