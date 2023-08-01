@@ -9,7 +9,6 @@ import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
 
-
 export const onBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
@@ -50,27 +49,25 @@ export const onBotCreate = () => {
         text: store?.state?.startingMessage,
         botId: res.data.result.id,
       });
-      if (store?.isBroadcastBot) {
-        onMappingBotToSegment({
-          queryParams: {
-            text: reqObj.startingMessage,
-            botId: res.data.result.id,
-          },
+      onMappingBotToSegment({
+        queryParams: {
+          text: reqObj.startingMessage,
+          botId: res.data.result.id,
+        }
+      }).then((res) => {
+          if(store?.isBroadcastBot){
+            onSegmentCreate()
+          }
+          else {
+            store?.stopLoading();
+            store.onReset();
+            history.navigate("/success");
+          }
         })
-          .then((res) => {
-            if (store?.isBroadcastBot) {
-              onSegmentCreate();
-            } else {
-              store?.stopLoading();
-              store.onReset();
-              history.navigate("/success");
-            }
-          })
-          .catch((err) => {
-            toast.error(err?.message);
-            store.stopLoading();
-          });
-      }
+        .catch((err) => {
+          toast.error(err?.message);
+          store.stopLoading();
+        });
     })
     .catch((err) => {
       store?.stopLoading();
@@ -118,6 +115,13 @@ export const onSegmentCreate = () => {
     });
 };
 
+export const afterBroadcastBotLogic = () => {
+  const store: any = useStore.getState();
+  if (store?.conversationLogic.length <= store?.broadcastBotLogics.length) {
+    store?.setConversationLogic(store?.broadcastBotLogics);
+    onBotCreate();
+  }
+};
 
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
@@ -188,7 +192,7 @@ export const onCreateBroadcastBotLogic = () => {
   console.log({ store });
   console.log({state:store.state})
   for (const botLogic of store?.conversationLogic) {
-    
+    console.log({ botLogic });
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
@@ -218,8 +222,11 @@ export const onCreateBroadcastBotLogic = () => {
             ],
             templateType: "JS_TEMPLATE_LITERALS",
           },
+          
         },
       ],
+
+      
     };
     // eslint-disable-next-line no-loop-func
     addLogic({ data: newBotLogic })
@@ -298,38 +305,35 @@ export const onBroadcastBotCreate=()=>{
 }
 
 
-
-
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
   store?.startLoading();
 
   const reqObj = {
-    ...store?.editState,
-    id: store.state.id,
+    ...store?.state,
+    isBroadcastBotEnabled: store?.isBroadcastBot,
+    users: [],
+    logic: [],
   };
-
-
+  store?.userSegments.forEach((userSegment) => {
+    reqObj.users.push(userSegment.id);
+  });
+  store?.conversationLogic.forEach((logic) => {
+    reqObj.logic.push(logic.id);
+  });
   if (reqObj.startDate) {
     reqObj.startDate = moment(reqObj.startDate).format("YYYY-MM-DD");
   }
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
-  // const newData = omitBy(reqObj, isNull);
-  // console.log("bot update:", { reqObj, newData });
+
   store?.startLoading();
   updateBot(reqObj)
     .then((res) => {
-      console.log("bot update:", { res });
       store?.stopLoading();
-      toast.success("Bot Updated");
-      store.stopLoading();
-      store.onReset();
-      history.navigate("/success");
     })
     .catch((err) => {
-      console.log("bot update:", { err });
       store?.stopLoading();
       console.log({ err });
     });

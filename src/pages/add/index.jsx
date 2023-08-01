@@ -19,135 +19,108 @@ import { toast } from "react-hot-toast";
 
 import ConversationSetup from "../../components/conversationSetup";
 import ConversationFlow from "../../components/conversationFlow";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { onBotCreate, onBotUpdate } from "../../api/api-util-functions";
 import { useStore } from "../../store";
-import { getBotById } from "../../api/getBotById";
 
 export const Add = () => {
   const store = useStore();
-
+  const location = useLocation();
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [searchParams] = useSearchParams();
-  const [isStep1, setIsStep1] = useState(true);
 
+  const [isStep1, setIsStep1] = useState(true);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
 
+  const [isEdit, setIsEdit] = useState(false);
   const onToggle = useCallback(() => setOpen((prev) => !prev), []);
-
-  const isEditParamAvailable = useMemo(
-    () => (searchParams.get("bot") ? true : false),
-    [searchParams]
-  );
 
   const onChangeHandler = useCallback(
     (ev) => {
-      if (isEditParamAvailable) {
-        store.setEditState({
-          ...store.editState,
-          [ev.target.name]: ev.target.value,
-        });
-      }
       store.setState({ ...store.state, [ev.target.name]: ev.target.value });
     },
-    [store, isEditParamAvailable]
+    [store]
   );
 
-  const onSubmitHandler = useCallback(
-    (ev) => {
-      ev.preventDefault();
-      if (isEditParamAvailable) onBotUpdate();
-      else onBotCreate(false, false);
-    },
-    [isEditParamAvailable]
+  const isEditParamAvailable = useMemo(
+    () => searchParams.get("edit") === "true",
+    [searchParams]
   );
+  const onSubmitHandler = useCallback((ev) => {
+    ev.preventDefault();
+    if(isEditParamAvailable )
+     onBotUpdate();
+   else onBotCreate(false, false);
+  }, [isEditParamAvailable]);
+
+
 
   useEffect(() => {
-    if (searchParams.get("bot")) {
-      getBotById(searchParams.get("bot"))
-        .then((res) => {
-          const data = {
-            // ...store?.state,
-            ...res.data.result,
-            startDate: new Date(res?.data?.result?.startDate),
-            endDate: new Date(res?.data?.result?.endDate),
-            description: res?.data?.result?.description || "",
-            purpose: res?.data?.result?.purpose || "",
-          };
-          console.log("venom res vv:", { data });
-          store?.setState({
-            ...data,
-          });
-          store?.setBotToEdit(data);
-          store?.setConversationLogic(data?.logicIDs);
-          store?.setBotIcon(data?.botImage);
-        })
-        .catch((error) => {
-          console.log("venom", { error });
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    searchParams,
-    store?.setState,
-    store?.setBotToEdit,
-    store?.setConversationLogic,
-    store?.setBotIcon,
-  ]);
-
-  const onCheckDuplicateName = useCallback(
-    ({ name }) => {
-      if (name !== "" && name !== store?.botToEdit?.name) {
-        checkDuplicateName({
-          name,
-        }).then((res) => {
-          if (res?.data?.result?.data?.length > 0) {
-            setErrors((prev) => ({ ...prev, name: "Name Not Available" }));
-          } else {
-            setErrors((prev) => ({ ...prev, name: null }));
-          }
-        });
+    if (isEditParamAvailable && isFirstLoad) {
+      setIsEdit(true);
+      var data;
+      if (location.state) {
+        data = location.state;
+      } else if (localStorage.getItem("botToEdit")) {
+        data = JSON.parse(localStorage.getItem("botToEdit"));
       }
-    },
-    [store?.botToEdit]
-  );
+      store?.setState({
+        // ...store?.state,
+        ...data,
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
+        description: data.description || "",
+        purpose: data.purpose || "",
+      });
+      setIsFirstLoad(false);
+    }
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditParamAvailable, location.state, store?.setState,isFirstLoad]);
 
-  const onCheckDuplicateStartingMsg = useCallback(
-    ({ startingMessage }) => {
-      if (
-        startingMessage !== "" &&
-        startingMessage !== store?.botToEdit?.startingMessage
-      )
-        checkDuplicateName({
-          startingMessage,
-        }).then((res) => {
-          if (res?.data?.result?.data?.length > 0) {
-            setErrors((prev) => ({
-              ...prev,
-              startingMessage: "Staring Message Not Available",
-            }));
-          } else {
-            setErrors((prev) => ({ ...prev, startingMessage: null }));
-          }
-        });
-    },
-    [store?.botToEdit?.startingMessage]
-  );
+  
+  const onCheckDuplicateName = useCallback(({ name }) => {
+    if (name !== "" && name!==store?.botToEdit?.name)
+      checkDuplicateName({
+        name,
+      }).then((res) => {
+  
+      
+        if (res?.data?.result?.data?.length > 0) {
+          setErrors((prev) => ({ ...prev, name: "Name Not Available" }));
+        } else {
+          setErrors((prev) => ({ ...prev, name: null }));
+        }
+      });
+  }, [store?.botToEdit?.name]);
+
+  const onCheckDuplicateStartingMsg = useCallback(({ startingMessage }) => {
+    if (startingMessage !== "" && startingMessage!==store?.botToEdit?.startingMessage)
+      checkDuplicateName({
+        startingMessage,
+      }).then((res) => {
+        if (res?.data?.result?.data?.length > 0) {
+          setErrors((prev) => ({
+            ...prev,
+            startingMessage: "Staring Message Not Available",
+          }));
+        } else {
+          setErrors((prev) => ({ ...prev, startingMessage: null }));
+        }
+      });
+  }, [store?.botToEdit?.startingMessage]);
 
   useEffect(() => {
     onCheckDuplicateName({ name: store?.state.name });
     onCheckDuplicateStartingMsg({
       startingMessage: store?.state.startingMessage,
     });
-    return () => {
-      setErrors({});
-    };
   }, [
     onCheckDuplicateName,
     onCheckDuplicateStartingMsg,
     store?.state?.name,
     store?.state.startingMessage,
-    store?.state,
   ]);
 
   useEffect(() => {
@@ -161,7 +134,7 @@ export const Add = () => {
             err.message || "Something went wrong in fetching segment count"
           );
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store?.state.segmentId, store?.setSegmentCount]);
 
   const compProps = useMemo(
@@ -169,52 +142,30 @@ export const Add = () => {
       state: store?.state,
       onChangeHandler,
       errors,
-      disabled: isEditParamAvailable,
       isBroadcastBot: store?.isBroadcastBot,
       setIsBroadcastBot: store?.setIsBroadcastBot,
       setBotIcon: store?.setBotIcon,
     }),
-    [
-      errors,
-      isEditParamAvailable,
-      onChangeHandler,
-      store?.isBroadcastBot,
-      store?.setBotIcon,
-      store?.setIsBroadcastBot,
-      store?.state,
-    ]
+    [errors, onChangeHandler, store]
   );
   const step2CompProps = useMemo(
-    () => ({
-      conversationLogic: store?.conversationLogic,
-      onToggle,
-      disabled: isEditParamAvailable,
-    }),
-    [store?.conversationLogic, onToggle, isEditParamAvailable]
+    () => ({ conversationLogic: store?.conversationLogic, onToggle }),
+    [store?.conversationLogic, onToggle]
   );
 
-  const isNextDisabled = useMemo(() => {
-    if (isEditParamAvailable) {
-      return false;
-    }
-    return (
+  const isNextDisabled = useMemo(
+    () =>
       Object.values(errors).some((v) => v !== null) ||
       Object.values(
         store?.isBroadcastBot ? store?.state : omit(store?.state, ["segmentId"])
       ).some((v) => v === "" || v === undefined || v === null) ||
       store?.botIcon === "" ||
-      store?.botIcon === null
-    );
-  }, [
-    errors,
-    store?.state,
-    store?.botIcon,
-    store?.isBroadcastBot,
-    isEditParamAvailable,
-  ]);
+      store?.botIcon === null,
+    [errors, store?.state, store?.botIcon, store?.isBroadcastBot]
+  );
   return (
     <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
-      <MDBRow className="mt-3">
+      <MDBRow>
         <>
           <MDBBreadcrumb>
             <MDBBreadcrumbItem>
@@ -230,12 +181,9 @@ export const Add = () => {
           <MDBRow className="my-5">
             <MDBCol md="2"></MDBCol>
             <MDBCol md="8">
-              <form onSubmit={(ev) => ev.preventDefault()}>
-                {isStep1 ? (
-                  <ConversationSetup compProps={compProps} />
-                ) : (
-                  <ConversationFlow compProps={step2CompProps} />
-                )}
+              <form onSubmit={(ev)=>ev.preventDefault()}>
+                {isStep1 && <ConversationSetup compProps={compProps} />}
+                {!isStep1 && <ConversationFlow compProps={step2CompProps} />}
 
                 <MDBRow className="my-3">
                   <MDBCol md="3" className="d-flex">
@@ -256,7 +204,7 @@ export const Add = () => {
                         onClick={onSubmitHandler}
                         disabled={store?.conversationLogic.length === 0}
                       >
-                        {isEditParamAvailable ? "Update" : "Submit"}
+                       {isEditParamAvailable ? 'Update' : 'Submit'}
                       </MDBBtn>
                     </MDBCol>
                   )}

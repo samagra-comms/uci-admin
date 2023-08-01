@@ -9,7 +9,6 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBIcon,
 } from "mdb-react-ui-kit";
 import { toast } from "react-hot-toast";
 import { getBotUrl } from "../../utils";
@@ -36,7 +35,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       localStorage.setItem("botToEdit", JSON.stringify(data));
       store?.setBotToEdit(data);
       store?.setConversationLogic(data?.logicIDs);
-      setTimeout(() => navigate(`/add-bot?bot=${data.id}`, { state: data }), 20);
+      setTimeout(() => navigate("/add-bot?edit=true", { state: data }), 20);
     },
     [navigate, store]
   );
@@ -114,7 +113,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                     })
                   )}
                 >
-                  <MDBIcon fas icon="copy" style={{fontSize:'18px',color:'#4F4F4F'}}/>
+                  Copy
                 </MDBBtn>
               </td>
               <td>
@@ -124,21 +123,21 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                   size="sm"
                   onClick={onCopy(record?.id)}
                 >
-                  <MDBIcon fas icon="copy" style={{fontSize:'18px',color:'#4F4F4F'}} />
+                  Copy
                 </MDBBtn>
               </td>
-              <td className="no-icon">
-                <MDBDropdown group dropright className="shadow-0" >
-                  <MDBDropdownToggle color="link"><MDBIcon fas icon="ellipsis-v" style={{fontSize:'18px',color:'#4F4F4F'}}/></MDBDropdownToggle>
+              <td>
+                <MDBDropdown group dropright className="shadow-0">
+                  <MDBDropdownToggle color="link">Action</MDBDropdownToggle>
                   <MDBDropdownMenu>
                     <MDBDropdownItem
                       link
                       childTag="button"
                       onClick={(ev) => {
                         ev.preventDefault();
-                         onEdit(record);
+                        // onEdit(record);
                       }}
-                    
+                      disabled
                     >
                       Edit
                     </MDBDropdownItem>
