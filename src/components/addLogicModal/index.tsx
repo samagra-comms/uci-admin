@@ -81,6 +81,7 @@ const AddLogicModal: FC<any> = ({
       adapter: process.env.REACT_APP_adapterId,
     };
 
+
     addLogic({ data })
       .then((res) => {
         const newLogic = [...logics, { ...res.data.result }];
@@ -180,7 +181,7 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow className="mb-3">
                       <MDBInput
                         label="Description"
-                        name="description"
+                        name="description" 
                         value={modalState.description}
                         onChange={onChangeHandler}
                       />
@@ -213,10 +214,11 @@ const AddLogicModal: FC<any> = ({
                     <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload Media"
-                        // accept="image/png, image/jpeg"
+                      //  accept="image/png, image/jpeg"
                         size="sm"
                         id="formFileSm"
                         onChange={onMediaChange}
+                        multiple
                       />
                     </MDBRow>
                     <MDBRow>
