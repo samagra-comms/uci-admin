@@ -216,6 +216,7 @@ const AddLogicModal: FC<any> = ({
                         // accept="image/png, image/jpeg"
                         size="sm"
                         id="formFileSm"
+                        multiple
                         onChange={onMediaChange}
                       />
                     </MDBRow>
