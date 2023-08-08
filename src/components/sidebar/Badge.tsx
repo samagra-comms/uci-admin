@@ -8,7 +8,7 @@ interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const StyledBadge = styled.div<BadgeProps>`
-  min-width: 18px;
+  min-width: 28px;
   min-height: 18px;
   display: flex;
   align-items: center;

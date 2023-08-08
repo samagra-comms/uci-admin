@@ -1,30 +1,59 @@
-import React, { useEffect } from "react";
-import { MDBCard, MDBCardBody } from "mdb-react-ui-kit";
+import { MDBCard, MDBCardBody, MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";
 import "./style.css";
-import { useStore } from "../../../store";
 
-type Theme = "light" | "dark";
+interface OverviewHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+  theme: string;
+}
+export const Overview: React.FC<OverviewHeaderProps> = ({
+  children,
+  theme,
+  ...rest
+}) => {
+  const handleFilterInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target;
+    console.log(value);
+  };
 
-export const Overview = () => {
-  const store: any = useStore();
-  const [theme, setTheme] = React.useState<Theme>(store?.theme);
-
-  useEffect(() => {
-    setTheme(store?.theme);
-  }, [store?.theme]);
+  const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("Submit");
+  };
 
   return (
     <div className="container my-3 text-center align-items-center">
-      <div className="row mx-4">
-        <div className="col-sm-12 col-md-4 mb-3">
+      <MDBRow className="mx-4 my-4">
+        <MDBCol className="d-flex justify-content-start">
+          <form
+            className="d-flex input-group w-auto"
+            onSubmit={handleFilterSubmit}
+          >
+            <input
+              type="search"
+              className="form-control"
+              placeholder="Filter"
+              aria-label="Filter"
+              // value={filterText}
+              onChange={handleFilterInputChange}
+            />
+            <MDBBtn color="primary" type="submit">
+              Filter
+            </MDBBtn>
+          </form>
+        </MDBCol>
+      </MDBRow>
+      <MDBRow className="mx-4">
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">80</h5>
               <p className="card-text">No. of Notifications sent</p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-        <div className="col-sm-12 col-md-4 mb-3">
+        </MDBCol>
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">65</h5>
@@ -33,26 +62,26 @@ export const Overview = () => {
               </p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-        <div className="col-sm-12 col-md-4 mb-3">
+        </MDBCol>
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">50</h5>
               <p className="card-text">No. of Notifications opened by users</p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-      </div>
-      <div className="row mx-4">
-        <div className="col-sm-12 col-md-4 mb-3">
+        </MDBCol>
+      </MDBRow>
+      <MDBRow className="row mx-4">
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">80</h5>
               <p className="card-text">No. of Notifications sent</p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-        <div className="col-sm-12 col-md-4 mb-3">
+        </MDBCol>
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">65</h5>
@@ -61,18 +90,16 @@ export const Overview = () => {
               </p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-        <div className="col-sm-12 col-md-4 mb-3">
+        </MDBCol>
+        <MDBCol className="col-sm-12 col-md-4 mb-3">
           <MDBCard className={`${theme}-card`}>
             <MDBCardBody>
               <h5 className="card-title">50</h5>
               <p className="card-text">No. of Notifications opened by users</p>
             </MDBCardBody>
           </MDBCard>
-        </div>
-      </div>
+        </MDBCol>
+      </MDBRow>
     </div>
   );
 };
-
-// export default Overview;
