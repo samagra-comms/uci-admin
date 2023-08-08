@@ -14,6 +14,7 @@ import {
   MDBContainer,
   MDBCol,
   MDBSpinner,
+  MDBIcon,
 } from "mdb-react-ui-kit";
 import { toast } from "react-hot-toast";
 import { uploadForm } from "../../api/uploadForm";
@@ -21,6 +22,9 @@ import { addLogic } from "../../api/addLogic";
 import { omitBy, isNull } from "lodash";
 import { getUploadErrorMsg } from "../../utils";
 import { useStore } from "../../store";
+import "./style.css";
+import FileModal from "../fileModal";
+
 const AddLogicModal: FC<any> = ({
   open,
   activeLogic = {},
@@ -31,6 +35,7 @@ const AddLogicModal: FC<any> = ({
   const [logics, setLogics] = useState<any>([]);
   const [form, setForm] = useState(null);
   const [media, setMedia] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [cadencePerPage, setCadencePerPage] = useState(100);
   const [formId, setFormId] = useState("");
   const [modalState, setModalState] = useState<any>({ ...activeLogic });
@@ -104,10 +109,11 @@ const AddLogicModal: FC<any> = ({
   }, []);
 
   const onMediaChange = useCallback((event: any) => {
-    if (!event.target.files.length) {
+    const files = Array.from(event.target.files);
+    if (!files.length) {
       toast.error("No File Selected");
     }
-    setMedia(event.target.files);
+    setMedia(files);
   }, []);
 
   const onFormUpload = useCallback(
@@ -150,7 +156,36 @@ const AddLogicModal: FC<any> = ({
       ),
     [form, formId, modalState]
   );
-  console.log("perpage_comp:",store?.cadencePerPage)
+
+  // Handle file selection
+  const handleFileChange = (e) => {
+    if (!e.target.files.length) {
+      toast.error("No File Selected");
+    }
+    const files = Array.from(e.target.files);
+    setMedia(files);
+  };
+
+  // Handle file removal
+  const handleFileRemove = (fileName) => {
+    //setIsDeleteModalOpen(true)
+    setMedia((prevSelectedFiles) =>
+      prevSelectedFiles.filter((file) => file.name !== fileName)
+    );
+  };
+
+  const confirmDelete = (ev, fileName) => {
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this media?"
+    );
+    if (shouldDelete) {
+      handleFileRemove(fileName);
+    } else {
+      ev.preventDefault();
+    }
+  };
+
+  console.log({ media });
 
   if (!open) return null;
   return (
@@ -197,8 +232,6 @@ const AddLogicModal: FC<any> = ({
                       >
                         <option value="100">100</option>
                         <option value="1000">1000</option>
-                        {/* <option value="2000">2000</option>
-                      <option value="5000">5000</option> */}
                       </select>
                     </MDBRow>
                     <MDBRow className="mb-3">
@@ -211,15 +244,55 @@ const AddLogicModal: FC<any> = ({
                         onChange={onOdkFormChange}
                       />
                     </MDBRow>
+                    
                     <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload Media"
-                      //  accept="image/png, image/jpeg"
                         size="sm"
                         id="formFileSm"
-                        onChange={onMediaChange}
                         multiple
+                        onChange={handleFileChange}
                       />
+                    </MDBRow>
+                    
+                    <MDBRow className="p-0">
+                      {/* {renderSelectedFiles()}  */}
+                      <div className="file-picker mb-2">
+                        <div className="selected-files">
+                          {media?.length > 0 ? (
+                            media.map((file) => (
+                              <div
+                                key={file.name}
+                                className="d-flex justify-content-between mb-2 border p-1 align-items-center"
+                              >
+                                <span>
+                                 
+                                  <MDBIcon far icon="file" /> {file.name}
+                                </span>
+
+                                {/* <button
+                                  className="remove-btn"
+                                  onClick={(ev) => confirmDelete(ev,file.name)}
+                                >
+                                  <MDBIcon fas icon="times" />
+                                </button> */}
+
+                                <MDBBtn
+                                  tag="a"
+                                  color="none"
+                                  className="m-1"
+                                  style={{ color: "#ff4444" }}
+                                  onClick={(ev) => confirmDelete(ev,file.name)}
+                                >
+                                  <MDBIcon fas icon="trash-alt" />
+                                </MDBBtn>
+                              </div>
+                            ))
+                          ) : (
+                            <p>No files selected.</p>
+                          )}
+                        </div>
+                      </div>
                     </MDBRow>
                     <MDBRow>
                       <MDBCol></MDBCol>
@@ -261,6 +334,10 @@ const AddLogicModal: FC<any> = ({
           </MDBContainer>
         </MDBModalDialog>
       </MDBModal>
+      <FileModal
+        open={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+      />
     </>
   );
 };
