@@ -1,0 +1,33 @@
+{
+    "Kafka Topics": {
+      "broadcast-transformer": "7",
+      "com.odk.transformer": "17",
+      "generic-transformer": "0",
+      "notification-outbound": "35",
+      "outbound": "17",
+      "inbound-processed": "24",
+      "process-outbound": "52",
+      "telemetry": "14",
+      "outbound-processed": "0"
+    },
+    "UCI API": {
+      "ResolveUser": 1
+    },
+    "Inbound": {
+      "Data inserted in Cassandra": 1,
+      "Kafka topic push": 1
+    },
+    "Orchestrator": {
+      "Topic consumed from Kafka": 5,
+      "Notification pushed to Kafka": 5
+    },
+    "Broadcast Transformer": {
+      "Broadcast Processed": 5,
+      "Kafka Push to outbound": 5
+    },
+    "Outbound": {
+      "Saved data in cache": 5,
+      "Notification inserted in Cassandra": 5
+    }
+  }
+  
