@@ -15,6 +15,7 @@ import { getBotUrl } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { startConversation } from "../../api/startConversation";
 import { useStore } from "../../store";
+import { updateBot } from "../../api/updateBot";
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   );
 
   const onEdit = useCallback(
-    (data) => {
+    (data) => {       
       localStorage.setItem("botToEdit", JSON.stringify(data));
       store?.setBotToEdit(data);
       store?.setConversationLogic(data?.logicIDs);
@@ -41,14 +42,22 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   );
 
   const onEnable = useCallback((data) => {
-    startConversation(data)
-      .then((res) => {
-        toast.success("Bot Enabled");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
-  }, []);
+    console.log({data})
+    store.startLoading();
+    const newValue={id:data.id , status : data.status === 'DISABLED' ? 'ENABLED' : 'DISABLED'}
+
+    updateBot(newValue).then(res=>{
+      store.stopLoading();
+      const toastMsg= data.status === 'DISABLED' ? 'Bot Enabled Succesfully' : 'Bot Disabled Succesfully'
+      toast.success(toastMsg);
+      window.location.reload();
+      console.log({res})
+    }).catch(err=>{
+      store.stopLoading();
+      toast.error(`Error occured in updating bot-${err.message}`)
+      console.log({err});
+    })
+  }, [store]);
 
   return (
     <MDBTable align="middle" small>
@@ -141,16 +150,14 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                     >
                       Edit
                     </MDBDropdownItem>
-                    {/* <MDBDropdownItem link
-                     disabled
-                    >Delete</MDBDropdownItem>
+          
                     <MDBDropdownItem link             
                       childTag="button"
-                      disabled
+                     
                       onClick={(ev) => {
                         ev.preventDefault();
                         onEnable(record);
-                      }}>Enable</MDBDropdownItem> */}
+                      }}>{record?.status === 'DISABLED' ? 'Enable' : 'Disable'}   </MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </td>

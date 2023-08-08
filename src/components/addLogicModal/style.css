@@ -1,0 +1,36 @@
+/* FilePicker.css */
+
+.file-picker {
+    /* width: 300px; */
+    margin: auto;
+   
+  }
+  
+  .selected-files {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+ 
+  .file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 70%;
+  }
+  
+  .remove-btn {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .remove-btn:hover {
+    background-color: #ff0000;
+  }
+  
