@@ -14,12 +14,10 @@ export const Overview: React.FC<OverviewHeaderProps> = ({
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
-    console.log(value);
   };
 
   const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Submit");
   };
 
   return (
