@@ -18,8 +18,14 @@ import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
 import { useStore } from "../../store";
-import { ShoppingCart } from "../icons/ShoppingCart";
-// import { Badge } from './Badge';
+import { MDBIcon } from "mdb-react-ui-kit";
+import { logsItemsConfig, monitoringItemsConfig } from "./Menu";
+
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+  collapsed: any;
+  handleCollapse: any;
+}
 
 type Theme = "light" | "dark";
 
@@ -71,10 +77,14 @@ const hexToRgba = (hex: string, alpha: number) => {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
-
-const SidebarComponent = () => {
+export const SidebarComponent: React.FC<SidebarProps> = ({
+  children,
+  collapsed,
+  handleCollapse,
+  ...rest
+}) => {
   const store: any = useStore();
-  const [collapsed, setCollapsed] = React.useState(false);
+  // const [collapsed, setCollapsed] = React.useState(false);
   const [toggled, setToggled] = React.useState(false);
   const [broken, setBroken] = React.useState(false);
   const [rtl, setRtl] = React.useState(false);
@@ -93,7 +103,7 @@ const SidebarComponent = () => {
     localStorage.setItem("theme", store?.theme === "dark" ? "light" : "dark");
   };
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   // handle on image change event
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHasImage(e.target.checked);
@@ -117,10 +127,10 @@ const SidebarComponent = () => {
       backgroundColor:
         level === 0
           ? hexToRgba(
-              themes[theme].menu.menuContent,
-              hasImage && !collapsed ? 0.4 : 1
+              themes[theme].sidebar.backgroundColor,
+              hasImage && !collapsed ? 0.8 : 1
             )
-          : "transparent",
+          : "black",
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -140,14 +150,13 @@ const SidebarComponent = () => {
   };
 
   const onLogout = useCallback(() => {
-    
-     store?.setUser(null);
-     localStorage.clear();
-     setTimeout(()=>{
-       navigate("/login");
-     },10)
+    store?.setUser(null);
+    localStorage.clear();
+    setTimeout(() => {
+      navigate("/login");
+    }, 10);
   }, [navigate, store]);
-  
+
   return (
     <div
       style={{
@@ -161,6 +170,7 @@ const SidebarComponent = () => {
         collapsed={collapsed}
         toggled={toggled}
         onBackdropClick={() => setToggled(false)}
+        customBreakPoint="sm"
         onBreakPoint={setBroken}
         image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
         rtl={rtl}
@@ -184,6 +194,8 @@ const SidebarComponent = () => {
         >
           <SidebarHeader
             rtl={rtl}
+            collapsed={collapsed}
+            handleCollapse={handleCollapse}
             style={{ marginBottom: "24px", marginTop: "16px" }}
           />
           <div style={{ flex: 1, marginBottom: "32px" }}>
@@ -222,20 +234,43 @@ const SidebarComponent = () => {
           </div> */}
 
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem icon={<ThemeIcon />} >
-            <Switch
-              id="theme"
-              checked={theme === 'dark'}
-              onChange={handleThemeChange}
-              label="Dark theme"
-            />
-            </MenuItem>
+              <MenuItem icon={<ThemeIcon />}>
+                <Switch
+                  id="theme"
+                  checked={theme === "dark"}
+                  onChange={handleThemeChange}
+                  label="Dark theme"
+                />
+              </MenuItem>
               <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
                 Dashboard
               </MenuItem>
               <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>
                 Add Bot
               </MenuItem>
+              <SubMenu
+                label="Monitoring"
+                icon={<MDBIcon far icon="chart-bar" />}
+              >
+                {monitoringItemsConfig.map((item) => (
+                  <MenuItem
+                    key={item.label}
+                    component={<Link to={item.link} />}
+                  >
+                    {item.label}
+                  </MenuItem>
+                ))}
+                <SubMenu label="Logs" icon={<MDBIcon fas icon="code" />}>
+                  {logsItemsConfig.map((item) => (
+                    <MenuItem
+                      key={item.label}
+                      component={<Link to={item.link} />}
+                    >
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                </SubMenu>
+              </SubMenu>
 
               <MenuItem icon={<LogoutIcon />} onClick={onLogout}>
                 Log Out
@@ -298,5 +333,3 @@ const SidebarComponent = () => {
     </div>
   );
 };
-
-export default SidebarComponent;
