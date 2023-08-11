@@ -252,6 +252,7 @@ const AddLogicModal: FC<any> = ({
                         id="formFileSm"
                         multiple
                         onChange={handleFileChange}
+
                       />
                     </MDBRow>
                     
