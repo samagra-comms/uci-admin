@@ -131,7 +131,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           checked={store?.isBroadcastBot}
           onChange={(ev) => store?.setIsBroadcastBot(ev.target.checked)}
           id="flexCheckDefault"
-          label="Create Broadcast bot"
+          label="Create Whatsapp bot"
           size={5}
           defaultChecked
           disabled={disabled}
@@ -141,7 +141,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         
         Name Not Available
       </div> */}
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <MDBInput
           label="Segment Id*"
           type="text"
@@ -151,7 +151,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           value={store?.state?.segmentId}
           disabled={!store?.isBroadcastBot || disabled}
         />
-      </div>
+      </div> */}
       <div className="mb-3">
         <ReactDatePicker
           minDate={new Date(moment().subtract(1, "days").valueOf())}
