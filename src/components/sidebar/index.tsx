@@ -13,7 +13,7 @@ import { Switch } from "./Switch";
 // import { Typography } from './Typography';
 import { SidebarFooter } from "./SidebarFooter";
 import { SidebarHeader } from "./SidebarHeader";
-import DashobardIcon from "../icons/Dashobard";
+import DashobardIcon from "../icons/Dashboard";
 import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
