@@ -6,14 +6,14 @@ import {
   MenuItemStyles,
   SubMenu,
 } from "react-pro-sidebar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import React, { useCallback, useState } from "react";
 import { Switch } from "./Switch";
 // import { PackageBadges } from './PackageBadges';
 // import { Typography } from './Typography';
 import { SidebarFooter } from "./SidebarFooter";
 import { SidebarHeader } from "./SidebarHeader";
-import DashobardIcon from "../icons/Dashobard";
+import DashboardIcon from "../icons/Dashboard";
 import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
@@ -48,6 +48,9 @@ const themes = {
       disabled: {
         color: "#9fb6cf",
       },
+      active: {
+        backgroundColor: "#000",
+      },
     },
     submenu: {
       menuContent: "#000",
@@ -58,6 +61,9 @@ const themes = {
       },
       disabled: {
         color: "#9fb6cf",
+      },
+      active: {
+        backgroundColor: "#000",
       },
     },
   },
@@ -76,6 +82,9 @@ const themes = {
       },
       disabled: {
         color: "#3e5e7e",
+      },
+      active: {
+        backgroundColor: "#000",
       },
     },
   },
@@ -102,6 +111,8 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
   const [rtl, setRtl] = useState(false);
   const [hasImage, setHasImage] = useState(true);
   const [theme, setTheme] = useState<Theme>(store?.theme);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // handle on RTL change event
   const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +126,6 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
     localStorage.setItem("theme", store?.theme === "dark" ? "light" : "dark");
   };
 
-  const navigate = useNavigate();
   // handle on image change event
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHasImage(e.target.checked);
@@ -143,7 +153,10 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
               hasImage && !collapsed ? 0.8 : 1
             )
           : "#0b2948",
-      ...(active && { backgroundColor: "black" }),
+      ...(active && {
+        backgroundColor: "white !important",
+        color: "white",
+      }),
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -156,13 +169,6 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
         ),
         color: themes[theme].menu.hover.color,
       },
-      "&:active": {
-        backgroundColor: "#fff",
-      },
-      // [`&.active`]: {
-      //   backgroundColor: "#fff",
-      //   color: "#b6c8d9",
-      // },
     },
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
@@ -219,42 +225,8 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
             style={{ marginBottom: "24px", marginTop: "16px" }}
           />
           <div style={{ flex: 1, marginBottom: "32px" }}>
-            {/* <div style={{ padding: '0 24px', marginBottom: '8px' }}>
-            <Typography
-              variant="body2"
-              fontWeight={600}
-              style={{ opacity: collapsed ? 0 : 0.7, letterSpacing: '0.5px' }}
-            >
-              General
-            </Typography>
-          </div> */}
-
-            {/* <Menu menuItemStyles={menuItemStyles}>
-            <SubMenu
-              label="Charts"
-              icon={<ShoppingCart />}   
-            >
-              <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
-              Dashboard
-            </MenuItem>
-            <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
-            
-            </SubMenu>
-           
-          </Menu>  */}
-
-            {/* <div style={{ padding: '0 24px', marginBottom: '8px', marginTop: '32px' }}>
-            <Typography
-              variant="body2"
-              fontWeight={600}
-              style={{ opacity: collapsed ? 0 : 0.7, letterSpacing: '0.5px' }}
-            >
-              Extra
-            </Typography>
-          </div> */}
-
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem icon={<ThemeIcon />}>
+              {/* <MenuItem icon={<ThemeIcon />}>
                 <Switch
                   id="theme"
                   checked={theme === "dark"}
@@ -263,8 +235,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                 />
               </MenuItem>
               <MenuItem
-                icon={<DashobardIcon />}
-                active
+                icon={<DashboardIcon />}
                 component={<Link to="/" id="dashboard" />}
               >
                 Dashboard
@@ -272,6 +243,32 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
               <MenuItem
                 icon={<AddIcon />}
                 component={<Link to="/add-bot" id="add-bot" />}
+              >
+                Add Bot
+              </MenuItem> */}
+              <MenuItem icon={<ThemeIcon />} active={location.pathname === "/"}>
+                <Switch
+                  id="theme"
+                  checked={theme === "dark"}
+                  onChange={handleThemeChange}
+                  label="Dark theme"
+                />
+              </MenuItem>
+              <MenuItem
+                icon={<DashboardIcon />}
+                active={location.pathname === "/"}
+                component={<Link to="/" id="dashboard" />}
+                className={location.pathname === "/" ? "active-menu" : ""}
+              >
+                Dashboard
+              </MenuItem>
+              <MenuItem
+                icon={<AddIcon />}
+                active={location.pathname === "/add-bot"}
+                component={<Link to="/add-bot" id="add-bot" />}
+                className={
+                  location.pathname === "/add-bot" ? "active-menu" : ""
+                }
               >
                 Add Bot
               </MenuItem>
@@ -283,6 +280,9 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                   <MenuItem
                     key={item.label}
                     component={<Link to={item.link} />}
+                    className={
+                      location.pathname === item.link ? "active-menu" : ""
+                    }
                   >
                     {item.label}
                   </MenuItem>
@@ -292,6 +292,9 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                     <MenuItem
                       key={item.label}
                       component={<Link to={item.link} />}
+                      className={
+                        location.pathname === item.link ? "active-menu" : ""
+                      }
                     >
                       {item.label}
                     </MenuItem>
@@ -299,7 +302,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                 </SubMenu>
               </SubMenu>
 
-              <MenuItem icon={<LogoutIcon />} onClick={onLogout}>
+              <MenuItem
+                icon={<LogoutIcon />}
+                onClick={onLogout}
+                className={location.pathname === "/logout" ? "active-menu" : ""}
+              >
                 Log Out
               </MenuItem>
             </Menu>
@@ -307,56 +314,6 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
           <SidebarFooter collapsed={collapsed} />
         </div>
       </Sidebar>
-
-      {/* <main>
-      <div style={{ padding: '16px 24px', color: '#44596e' }}>
-        <div style={{ marginBottom: '16px' }}>
-          {broken && (
-            <button className="sb-button" onClick={() => setToggled(!toggled)}>
-              Toggle
-            </button>
-          )}
-        </div>
-        <div style={{ marginBottom: '48px' }}>
-          <Typography variant="h4" fontWeight={600}>
-            React Pro Sidebar
-          </Typography>
-          <Typography variant="body2">
-            React Pro Sidebar provides a set of components for creating high level and
-            customizable side navigation
-          </Typography>
-          <PackageBadges />
-        </div>
-
-        <div style={{ padding: '0 8px' }}>
-          <div style={{ marginBottom: 16 }}>
-            <Switch
-              id="collapse"
-              checked={collapsed}
-              onChange={() => setCollapsed(!collapsed)}
-              label="Collapse"
-            />
-          </div>
-
-          <div style={{ marginBottom: 16 }}>
-            <Switch id="rtl" checked={rtl} onChange={handleRTLChange} label="RTL" />
-          </div>
-
-          <div style={{ marginBottom: 16 }}>
-            <Switch
-              id="theme"
-              checked={theme === 'dark'}
-              onChange={handleThemeChange}
-              label="Dark theme"
-            />
-          </div>
-
-          <div style={{ marginBottom: 16 }}>
-            <Switch id="image" checked={hasImage} onChange={handleImageChange} label="Image" />
-          </div>
-        </div>
-      </div>
-    </main> */}
     </div>
   );
 };
