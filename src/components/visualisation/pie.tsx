@@ -16,18 +16,16 @@ const PieChart = ({ data }) => {
   const { height } = useWindowSize();
 
   useEffect(() => {
-    // Generate dynamic background colors for each segment based on labels
-    const dynamicColors = data.labels.map(() => generateRandomColor());
+    const dynamicColors = data?.labels?.map(() => generateRandomColor());
 
-    // Create a new pie chart instance
     const ctx = chartRef.current.getContext("2d");
     const chart = new Chart(ctx, {
       type: "pie",
       data: {
-        labels: data.labels,
+        labels: data?.labels,
         datasets: [
           {
-            data: data.datasets[0].data,
+            data: data?.datasets[0].data,
             backgroundColor: dynamicColors,
           },
         ],
@@ -38,9 +36,9 @@ const PieChart = ({ data }) => {
           tooltip: {
             callbacks: {
               label: (context) => {
-                const label = data.labels[context.dataIndex];
-                const value = data.datasets[0].data[context.dataIndex];
-                const total = data.datasets[0].data.reduce((acc, curr) => acc + curr);
+                const label = data?.labels[context.dataIndex];
+                const value = data?.datasets[0].data[context.dataIndex];
+                const total = data?.datasets[0].data.reduce((acc, curr) => acc + curr);
                 const percentage = ((value / total) * 100).toFixed(2);
                 return `${label}: ${value} (${percentage}%)`;
               },
@@ -50,21 +48,20 @@ const PieChart = ({ data }) => {
       },
     });
 
-    // Clean up the chart instance on component unmount
     return () => {
       chart.destroy();
     };
   }, [data]);
 
+  const chartContainerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    maxHeight: `${height - 100}px`,
+  };
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        maxHeight: `${height - 100}px`,
-      }}
-    >
+    <div style={chartContainerStyle}>
       <canvas ref={chartRef} />
     </div>
   );

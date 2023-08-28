@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Chart from 'chart.js/auto';
 
 const LineChart = ({ data }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    // Create a new line chart instance
     const ctx = chartRef.current.getContext("2d");
     const chart = new Chart(ctx, {
       type: "line",
@@ -19,16 +18,12 @@ const LineChart = ({ data }) => {
             },
           },
           y: {
-            beginAtZero: true,
-            // grid: {
-            //   borderDash: [2],
-            // },
+            beginAtZero: true
           },
         },
       },
     });
 
-    // Clean up the chart instance on component unmount
     return () => {
       chart.destroy();
     };
