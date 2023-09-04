@@ -1,4 +1,15 @@
-.active-menu{
-  background: aliceblue;
-  color: black;
+/* This is for menu item */
+.pro-menu-item a.active {
+  color: aliceblue !important; /* put any color you want */
+  font-weight: 500;
+}
+
+/* This is for submenu item */
+.nav-member .react-slidedown .pro-menu-item a.active {
+  color: #003642; /* put any color you want */
+  font-weight: 500;
+}
+
+.ps-menu-button a:active {
+  background-color: aliceblue !important;
 }
