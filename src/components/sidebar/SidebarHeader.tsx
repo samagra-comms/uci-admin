@@ -80,11 +80,10 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
               fas
               icon="times"
               onClick={handleCollapse}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer",textAlign:"center",marginRight:"7px" }}
             />
           )}
         </div>
-
         <StyledLogo rtl={rtl}>UCI</StyledLogo>
         <Typography variant="body1" fontWeight={700} color="#0098e5">
           Admin Dashboard

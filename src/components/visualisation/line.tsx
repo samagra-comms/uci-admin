@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import Chart from 'chart.js/auto';
 
-const BarChart = ({ data}) => {
+const LineChart = ({ data }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
     const chart = new Chart(ctx, {
-      type: "bar",
+      type: "line",
       data: data,
       options: {
         responsive: true,
@@ -18,7 +18,7 @@ const BarChart = ({ data}) => {
             },
           },
           y: {
-            beginAtZero: true,
+            beginAtZero: true
           },
         },
       },
@@ -32,4 +32,4 @@ const BarChart = ({ data}) => {
   return <canvas ref={chartRef} />;
 };
 
-export default BarChart;
+export default LineChart;
