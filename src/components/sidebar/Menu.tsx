@@ -4,10 +4,6 @@ export const monitoringItemsConfig = [
     link: "/monitoring/overview",
   },
   {
-    label: "Kafka Topics",
-    link: "/monitoring/kafka-topics",
-  },
-  {
     label: "UCI-API",
     link: "/monitoring/uci-api",
   },
@@ -38,10 +34,6 @@ export const monitoringItemsConfig = [
 ];
 
 export const logsItemsConfig = [
-  {
-    label: "Kafka Topics",
-    link: "/monitoring/logs/kafka-topics",
-  },
   {
     label: "UCI-API",
     link: "/monitoring/logs/uci-api",
