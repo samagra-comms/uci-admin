@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { Typography } from "./Typography";
-import { MDBIcon } from "mdb-react-ui-kit";
-
+import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   rtl: boolean;
-  collapsed: boolean;
-  handleCollapse: Function;
+  collapsed:any;
+  handleCollapse:any
 }
 
 const StyledSidebarHeader = styled.div`
@@ -68,27 +68,15 @@ export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
     <StyledSidebarHeader {...rest}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <div className="m-2">
-          {!collapsed ? (
-            <MDBIcon
-              fas
-              icon="bars"
-              onClick={handleCollapse}
-              style={{ cursor: "pointer" }}
-            />
-          ) : (
-            <MDBIcon
-              fas
-              icon="times"
-              onClick={handleCollapse}
-              style={{ cursor: "pointer" }}
-            />
-          )}
+          {!collapsed?<DehazeOutlinedIcon onClick={handleCollapse} style={{cursor:'pointer'}}/>:<CloseOutlinedIcon onClick={handleCollapse} style={{cursor:'pointer'}}/>}
         </div>
-
+     
+     
         <StyledLogo rtl={rtl}>UCI</StyledLogo>
         <Typography variant="body1" fontWeight={700} color="#0098e5">
           Admin Dashboard
         </Typography>
+        
       </div>
     </StyledSidebarHeader>
   );
