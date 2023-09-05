@@ -123,28 +123,6 @@ export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
   toast.success('Notification Triggered');
   startConversation(bot)
-    // .then((res) => {
-    //   store.stopLoading();
-    //   store.onReset();
-    //   history.navigate("/success");
-    //   // console.log("debug:12")
-    //   // if (store?.isBroadcastBot) {
-    //   //   console.log("debug:13")
-    //   //   if (isNavigateToEnd) {
-    //   //     console.log("debug:14")
-    //   //     onAfterBotSubmit({
-    //   //       queryParams: { text: store?.state?.startingMessage, botId: bot.id },
-    //   //     });
-    //   //   } else {
-    //   //     console.log("debug:15")
-    //   //     onSegmentCreate();
-    //   //   }
-    //   // } else {
-    //   //   console.log("debug:16")
-    //   //   store.onReset();
-    //   //   history.navigate("/success");
-    //   // }
-    // })
     .catch((err) => {
       store?.stopLoading();
       toast.error(`Error Occured in Starting bot: ${err.message}`);

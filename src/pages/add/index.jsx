@@ -23,6 +23,8 @@ import { useSearchParams } from "react-router-dom";
 import { onBotCreate, onBotUpdate } from "../../api/api-util-functions";
 import { useStore } from "../../store";
 import { getBotById } from "../../api/getBotById";
+import { isSmsObjValid, isWebObjValid, isWhatsappObjValid } from "../../utils/check-error";
+import { onSmsBotCreate } from "../../utils/trigger-sms-bot";
 
 export const Add = () => {
   const store = useStore();
@@ -193,25 +195,36 @@ export const Add = () => {
     [store?.conversationLogic, onToggle, isEditParamAvailable]
   );
 
+  const notificationMedium = useMemo(
+    () => store?.state?.notificationMedium,
+    [store?.state?.notificationMedium]
+  );
+
+  console.log({notificationMedium})
+
   const isNextDisabled = useMemo(() => {
+    
     if (isEditParamAvailable) {
       return false;
     }
-    return (
-      Object.values(errors).some((v) => v !== null) ||
-      Object.values(
-        store?.isBroadcastBot ? store?.state : omit(store?.state, ["segmentId"])
-      ).some((v) => v === "" || v === undefined || v === null) ||
-      store?.botIcon === "" ||
-      store?.botIcon === null
-    );
-  }, [
-    errors,
-    store?.state,
-    store?.botIcon,
-    store?.isBroadcastBot,
-    isEditParamAvailable,
-  ]);
+    if (notificationMedium === "sms") {
+     return isSmsObjValid(errors)
+    }
+    if (notificationMedium === "whatsapp") {
+      return isWhatsappObjValid(errors)
+    }
+    return isWebObjValid(errors)
+  }, [isEditParamAvailable, notificationMedium, errors]);
+
+
+  const onNextClick =useCallback((ev) => {
+    ev.preventDefault();
+    if(notificationMedium==='sms'){
+      onSmsBotCreate()
+    }
+   else setIsStep1((prev) => !prev);
+  },[notificationMedium])
+
   return (
     <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
       <MDBRow className="mt-3">
@@ -240,10 +253,7 @@ export const Add = () => {
                 <MDBRow className="my-3">
                   <MDBCol md="3" className="d-flex">
                     <MDBBtn
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        setIsStep1((prev) => !prev);
-                      }}
+                      onClick={onNextClick}
                       disabled={isStep1 ? isNextDisabled : false}
                     >
                       {isStep1 ? "Next" : "Previous"}

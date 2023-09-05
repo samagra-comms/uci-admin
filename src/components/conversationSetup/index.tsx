@@ -1,12 +1,11 @@
 import {
   MDBCheckbox,
-  MDBCol,
   MDBFile,
   MDBInput,
   MDBRow,
   MDBTextArea,
 } from "mdb-react-ui-kit";
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useMemo } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useStore } from "../../store";
@@ -23,52 +22,83 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
     [onChangeHandler]
   );
 
+  const notificationMedium = useMemo(
+    () => store?.state?.notificationMedium,
+    [store?.state?.notificationMedium]
+  );
+  console.log("__shri ram__:", { notificationMedium });
   return (
     <MDBRow className="">
-      {/* <MDBRow className="mb-3">
-        <h4>Conversation Setup</h4>
-      </MDBRow> */}
+    
       <div className="my-3">
-        <p>Bot Icon</p>
-
-        {store?.state.botImage && (
-          <MDBRow className="text-center mb-2">
-            <div
-              className="text-center mx-auto"
-              style={{
-                background: "white",
-
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "150px",
-                height: "150px",
-                borderRadius: "50%",
-                border: "2px solid lightgray",
-              }}
-            >
-              <img
-                className="mx-auto"
-                style={{
-                  height: "100px",
-                  width: "150px",
-                  objectFit: "contain",
-                }}
-                src={store?.state?.botImage}
-                alt="bot-icon"
-              />
-            </div>
-          </MDBRow>
-        )}
-        <MDBFile
-          accept="image/png, image/jpeg"
-          // size="sm"
-          id="formFileSm"
-          size="md"
-          disabled={disabled}
-          onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
-        />
+        <label>Select Notification Medium</label>
+        <select
+          name="notificationMedium"
+          className="form-control"
+          onChange={onChangeHandler}
+          value={store?.state?.notificationMedium}
+        >
+          <option value="sms">SMS</option>
+          <option value="web">Web</option>
+          <option value="whatsapp">Whatsapp</option>
+        </select>
       </div>
+
+      {notificationMedium !== "sms" && (
+        <div className="mb-2">
+          <MDBCheckbox
+            name="flexCheck"
+            checked={store?.isBroadcastBot}
+            onChange={(ev) => store?.setIsBroadcastBot(ev.target.checked)}
+            id="flexCheckDefault"
+            label="Create Broadcast bot"
+            size={5}
+            defaultChecked
+            disabled={disabled}
+          />
+        </div>
+      )}
+      {notificationMedium === "web" && (
+        <div className="mb-3">
+          <p>Bot Icon</p>
+          {store?.state.botImage && (
+            <MDBRow className="text-center mb-2">
+              <div
+                className="text-center mx-auto"
+                style={{
+                  background: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "150px",
+                  height: "150px",
+                  borderRadius: "50%",
+                  border: "2px solid lightgray",
+                }}
+              >
+                <img
+                  className="mx-auto"
+                  style={{
+                    height: "100px",
+                    width: "150px",
+                    objectFit: "contain",
+                  }}
+                  src={store?.state?.botImage}
+                  alt="bot-icon"
+                />
+              </div>
+            </MDBRow>
+          )}
+          <MDBFile
+            accept="image/png, image/jpeg"
+            // size="sm"
+            id="formFileSm"
+            size="md"
+            disabled={disabled}
+            onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
+          />
+        </div>
+      )}
 
       <div className="mb-3">
         <MDBInput
@@ -94,9 +124,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           rows={4}
           size="md"
         />
-        {/* <div className="form-text text-danger">
-        Name Not Available
-      </div> */}
+       
       </div>
       <div className="mb-3">
         <MDBInput
@@ -107,9 +135,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           value={store?.state?.purpose || ""}
           size="md"
         />
-        {/* <div className="form-text text-danger">
-        Name Not Available
-      </div> */}
       </div>
       <div className="mb-3">
         <MDBInput
@@ -125,29 +150,15 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         )}
       </div>
 
-      <div className="mb-2">
-        <MDBCheckbox
-          name="flexCheck"
-          checked={store?.isBroadcastBot}
-          onChange={(ev) => store?.setIsBroadcastBot(ev.target.checked)}
-          id="flexCheckDefault"
-          label="Create Broadcast bot"
-          size={5}
-          defaultChecked
-          disabled={disabled}
-        />
-      </div>
-      {/* <div className="form-text text-danger">
-        
-        Name Not Available
-      </div> */}
+
+    
       <div className="mb-3">
         <MDBInput
           label="Segment Id*"
           type="text"
           size="md"
           onChange={onChangeHandler}
-          name="segmentId"  
+          name="segmentId"
           value={store?.state?.segmentId}
           disabled={!store?.isBroadcastBot || disabled}
         />
