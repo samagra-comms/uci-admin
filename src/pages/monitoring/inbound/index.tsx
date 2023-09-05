@@ -45,25 +45,21 @@ export const Inbound: React.FC<InboundProps> = ({ theme }) => {
 
   const [InboundData, setInboundData] = useState([]);
 
-  const [final, setFinal] = useState("");
+  const [FileName, setFileName] = useState("");
 
   const func = async () => {
     if (localStorage.getItem("file")) {
       const file = localStorage.getItem("file");
-      console.log(file)
       const apiEndpoint = fetchRealtime(file);
       try {
         const response = await apiEndpoint;
         const res = JSON.parse(response.data.result);
         setInboundData(res["Inbound".trim()] || {}); 
-        console.log(res)
       } catch (error) {
         console.error("Error toggling:", error);
       }
-    } else if (final !== "") {
-      console.log(final)
-
-      const file = reverseFormatDate(final);
+    } else if (FileName !== "") {
+      const file = reverseFormatDate(FileName);
       localStorage.setItem("file", file);
 
       const shortDate = convertToShortDate(selected);
@@ -85,7 +81,7 @@ export const Inbound: React.FC<InboundProps> = ({ theme }) => {
   useEffect(() => {
     func();
     // fetchBotData();
-  }, [final]);
+  }, [FileName]);
 
   const dataBar = {
     labels: Object.keys(InboundData),
@@ -173,7 +169,7 @@ export const Inbound: React.FC<InboundProps> = ({ theme }) => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    setFinal(selected);
+    setFileName(selected);
 
     const shortDate = convertToShortDate(selected);
     localStorage.setItem("shortDate", shortDate);

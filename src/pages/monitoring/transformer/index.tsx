@@ -45,7 +45,7 @@ export const Transformer: React.FC<TransformerProps> = ({ theme }) => {
 
   const [TransformerData, setTransformerData] = useState([]);
 
-  const [final, setFinal] = useState("");
+  const [FileName, setFileName] = useState("");
 
   const func = async () => {
     if (localStorage.getItem("file")) {
@@ -58,8 +58,8 @@ export const Transformer: React.FC<TransformerProps> = ({ theme }) => {
       } catch (error) {
         console.error("Error toggling:", error);
       }
-    } else if (final !== "") {
-      const file = reverseFormatDate(final);
+    } else if (FileName !== "") {
+      const file = reverseFormatDate(FileName);
       localStorage.setItem("file", file);
 
       const shortDate = convertToShortDate(selected);
@@ -81,7 +81,7 @@ export const Transformer: React.FC<TransformerProps> = ({ theme }) => {
   useEffect(() => {
     func();
     // fetchBotData();
-  }, [final]);
+  }, [FileName]);
 
   const dataBar = {
     labels: Object.keys(TransformerData),
@@ -169,7 +169,7 @@ export const Transformer: React.FC<TransformerProps> = ({ theme }) => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    setFinal(selected);
+    setFileName(selected);
 
     const shortDate = convertToShortDate(selected);
     localStorage.setItem("shortDate", shortDate);

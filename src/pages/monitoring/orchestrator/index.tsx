@@ -45,7 +45,7 @@ export const Orchestrator: React.FC<OrchestratorProps> = ({ theme }) => {
 
   const [OrchestratorData, setOrchestratorData] = useState([]);
 
-  const [final, setFinal] = useState("");
+  const [FileName, setFileName] = useState("");
 
   const func = async () => {
     if (localStorage.getItem("file")) {
@@ -58,8 +58,8 @@ export const Orchestrator: React.FC<OrchestratorProps> = ({ theme }) => {
       } catch (error) {
         console.error("Error toggling:", error);
       }
-    } else if (final !== "") {
-      const file = reverseFormatDate(final);
+    } else if (FileName !== "") {
+      const file = reverseFormatDate(FileName);
       localStorage.setItem("file", file);
 
       const shortDate = convertToShortDate(selected);
@@ -81,7 +81,7 @@ export const Orchestrator: React.FC<OrchestratorProps> = ({ theme }) => {
   useEffect(() => {
     func();
     // fetchBotData();
-  }, [final]);
+  }, [FileName]);
 
   const dataBar = {
     labels: Object.keys(OrchestratorData),
@@ -170,7 +170,7 @@ export const Orchestrator: React.FC<OrchestratorProps> = ({ theme }) => {
   ) => {
     event.preventDefault();
     setDropdown(false);
-    setFinal(selected);
+    setFileName(selected);
 
     const shortDate = convertToShortDate(selected);
     localStorage.setItem("shortDate", shortDate);
