@@ -1,14 +1,15 @@
 .card-title {
-  font-size: 50px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.card-text {
-  text-align: center;
-}
-
-.dark-card {
-  background-color: black;
-  color: black;
-}
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .card-text {
+    text-align: center;
+  }
+  
+  .dark-card {
+    background-color: black;
+    color: black;
+  }
+  

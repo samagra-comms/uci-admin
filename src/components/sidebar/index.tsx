@@ -7,20 +7,19 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { Switch } from "./Switch";
 // import { PackageBadges } from './PackageBadges';
 // import { Typography } from './Typography';
 import { SidebarFooter } from "./SidebarFooter";
 import { SidebarHeader } from "./SidebarHeader";
-import DashobardIcon from "../icons/Dashobard";
+import DashboardIcon from "../icons/Dashboard";
 import AddIcon from "../icons/AddIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import ThemeIcon from "../icons/ThemeIcon";
 import { useStore } from "../../store";
-import { MDBIcon } from "mdb-react-ui-kit";
-import { logsItemsConfig, monitoringItemsConfig } from "./Menu";
-import "./style.css";
+import InsightsIcon from "@mui/icons-material/Insights";
+import CodeIcon from "@mui/icons-material/Code";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -40,17 +39,6 @@ const themes = {
     },
     menu: {
       menuContent: "#fbfcfd",
-      icon: "#0098e5",
-      hover: {
-        backgroundColor: "#c5e4ff",
-        color: "#44596e",
-      },
-      disabled: {
-        color: "#9fb6cf",
-      },
-    },
-    submenu: {
-      menuContent: "#000",
       icon: "#0098e5",
       hover: {
         backgroundColor: "#c5e4ff",
@@ -97,11 +85,11 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
 }) => {
   const store: any = useStore();
   // const [collapsed, setCollapsed] = React.useState(false);
-  const [toggled, setToggled] = useState(false);
-  const [broken, setBroken] = useState(false);
-  const [rtl, setRtl] = useState(false);
-  const [hasImage, setHasImage] = useState(true);
-  const [theme, setTheme] = useState<Theme>(store?.theme);
+  const [toggled, setToggled] = React.useState(false);
+  const [broken, setBroken] = React.useState(false);
+  const [rtl, setRtl] = React.useState(false);
+  const [hasImage, setHasImage] = React.useState(true);
+  const [theme, setTheme] = React.useState<Theme>(store?.theme);
 
   // handle on RTL change event
   const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,15 +123,14 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
     SubMenuExpandIcon: {
       color: "#b6b7b9",
     },
-    subMenuContent: ({ level, active }) => ({
+    subMenuContent: ({ level }) => ({
       backgroundColor:
         level === 0
           ? hexToRgba(
-              themes[theme].sidebar.backgroundColor,
-              hasImage && !collapsed ? 0.8 : 1
+              themes[theme].menu.menuContent,
+              hasImage && !collapsed ? 0.4 : 1
             )
-          : "#0b2948",
-      ...(active && { backgroundColor: "black" }),
+          : "transparent",
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -156,13 +143,6 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
         ),
         color: themes[theme].menu.hover.color,
       },
-      "&:active": {
-        backgroundColor: "#fff",
-      },
-      // [`&.active`]: {
-      //   backgroundColor: "#fff",
-      //   color: "#b6c8d9",
-      // },
     },
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
@@ -234,7 +214,7 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
               label="Charts"
               icon={<ShoppingCart />}   
             >
-              <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
+              <MenuItem icon={<DashboardIcon />} component={<Link to="/" />}>
               Dashboard
             </MenuItem>
             <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>Add Bot</MenuItem>
@@ -262,40 +242,76 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
                   label="Dark theme"
                 />
               </MenuItem>
-              <MenuItem
-                icon={<DashobardIcon />}
-                active
-                component={<Link to="/" id="dashboard" />}
-              >
+              <MenuItem icon={<DashboardIcon />} component={<Link to="/" />}>
                 Dashboard
               </MenuItem>
-              <MenuItem
-                icon={<AddIcon />}
-                component={<Link to="/add-bot" id="add-bot" />}
-              >
+              <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>
                 Add Bot
               </MenuItem>
-              <SubMenu
-                label="Monitoring"
-                icon={<MDBIcon far icon="chart-bar" />}
-              >
-                {monitoringItemsConfig.map((item) => (
-                  <MenuItem
-                    key={item.label}
-                    component={<Link to={item.link} />}
-                  >
-                    {item.label}
+              <SubMenu label="Monitoring" icon={<InsightsIcon />}>
+                <MenuItem component={<Link to="/monitoring/overview" />}>
+                  Overview
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/kafka-topics" />}>
+                  Kafka Topics
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/uci-api" />}>
+                  UCI-API
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/inbound" />}>
+                  Inbound
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/orchestrator" />}>
+                  Orchestrator
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/transformer" />}>
+                  Transformer
+                </MenuItem>
+                <MenuItem
+                  component={<Link to="/monitoring/broadcast-transformer" />}
+                >
+                  Broadcast-Transformer
+                </MenuItem>
+                <MenuItem component={<Link to="/monitoring/outbound" />}>
+                  Outbound
+                </MenuItem>
+                <MenuItem
+                  component={<Link to="/monitoring/transport-socket" />}
+                >
+                  Transport-Socket
+                </MenuItem>
+                <SubMenu label="Logs" icon={<CodeIcon />}>
+                  <MenuItem component={<Link to="/monitoring/logs/uci-api" />}>
+                    UCI-API
                   </MenuItem>
-                ))}
-                <SubMenu label="Logs" icon={<MDBIcon fas icon="code" />}>
-                  {logsItemsConfig.map((item) => (
-                    <MenuItem
-                      key={item.label}
-                      component={<Link to={item.link} />}
-                    >
-                      {item.label}
-                    </MenuItem>
-                  ))}
+                  <MenuItem component={<Link to="/monitoring/logs/inbound" />}>
+                    Inbound
+                  </MenuItem>
+                  <MenuItem
+                    component={<Link to="/monitoring/logs/orchestrator" />}
+                  >
+                    Orchestrator
+                  </MenuItem>
+                  <MenuItem
+                    component={<Link to="/monitoring/logs/transformer" />}
+                  >
+                    Transformer
+                  </MenuItem>
+                  <MenuItem
+                    component={
+                      <Link to="/monitoring/logs/broadcast-transformer" />
+                    }
+                  >
+                    Broadcast-Transformer
+                  </MenuItem>
+                  <MenuItem component={<Link to="/monitoring/logs/outbound" />}>
+                    Outbound
+                  </MenuItem>
+                  <MenuItem
+                    component={<Link to="/monitoring/logs/transport-socket" />}
+                  >
+                    Transport-Socket
+                  </MenuItem>
                 </SubMenu>
               </SubMenu>
 
