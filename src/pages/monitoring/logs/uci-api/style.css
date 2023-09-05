@@ -1,0 +1,59 @@
+.autocomplete-dropdown {
+  position: absolute;
+  z-index: 100;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  list-style: none;
+  max-height: 150px;
+  min-width: 5%;
+  overflow-y: auto;
+}
+
+.autocomplete-dropdown li {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.autocomplete-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+.date-picker-container {
+  z-index: 9999 !important;
+  position: relative;
+}
+
+.date-picker {
+  padding: 5px;
+  width: 500px;
+  cursor: pointer;
+}
+
+.light-icon {
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #333;
+}
+
+.dark-icon {
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: white;
+}
+
+.dark-date-picker .react-datetime-picker__button svg,
+.dark-date-picker .react-datetime-picker__button:after,
+.dark-date-picker .react-datetime-picker__button:before {
+  background-color: white !important;
+}
