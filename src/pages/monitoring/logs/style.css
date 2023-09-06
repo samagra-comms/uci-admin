@@ -1,0 +1,51 @@
+.highlight {
+  background-color: yellow;
+}
+
+.date-picker-container {
+  z-index: 9999 !important;
+  position: relative;
+}
+
+.date-picker {
+  padding: 5px;
+  cursor: pointer;
+  background-color: #024f9d;
+}
+
+.light-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #333;
+}
+
+.dark-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: white;
+}
+
+.dark-date-picker,.light-date-picker {
+  color: white!important;
+}
+
+.dark-date-picker .react-datetime-picker__button svg,
+.dark-date-picker .react-datetime-picker__button:after,
+.dark-date-picker .react-datetime-picker__button:before {
+  background-color: white !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
