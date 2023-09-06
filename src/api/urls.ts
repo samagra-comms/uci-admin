@@ -20,4 +20,20 @@ export const addLogicUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/conversa
 
 export const getBotByIdUrl =(id:string)=> `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`;
 
+export const fetchService =(service_name:string,lines:number,date:string)=> `${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/logs/${service_name}?lines=${lines}&date=${date}`;
+
+export const triggerRealtimeData =`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/realtime/start`;
+
+export const fetchRealtimeData =(file:string)=>`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/realtime?date=${file}`;
+
+export const stopRealtimeData =`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/realtime/stop`;
+
+export const getFiles =`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/realtime/available`;
+
+export const fetchOverview =(file:string)=>`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/overview?date=${file}`;
+
+export const downloadLog =(service_name:string,date:string)=>`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/logs/${service_name}/download/log?date=${date}`;
+
+export const downloadErrLog =(service_name:string,date:string)=>`${process.env.REACT_APP_UCI_BASE_URL}/admin/monitoring/logs/${service_name}/download/error?date=${date}`;
+
 export const getSegmentCountUrl = (segment:string | number) => `${process.env.REACT_APP_nl_url}/segments/${segment}/mentors/count`
