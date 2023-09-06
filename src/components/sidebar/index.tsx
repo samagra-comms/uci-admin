@@ -20,6 +20,7 @@ import ThemeIcon from "../icons/ThemeIcon";
 import { useStore } from "../../store";
 import { MDBIcon } from "mdb-react-ui-kit";
 import { logsItemsConfig, monitoringItemsConfig } from "./Menu";
+import "./style.css";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -39,6 +40,17 @@ const themes = {
     },
     menu: {
       menuContent: "#fbfcfd",
+      icon: "#0098e5",
+      hover: {
+        backgroundColor: "#c5e4ff",
+        color: "#44596e",
+      },
+      disabled: {
+        color: "#9fb6cf",
+      },
+    },
+    submenu: {
+      menuContent: "#000",
       icon: "#0098e5",
       hover: {
         backgroundColor: "#c5e4ff",
@@ -123,14 +135,15 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
     SubMenuExpandIcon: {
       color: "#b6b7b9",
     },
-    subMenuContent: ({ level }) => ({
+    subMenuContent: ({ level,active }) => ({
       backgroundColor:
         level === 0
           ? hexToRgba(
               themes[theme].sidebar.backgroundColor,
               hasImage && !collapsed ? 0.8 : 1
             )
-          : "black",
+            : "#0b2948",
+      ...(active && { backgroundColor: "black" }),
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
@@ -142,6 +155,9 @@ export const SidebarComponent: React.FC<SidebarProps> = ({
           hasImage ? 0.8 : 1
         ),
         color: themes[theme].menu.hover.color,
+      },
+      "&:active": {
+        backgroundColor: "#fff",
       },
     },
     label: ({ open }) => ({

@@ -1,0 +1,13 @@
+.pro-menu-item a.active {
+  color: aliceblue !important;
+  font-weight: 500;
+}
+
+.nav-member .react-slidedown .pro-menu-item a.active {
+  color: #003642;
+  font-weight: 500;
+}
+
+.ps-menu-button a:active {
+  background-color: aliceblue !important;
+}

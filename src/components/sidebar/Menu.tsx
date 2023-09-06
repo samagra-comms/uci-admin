@@ -26,10 +26,6 @@ export const monitoringItemsConfig = [
   {
     label: "Outbound",
     link: "/monitoring/outbound",
-  },
-  {
-    label: "Transport-Socket",
-    link: "/monitoring/transport-socket",
   }
 ];
 
@@ -57,9 +53,5 @@ export const logsItemsConfig = [
   {
     label: "Outbound",
     link: "/monitoring/logs/outbound",
-  },
-  {
-    label: "Transport-Socket",
-    link: "/monitoring/logs/transport-socket",
   }
 ];
