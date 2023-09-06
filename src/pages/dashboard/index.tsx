@@ -30,6 +30,7 @@ export const Dashboard = () => {
       .then((res) => {
         store?.stopLoading();
         setBotList(res?.data?.result?.data);
+        console.log(botList);
         setTotalRecords(res?.data?.result?.totalCount || 0);
         if(searchText.length >0 ){
           setPage(1);
