@@ -13,6 +13,7 @@ import emptyList from "../../assets/images/empty.svg";
 
 const ConversationFlow: FC<{ compProps: any }> = ({ compProps }) => {
   const { conversationLogic, onToggle } = compProps;
+  
   return (
     <MDBRow>
       <h4>Conversation Flow</h4>
