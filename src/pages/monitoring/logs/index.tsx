@@ -213,7 +213,9 @@ export const Servicelogs: React.FC<ServicelogsProps> = ({
       <div className="parent-container">
         <MDBRow className="my-3 mx-10">
           <MDBCol className="date-picker-container col my-3">
-            <label className={`${theme}-label`}>Start Date&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label className={`bg-primary text-white ${theme}-label my-32`}>
+            &nbsp;&nbsp;&nbsp;&nbsp;Start Date&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
             <MDBIcon icon="calendar-alt" className={`${theme}-icon`} />
             <DateTimePicker
               onChange={handleDateChange}
@@ -223,7 +225,9 @@ export const Servicelogs: React.FC<ServicelogsProps> = ({
             />
           </MDBCol>
           <MDBCol className="date-picker-container col my-3">
-            <label className={`${theme}-label`}>End Date&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label className={`bg-primary text-white ${theme}-label my-32`}>
+            &nbsp;&nbsp;&nbsp;&nbsp;End Date&nbsp;&nbsp;&nbsp;&nbsp;
+            </label>
             <MDBIcon icon="calendar-alt" className={`${theme}-icon`} />
             <DateTimePicker
               onChange={handleEndDateChange}
@@ -235,39 +239,39 @@ export const Servicelogs: React.FC<ServicelogsProps> = ({
         </MDBRow>
         <MDBRow>
           <MDBCol>
-          <div className="autocomplete-container">
-            <form className="input-group" onSubmit={handleSearchSubmit}>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Enter No. of lines"
-                aria-label="Search"
-                value={searchText === 0 ? "" : searchText}
-                onChange={handleSearchInputChange}
-              />
-              <MDBBtn color="primary" type="submit">
-                Search
-              </MDBBtn>
-            </form>
-            {showDropdown &&
-              autocompleteSuggestions.length > 0 &&
-              searchText !== 0 && (
-                <ul className={`autocomplete-dropdown ${theme}-dropdown`}>
-                  {autocompleteSuggestions.map((item) => (
-                    <li
-                      key={item.value}
-                      onClick={() => handleDropdownItemClick(item.value)}
-                    >
-                      {item.value}
-                    </li>
-                  ))}
-                </ul>
+            <div className="autocomplete-container">
+              <form className="input-group" onSubmit={handleSearchSubmit}>
+                <input
+                  type="number"
+                  className="form-control bg-white"
+                  placeholder="Enter No. of lines"
+                  aria-label="Search"
+                  value={searchText === 0 ? "" : searchText}
+                  onChange={handleSearchInputChange}
+                />
+                <MDBBtn color="primary" type="submit">
+                  Search
+                </MDBBtn>
+              </form>
+              {showDropdown &&
+                autocompleteSuggestions.length > 0 &&
+                searchText !== 0 && (
+                  <ul className={`autocomplete-dropdown ${theme}-dropdown`}>
+                    {autocompleteSuggestions.map((item) => (
+                      <li
+                        key={item.value}
+                        onClick={() => handleDropdownItemClick(item.value)}
+                      >
+                        {item.value}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              {!searchPerformed && (
+                <p style={{ textAlign: "left", color: "red" }}>
+                  Please select number of lines
+                </p>
               )}
-            {!searchPerformed && (
-              <p style={{ textAlign: "center" }}>
-                Please select number of lines
-              </p>
-            )}
             </div>
           </MDBCol>
           <MDBCol>

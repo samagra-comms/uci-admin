@@ -10,7 +10,7 @@
 .date-picker {
   padding: 5px;
   cursor: pointer;
-  background-color: #024f9d;
+  background-color: white;
 }
 
 .light-icon {
@@ -30,7 +30,7 @@
 }
 
 .dark-date-picker,.light-date-picker {
-  color: white!important;
+  color: black !important;
 }
 
 .dark-date-picker .react-datetime-picker__button svg,
