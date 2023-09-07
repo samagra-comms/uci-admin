@@ -1,0 +1,47 @@
+.card-title {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-text {
+  text-align: center;
+}
+
+.dark-card {
+  background-color: black;
+  color: black;
+}
+
+.dark-dropdown {
+  color: black;
+}
+
+.autocomplete-container{
+    position: relative;
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  z-index: 100;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  list-style: none;
+  max-height: 150px;
+  min-width: 100%;
+  overflow-y: auto;
+}
+
+.autocomplete-dropdown li {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.autocomplete-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
+.dark-dropdown {
+  color: black !important;
+}
