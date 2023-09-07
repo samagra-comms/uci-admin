@@ -13,7 +13,7 @@ import { AppContext } from "./provider/contextProvider";
 import RequireAuth from "./hoc/requireAuth";
 import Loader from "./components/fullscreenLoader";
 import { useStore } from "./store";
-import { SuccessScreen, Dashboard, Login, Add } from "./pages";
+import { SuccessScreen, Dashboard, Login, Add, Overview } from "./pages";
 import { history } from "./utils/history";
 import Service from "./pages/monitoring/services";
 import { logs, monitoringItems } from "./AppConfig";
@@ -79,6 +79,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <SuccessScreen />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/monitoring/overview"
+                  element={
+                    <RequireAuth>
+                      <Overview />
                     </RequireAuth>
                   }
                 />
