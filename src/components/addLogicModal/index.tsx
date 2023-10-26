@@ -185,7 +185,7 @@ const AddLogicModal: FC<any> = ({
     }
   };
 
-  console.log({ media });
+ 
 
   if (!open) return null;
   return (

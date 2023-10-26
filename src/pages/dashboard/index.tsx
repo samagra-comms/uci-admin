@@ -16,6 +16,8 @@ import {
 import Pagination from "../../components/pagination";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store";
+import { deleteAllExpiredBots } from "../../api/deleteAllExpiredBots";
+import { removeBotsFromNl } from "../../api/removeBotsfromNl";
 
 const getSortTypeLabel = (value: string) => {
   switch (value) {
@@ -63,7 +65,15 @@ export const Dashboard = () => {
       });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, perPage, store.startLoading, store?.stopLoading, searchText,orderBy,sortBy]);
+  }, [
+    page,
+    perPage,
+    store.startLoading,
+    store?.stopLoading,
+    searchText,
+    orderBy,
+    sortBy,
+  ]);
 
   const onSortChange = useCallback(
     (sortValue) => () => {
@@ -77,10 +87,38 @@ export const Dashboard = () => {
     () => (orderBy === "desc" ? "sort-amount-down" : "sort-amount-up"),
     [orderBy]
   );
+
+  const onDeleteBots = useCallback(() => {
+    store?.startLoading();
+
+    deleteAllExpiredBots()
+      .then((res) => {
+        removeBotsFromNl(res.data.result)
+          .then((res) => {
+            toast.success(
+              `Bots succesfully removed from NL-${
+                res?.data?.data?.delete_segment_bots?.affected_rows || 0
+              }`
+            );
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+          })
+          .catch((err) => {
+            console.log({ err });
+          });
+        store?.stopLoading();
+      })
+      .catch((err) => {
+        store?.stopLoading();
+        toast.error(err.message);
+      });
+  }, [store]);
+
   return (
     <MDBContainer className="mt-5 px-5">
       <MDBRow className="my-3">
-        <MDBCol>
+        <MDBCol size={4}>
           <form className="d-flex input-group w-auto">
             <input
               type="search"
@@ -157,10 +195,10 @@ export const Dashboard = () => {
             <MDBIcon fas icon="plus" />
             &nbsp;&nbsp; Add
           </MDBBtn>
-          {/* <MDBBtn onClick={() => null}  className="mx-2">
-           <MDBIcon fas icon="redo" />
-            &nbsp;&nbsp; Refresh
-          </MDBBtn> */}
+          <MDBBtn onClick={onDeleteBots} className="mx-2 btn-danger">
+            <MDBIcon fas icon="trash" />
+            &nbsp;&nbsp; Delete Expired Bots
+          </MDBBtn>
         </MDBCol>
       </MDBRow>
       <div style={{ maxHeight: "80vh", overflow: "scroll" }}>

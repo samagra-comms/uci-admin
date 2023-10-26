@@ -80,7 +80,6 @@ export const onBotCreate = () => {
 
 export const onSegmentCreate = () => {
   const store: any = useStore.getState();
-  console.log({perPage:store?.cadencePerPage})
   const segData = {
     name: store?.state.name,
     all: {
@@ -185,8 +184,6 @@ export const onMappingBotToSegment = (extras) => {
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
-  console.log({ store });
-  console.log({state:store.state})
   for (const botLogic of store?.conversationLogic) {
     
     const newBotLogic = {
@@ -321,7 +318,6 @@ export const onBotUpdate = () => {
   store?.startLoading();
   updateBot(reqObj)
     .then((res) => {
-      console.log("bot update:", { res });
       store?.stopLoading();
       toast.success("Bot Updated");
       store.stopLoading();
@@ -329,7 +325,6 @@ export const onBotUpdate = () => {
       history.navigate("/success");
     })
     .catch((err) => {
-      console.log("bot update:", { err });
       store?.stopLoading();
       console.log({ err });
     });

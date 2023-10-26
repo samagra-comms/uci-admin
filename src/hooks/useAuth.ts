@@ -17,6 +17,7 @@ export const useAuth = () => {
           toast.error(res?.data?.params?.errMsg || "Something Went Wrong");
         }
         if (res.data.responseCode === "OK") {
+         
           localStorage.setItem("accessToken", res.data.result.data.user.token);
           localStorage.setItem(
             "self",

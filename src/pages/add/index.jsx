@@ -74,7 +74,7 @@ export const Add = () => {
             description: res?.data?.result?.description || "",
             purpose: res?.data?.result?.purpose || "",
           };
-          console.log("venom res vv:", { data });
+       
           store?.setState({
             ...data,
           });
@@ -83,7 +83,7 @@ export const Add = () => {
           store?.setBotIcon(data?.botImage);
         })
         .catch((error) => {
-          console.log("venom", { error });
+          console.log({ error });
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

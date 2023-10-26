@@ -14,9 +14,10 @@ import {
 import { toast } from "react-hot-toast";
 import { getBotUrl } from "../../utils";
 import { useNavigate } from "react-router-dom";
-import { startConversation } from "../../api/startConversation";
 import { useStore } from "../../store";
 import { updateBot } from "../../api/updateBot";
+import { deleteBot } from "../../api/deleteBot";
+import { removeBotsFromNl } from "../../api/removeBotsfromNl";
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const navigate = useNavigate();
@@ -33,33 +34,76 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   );
 
   const onEdit = useCallback(
-    (data) => {       
+    (data) => {
       localStorage.setItem("botToEdit", JSON.stringify(data));
       store?.setBotToEdit(data);
       store?.setConversationLogic(data?.logicIDs);
-      setTimeout(() => navigate(`/add-bot?bot=${data.id}`, { state: data }), 20);
+      setTimeout(
+        () => navigate(`/add-bot?bot=${data.id}`, { state: data }),
+        20
+      );
     },
     [navigate, store]
   );
 
-  const onEnable = useCallback((data) => {
-    console.log({data})
+  const onEnable = useCallback(
+    (data) => {
+      store.startLoading();
+      const newValue = {
+        id: data.id,
+        status: data.status === "DISABLED" ? "ENABLED" : "DISABLED",
+      };
+
+      updateBot(newValue)
+        .then((res) => {
+          store.stopLoading();
+          const toastMsg =
+            data.status === "DISABLED"
+              ? "Bot Enabled Succesfully"
+              : "Bot Disabled Succesfully";
+          toast.success(toastMsg);
+          window.location.reload();
+        })
+        .catch((err) => {
+          store.stopLoading();
+          toast.error(`Error occured in updating bot-${err.message}`);
+          console.log({ err });
+        });
+    },
+    [store]
+  );
+
+  const onDelete=useCallback((bot)=>{
     store.startLoading();
-    const newValue={id:data.id , status : data.status === 'DISABLED' ? 'ENABLED' : 'DISABLED'}
+    const data = {
+      "botId": bot.id,
+    };
 
-    updateBot(newValue).then(res=>{
-      store.stopLoading();
-      const toastMsg= data.status === 'DISABLED' ? 'Bot Enabled Succesfully' : 'Bot Disabled Succesfully'
-      toast.success(toastMsg);
-      window.location.reload();
-      console.log({res})
-    }).catch(err=>{
-      store.stopLoading();
-      toast.error(`Error occured in updating bot-${err.message}`)
-      console.log({err});
-    })
-  }, [store]);
+    deleteBot(data)
+      .then((res) => {
+        store.stopLoading();
+       // toast.success('Bot Deleted Succesfully');
+       // window.location.reload();
 
+        removeBotsFromNl(res.data.result)
+        .then((res) => {
+          toast.success(
+            `Bots succesfully removed from NL-${
+              res?.data?.data?.delete_segment_bots?.affected_rows || 0
+            }`
+          );
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        })
+      })
+      .catch((err) => {
+        store.stopLoading();
+        toast.error(`Error occured in updating bot-${err.message}`);
+        console.log({ err });
+      });
+  },
+  [store])
   return (
     <MDBTable align="middle" small>
       <MDBTableHead>
@@ -123,7 +167,11 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                     })
                   )}
                 >
-                  <MDBIcon fas icon="copy" style={{fontSize:'18px',color:'#4F4F4F'}}/>
+                  <MDBIcon
+                    fas
+                    icon="copy"
+                    style={{ fontSize: "18px", color: "#4F4F4F" }}
+                  />
                 </MDBBtn>
               </td>
               <td>
@@ -133,32 +181,55 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                   size="sm"
                   onClick={onCopy(record?.id)}
                 >
-                  <MDBIcon fas icon="copy" style={{fontSize:'18px',color:'#4F4F4F'}} />
+                  <MDBIcon
+                    fas
+                    icon="copy"
+                    style={{ fontSize: "18px", color: "#4F4F4F" }}
+                  />
                 </MDBBtn>
               </td>
               <td className="no-icon">
-                <MDBDropdown group dropright className="shadow-0" >
-                  <MDBDropdownToggle color="link"><MDBIcon fas icon="ellipsis-v" style={{fontSize:'18px',color:'#4F4F4F'}}/></MDBDropdownToggle>
+                <MDBDropdown group dropright className="shadow-0">
+                  <MDBDropdownToggle color="link">
+                    <MDBIcon
+                      fas
+                      icon="ellipsis-v"
+                      style={{ fontSize: "18px", color: "#4F4F4F" }}
+                    />
+                  </MDBDropdownToggle>
                   <MDBDropdownMenu>
                     <MDBDropdownItem
                       link
                       childTag="button"
                       onClick={(ev) => {
                         ev.preventDefault();
-                         onEdit(record);
+                        onEdit(record);
                       }}
-                    
                     >
                       Edit
                     </MDBDropdownItem>
-          
-                    <MDBDropdownItem link             
+
+                    <MDBDropdownItem
+                      link
                       childTag="button"
-                     
                       onClick={(ev) => {
                         ev.preventDefault();
                         onEnable(record);
-                      }}>{record?.status === 'DISABLED' ? 'Enable' : 'Disable'}   </MDBDropdownItem>
+                      }}
+                    >
+                      {record?.status === "DISABLED" ? "Enable" : "Disable"}
+                    </MDBDropdownItem>
+
+                    <MDBDropdownItem
+                      link
+                      childTag="button"
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        onDelete(record);
+                      }}
+                    >
+                      Delete Bot
+                    </MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
               </td>
