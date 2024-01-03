@@ -18,6 +18,7 @@ import { useStore } from "../../store";
 import { updateBot } from "../../api/updateBot";
 import { deleteBot } from "../../api/deleteBot";
 import { removeBotsFromNl } from "../../api/removeBotsfromNl";
+import { startConversation } from "../../api/startConversation";
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const navigate = useNavigate();
@@ -104,6 +105,19 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       });
   },
   [store])
+
+  const onResendNotification =useCallback((bot)=>{
+   store.startLoading();
+    startConversation(bot).then(response=>{
+      console.log({response})
+      toast.success(`Notification Triggered`)
+      store.stopLoading();
+    }).catch(err=>{
+      toast.error(err.message);
+      store.stopLoading();
+    })
+  },[store]);
+  
   return (
     <MDBTable align="middle" small>
       <MDBTableHead>
@@ -229,6 +243,16 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                       }}
                     >
                       Delete Bot
+                    </MDBDropdownItem>
+                    <MDBDropdownItem
+                      link
+                      childTag="button"
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        onResendNotification(record);
+                      }}
+                    >
+                      Trigger Notification
                     </MDBDropdownItem>
                   </MDBDropdownMenu>
                 </MDBDropdown>
