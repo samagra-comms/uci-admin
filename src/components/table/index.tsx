@@ -147,6 +147,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       </MDBTableHead>
       <MDBTableBody>
         {data.map((record, index) => {
+          console.log({record})
           return (
             <tr key={record?.id}>
               <td>
@@ -247,9 +248,10 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                     <MDBDropdownItem
                       link
                       childTag="button"
+                      disabled={!record.name.includes('Broadcast')}
                       onClick={(ev) => {
                         ev.preventDefault();
-                        onResendNotification(record);
+                        record.name.includes('Broadcast') &&  onResendNotification(record);
                       }}
                     >
                       Trigger Notification
