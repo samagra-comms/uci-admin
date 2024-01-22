@@ -107,12 +107,8 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   [store])
 
   const onResendNotification =useCallback((bot)=>{
-   store.startLoading();
-    startConversation(bot).then(response=>{
-      console.log({response})
-      toast.success(`Notification Triggered`)
-      store.stopLoading();
-    }).catch(err=>{
+    toast.success(`Notification Triggered`)
+    startConversation(bot).catch(err=>{
       toast.error(err.message);
       store.stopLoading();
     })
