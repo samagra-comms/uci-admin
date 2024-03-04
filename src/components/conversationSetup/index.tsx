@@ -1,6 +1,5 @@
 import {
   MDBCheckbox,
-  MDBCol,
   MDBFile,
   MDBInput,
   MDBRow,
@@ -71,6 +70,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           disabled={disabled}
           onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
         />
+        {errors?.botIcon && <div className="form-text text-danger"> Filename must contain only alphanumeric characters, hyphens, and underscores.</div>}
       </div>
 
       <div className="mb-3">

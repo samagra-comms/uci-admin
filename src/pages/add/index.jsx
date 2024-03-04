@@ -23,7 +23,7 @@ import { useSearchParams } from "react-router-dom";
 import { onBotCreate, onBotUpdate } from "../../api/api-util-functions";
 import { useStore } from "../../store";
 import { getBotById } from "../../api/getBotById";
-
+const filenameRegex = /^[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+$/;
 export const Add = () => {
   const store = useStore();
 
@@ -40,6 +40,7 @@ export const Add = () => {
     [searchParams]
   );
 
+  const isInvalidFileName =useMemo(()=> !(filenameRegex.test(store?.botIcon?.name)),[store?.botIcon?.name]);
   const onChangeHandler = useCallback(
     (ev) => {
       if (isEditParamAvailable) {
@@ -61,6 +62,16 @@ export const Add = () => {
     },
     [isEditParamAvailable]
   );
+
+  useEffect(()=>{
+    if(store?.botIcon && isInvalidFileName){
+      setErrors((prev) => ({ ...prev, botIcon: "Filename must contain only alphanumeric characters, hyphens, and underscores" }));
+    }
+    else {
+      setErrors((prev) => ({ ...prev, botIcon: null }));
+    }
+
+  },[isInvalidFileName, store?.botIcon]);
 
   useEffect(() => {
     if (searchParams.get("bot")) {
