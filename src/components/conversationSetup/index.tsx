@@ -1,6 +1,5 @@
 import {
   MDBCheckbox,
-  MDBCol,
   MDBFile,
   MDBInput,
   MDBRow,
@@ -18,10 +17,12 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const { onChangeHandler, errors, disabled } = compProps;
   const onDateChangeHandler = useCallback(
     (data) => {
+      
       onChangeHandler({ target: data });
     },
     [onChangeHandler]
   );
+ 
 
   return (
     <MDBRow className="">
@@ -37,7 +38,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               className="text-center mx-auto"
               style={{
                 background: "white",
-
+                overflow:'hidden',
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -50,9 +51,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               <img
                 className="mx-auto"
                 style={{
-                  height: "100px",
+                  height: "150px",
                   width: "150px",
                   objectFit: "contain",
+                  borderRadius:'50%'
                 }}
                 src={store?.state?.botImage}
                 alt="bot-icon"
@@ -68,6 +70,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           disabled={disabled}
           onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
         />
+        {errors?.botIcon && <div className="form-text text-danger"> Filename must contain only alphanumeric characters, hyphens, and underscores.</div>}
       </div>
 
       <div className="mb-3">
@@ -83,6 +86,32 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         {errors.name && (
           <div className="form-text text-danger"> {errors?.name}</div>
         )}
+      </div>
+
+      <div className="mb-3">
+        <MDBInput
+          label="Bucket Name *"
+          type="text"
+          onChange={onChangeHandler}
+          name="tags"
+          style={{ background: "white" }}
+          value={store?.state?.tags}
+          size="md"
+        />
+        {errors.tags && (
+          <div className="form-text text-danger"> {errors?.tags}</div>
+        )}
+      </div>
+      <div className="mb-3">
+        <MDBCheckbox
+          name="flexCheck"
+          checked={['pinned','PINNED'].includes(store?.state?.status) }
+          onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
+          id="flexCheckDefault2"
+          label="Pinned to User's Screen"
+          size={5}
+          defaultChecked={['pinned','PINNED'].includes(store?.state?.status) }
+        />
       </div>
       <div className="mb-3">
         <MDBTextArea
