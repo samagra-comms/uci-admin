@@ -14,6 +14,7 @@ const initialState = {
     startDate: new Date(moment().subtract(1,'days').valueOf()),
     endDate: null,
     startingMessage: "",
+    tags:""
   },
   segmentCount: 100,
   activeLogic: {},
@@ -47,6 +48,7 @@ export const useStore = create((set) => ({
     startDate:new Date(moment().subtract(1,'days').valueOf()),
     endDate: null,
     startingMessage: "",
+    tags:""
   },
   editState:{
   },
