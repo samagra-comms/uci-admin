@@ -17,12 +17,11 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const { onChangeHandler, errors, disabled } = compProps;
   const onDateChangeHandler = useCallback(
     (data) => {
-      
       onChangeHandler({ target: data });
     },
     [onChangeHandler]
   );
- 
+
 
   return (
     <MDBRow className="">
@@ -38,7 +37,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               className="text-center mx-auto"
               style={{
                 background: "white",
-                overflow:'hidden',
+                overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -54,7 +53,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
                   height: "150px",
                   width: "150px",
                   objectFit: "contain",
-                  borderRadius:'50%'
+                  borderRadius: "50%",
                 }}
                 src={store?.state?.botImage}
                 alt="bot-icon"
@@ -70,7 +69,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           disabled={disabled}
           onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
         />
-        {errors?.botIcon && <div className="form-text text-danger"> Filename must contain only alphanumeric characters, hyphens, and underscores.</div>}
+        {errors?.botIcon && (
+          <div className="form-text text-danger">
+            {" "}
+            Filename must contain only alphanumeric characters, hyphens, and
+            underscores.
+          </div>
+        )}
       </div>
 
       <div className="mb-3">
@@ -105,12 +110,17 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       <div className="mb-3">
         <MDBCheckbox
           name="flexCheck"
-          checked={['pinned','PINNED'].includes(store?.state?.status) }
-          onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
+          checked={store?.state?.isPinned}
+          //  onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
+          onChange={(ev) =>
+            onChangeHandler({
+              target: { name: "isPinned", value: ev.target.checked },
+            })
+          }
           id="flexCheckDefault2"
           label="Pinned to User's Screen"
           size={5}
-          defaultChecked={['pinned','PINNED'].includes(store?.state?.status) }
+          defaultChecked={store?.state?.isPinned}
         />
       </div>
       <div className="mb-3">
@@ -176,7 +186,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           size="md"
           onChange={onChangeHandler}
-          name="segmentId"  
+          name="segmentId"
           value={store?.state?.segmentId}
           disabled={!store?.isBroadcastBot || disabled}
         />

@@ -114,6 +114,18 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
     })
   },[store]);
   
+  const getStatusColor =useCallback((status: string)=>{
+    switch(status){
+      case 'ENABLED':
+        return 'success'
+      case 'DISABLED':
+        return 'danger'
+      case '':  
+      default:
+        return 'primary'
+    }
+  },[])
+ 
   return (
     <MDBTable align="middle" small>
       <MDBTableHead>
@@ -151,10 +163,10 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
               </td>
               <td>
                 <MDBBadge
-                  color={record?.status === "ENABLED" ? "success" : "warning"}
+                  color={getStatusColor(record?.status)}
                   pill
                 >
-                  {record?.status === "ENABLED" ? "Active" : "DRAFT"}
+                  {record?.status === "ENABLED" ? "Active" : record?.status}
                 </MDBBadge>
               </td>
               <td>

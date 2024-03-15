@@ -17,6 +17,7 @@ export const onBotCreate = () => {
   const reqObj = {
     ...store?.state,
     tags: store?.state?.tags?.split(","),
+    isPinned: store?.state?.isPinned,
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -259,6 +260,7 @@ export const onBroadcastBotCreate=()=>{
   const reqObj = {
     ...store?.state,
     tags: store?.state?.tags?.split(","),
+    isPinned: store?.state?.isPinned,
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
