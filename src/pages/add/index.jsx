@@ -80,6 +80,7 @@ export const Add = () => {
           const data = {
             // ...store?.state,
             ...res.data.result,
+            isPinned: res?.data?.result?.meta?.isPinned ?? false,
             startDate: new Date(res?.data?.result?.startDate),
             endDate: new Date(res?.data?.result?.endDate),
             description: res?.data?.result?.description || "",
@@ -211,7 +212,7 @@ export const Add = () => {
     return (
       Object.values(errors).some((v) => v !== null) ||
       Object.values(
-        store?.isBroadcastBot ? store?.state : omit(store?.state, ["segmentId"])
+        store?.isBroadcastBot ? omit(store?.state,["tags"]) : omit(store?.state, ["segmentId","tags"])
       ).some((v) => v === "" || v === undefined || v === null) ||
       store?.botIcon === "" ||
       store?.botIcon === null
@@ -223,6 +224,7 @@ export const Add = () => {
     store?.isBroadcastBot,
     isEditParamAvailable,
   ]);
+ 
   return (
     <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
       <MDBRow className="mt-3">

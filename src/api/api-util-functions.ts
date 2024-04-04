@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
+import { omit } from "lodash";
 
 
 export const onBotCreate = () => {
@@ -15,8 +16,12 @@ export const onBotCreate = () => {
   store.startLoading();
 
   const reqObj = {
-    ...store?.state,
+    ...omit(store?.state, ["isPinned"]) as any,
     tags: store?.state?.tags?.split(","),
+    // isPinned: store?.state?.isPinned,
+    meta: {
+      isPinned: store?.state?.isPinned,
+    },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -149,9 +154,9 @@ export const onStartConversation = (bot) => {
       store?.stopLoading();
       toast.error(`Error Occured in Starting bot: ${err.message}`);
     });
-    store.stopLoading();
-      store.onReset();
-      history.navigate("/success");
+  store.stopLoading();
+  store.onReset();
+  history.navigate("/success");
 };
 
 export const onAfterBotSubmit = (extras) => {
@@ -179,14 +184,14 @@ export const onMappingBotToSegment = (extras) => {
     segmentId: parseInt(store?.state?.segmentId, 10),
     botId: store.conversationBot.botId,
   };
- return mapToSegment(mappingData)
-    
+  return mapToSegment(mappingData)
+
 };
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
   for (const botLogic of store?.conversationLogic) {
-    
+
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
@@ -252,13 +257,17 @@ export const onCreateBroadcastBotLogic = () => {
 };
 
 
-export const onBroadcastBotCreate=()=>{
+export const onBroadcastBotCreate = () => {
   const store: any = useStore.getState();
   store.startLoading();
 
   const reqObj = {
-    ...store?.state,
+    ...omit(store?.state, ["isPinned"]) as any,
     tags: store?.state?.tags?.split(","),
+    // isPinned: store?.state?.isPinned,
+    meta: {
+      isPinned: store?.state?.isPinned,
+    },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -275,9 +284,9 @@ export const onBroadcastBotCreate=()=>{
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
   }
- 
-    reqObj.name += " Broadcast";
-    reqObj.startingMessage += " Broadcast";
+
+  reqObj.name += " Broadcast";
+  reqObj.startingMessage += " Broadcast";
 
 
   // store?.startLoading();
@@ -286,6 +295,7 @@ export const onBroadcastBotCreate=()=>{
   formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
+  console.log("debug", { reqObj })
   createBot(formdata)
     .then((res) => {
       onStartConversation(res?.data?.result);
@@ -305,6 +315,7 @@ export const onBotUpdate = () => {
 
   const reqObj = {
     ...store?.editState,
+    meta: { isPinned: store?.editState?.isPinned },
     id: store.state.id,
   };
 
@@ -318,7 +329,8 @@ export const onBotUpdate = () => {
   // const newData = omitBy(reqObj, isNull);
   // console.log("bot update:", { reqObj, newData });
   store?.startLoading();
-  updateBot(reqObj)
+
+  updateBot(omit(reqObj, ["isPinned"]))
     .then((res) => {
       store?.stopLoading();
       toast.success("Bot Updated");
