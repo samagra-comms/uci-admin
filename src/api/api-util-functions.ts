@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
+import { omit } from "lodash";
 
 
 export const onBotCreate = () => {
@@ -15,9 +16,12 @@ export const onBotCreate = () => {
   store.startLoading();
 
   const reqObj = {
-    ...store?.state,
+    ...omit(store?.state,["isPinned"]) as any,
     tags: store?.state?.tags?.split(","),
-    isPinned: store?.state?.isPinned,
+    // isPinned: store?.state?.isPinned,
+    meta:{
+      isPinned: store?.state?.isPinned,
+     },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -258,9 +262,12 @@ export const onBroadcastBotCreate=()=>{
   store.startLoading();
 
   const reqObj = {
-    ...store?.state,
+    ...omit(store?.state,["isPinned"]) as any,
     tags: store?.state?.tags?.split(","),
+   // isPinned: store?.state?.isPinned,
+   meta:{
     isPinned: store?.state?.isPinned,
+   },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -288,6 +295,7 @@ export const onBroadcastBotCreate=()=>{
   formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
+  console.log("debug",{reqObj})
   createBot(formdata)
     .then((res) => {
       onStartConversation(res?.data?.result);
@@ -307,6 +315,7 @@ export const onBotUpdate = () => {
 
   const reqObj = {
     ...store?.editState,
+    meta:{isPinned:store?.editState?.isPinned},
     id: store.state.id,
   };
 
@@ -320,7 +329,8 @@ export const onBotUpdate = () => {
   // const newData = omitBy(reqObj, isNull);
   // console.log("bot update:", { reqObj, newData });
   store?.startLoading();
-  updateBot(reqObj)
+
+  updateBot(omit(reqObj,["isPinned"]))
     .then((res) => {
       store?.stopLoading();
       toast.success("Bot Updated");

@@ -36,11 +36,12 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
 
   const onEdit = useCallback(
     (data) => {
-      localStorage.setItem("botToEdit", JSON.stringify(data));
-      store?.setBotToEdit(data);
+      const updatedData={...data,isPinned:data?.meta?.isPinned ?? false }
+      localStorage.setItem("botToEdit", JSON.stringify(updatedData));
+      store?.setBotToEdit({...data,isPinned:data?.meta?.isPinned ?? false });
       store?.setConversationLogic(data?.logicIDs);
       setTimeout(
-        () => navigate(`/add-bot?bot=${data.id}`, { state: data }),
+        () => navigate(`/add-bot?bot=${data.id}`, { state: {...data,isPinned:data?.meta?.isPinned ?? false } }),
         20
       );
     },
@@ -155,7 +156,6 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       </MDBTableHead>
       <MDBTableBody>
         {data.map((record, index) => {
-          console.log({record})
           return (
             <tr key={record?.id}>
               <td>
@@ -163,10 +163,10 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
               </td>
               <td>
                 <MDBBadge
-                  color={getStatusColor(record?.status)}
+                  color={record?.meta?.isPinned ? "primary": getStatusColor(record?.status)}
                   pill
                 >
-                  {record?.status === "ENABLED" ? "Active" : record?.status}
+                  {record?.meta?.isPinned ? "Pinned" : record?.status === "ENABLED" ? "Active" : record?.status}
                 </MDBBadge>
               </td>
               <td>

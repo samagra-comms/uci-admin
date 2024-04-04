@@ -80,6 +80,7 @@ export const Add = () => {
           const data = {
             // ...store?.state,
             ...res.data.result,
+            isPinned: res?.data?.result?.meta?.isPinned ?? false,
             startDate: new Date(res?.data?.result?.startDate),
             endDate: new Date(res?.data?.result?.endDate),
             description: res?.data?.result?.description || "",
