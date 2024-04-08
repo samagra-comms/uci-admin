@@ -314,10 +314,12 @@ export const onBotUpdate = () => {
   store?.startLoading();
   const reqObj = {
     ...store?.editState,
+
     meta: store?.editState?.isPinned ? { isPinned: store?.editState?.isPinned ?? false } : null,
     tags: store?.editState?.tags ? store?.editState?.tags?.split(",") : null,
     id: store.state.id,
   };
+  
 
   const _reqObj = omitBy(reqObj, isNull);
 
@@ -327,8 +329,7 @@ export const onBotUpdate = () => {
   if (_reqObj.endDate) {
     _reqObj.endDate = moment(_reqObj.endDate).format("YYYY-MM-DD");
   }
-  // const newData = omitBy(reqObj, isNull);
-  // console.log("bot update:", { reqObj, newData });
+
   store?.startLoading();
 
   updateBot(omit(_reqObj, ["isPinned"]))
