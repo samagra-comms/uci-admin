@@ -156,7 +156,7 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
       </MDBTableHead>
       <MDBTableBody>
         {data.map((record, index) => {
-          console.log({record})
+      
           return (
             <tr key={record?.id}>
               <td>

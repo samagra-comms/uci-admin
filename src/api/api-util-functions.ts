@@ -312,15 +312,14 @@ export const onBroadcastBotCreate = () => {
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
   store?.startLoading();
-console.log("reqObj:",store?.editState)
   const reqObj = {
     ...store?.editState,
-    meta: store?.editState?.isPinned ? { isPinned: store?.editState?.isPinned ?? false } :null,
-    tags: store?.editState?.tags ? store?.editState?.tags?.split(",") :null,
+    meta: store?.editState?.isPinned ? { isPinned: store?.editState?.isPinned ?? false } : null,
+    tags: store?.editState?.tags ? store?.editState?.tags?.split(",") : null,
     id: store.state.id,
   };
-  
-const _reqObj =omitBy(reqObj, isNull);
+
+  const _reqObj = omitBy(reqObj, isNull);
 
   if (_reqObj.startDate) {
     _reqObj.startDate = moment(_reqObj.startDate).format("YYYY-MM-DD");
@@ -331,7 +330,7 @@ const _reqObj =omitBy(reqObj, isNull);
   // const newData = omitBy(reqObj, isNull);
   // console.log("bot update:", { reqObj, newData });
   store?.startLoading();
-console.log({_reqObj})
+
   updateBot(omit(_reqObj, ["isPinned"]))
     .then((res) => {
       store?.stopLoading();
