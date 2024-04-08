@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 import { history } from "../utils/history";
 import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
-import { omit } from "lodash";
+import { isNull, omit, omitBy } from "lodash";
 
 
 export const onBotCreate = () => {
@@ -312,28 +312,27 @@ export const onBroadcastBotCreate = () => {
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
   store?.startLoading();
-
   const reqObj = {
     ...store?.editState,
 
-    meta: { isPinned: store?.editState?.isPinned ?? false },
-    tags: store?.editState?.tags ? store?.editState?.tags?.split(",") :null,
+    meta: store?.editState?.isPinned ? { isPinned: store?.editState?.isPinned ?? false } : null,
+    tags: store?.editState?.tags ? store?.editState?.tags?.split(",") : null,
     id: store.state.id,
   };
   
 
+  const _reqObj = omitBy(reqObj, isNull);
 
-  if (reqObj.startDate) {
-    reqObj.startDate = moment(reqObj.startDate).format("YYYY-MM-DD");
+  if (_reqObj.startDate) {
+    _reqObj.startDate = moment(_reqObj.startDate).format("YYYY-MM-DD");
   }
-  if (reqObj.endDate) {
-    reqObj.endDate = moment(reqObj.endDate).format("YYYY-MM-DD");
+  if (_reqObj.endDate) {
+    _reqObj.endDate = moment(_reqObj.endDate).format("YYYY-MM-DD");
   }
-  // const newData = omitBy(reqObj, isNull);
-  // console.log("bot update:", { reqObj, newData });
+
   store?.startLoading();
 
-  updateBot(omit(reqObj, ["isPinned"]))
+  updateBot(omit(_reqObj, ["isPinned"]))
     .then((res) => {
       store?.stopLoading();
       toast.success("Bot Updated");

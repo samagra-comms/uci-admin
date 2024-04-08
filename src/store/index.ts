@@ -21,6 +21,7 @@ const initialState = {
   botIcon: "",
   userSegments: [],
   broadcastBotLogics: [],
+  editState:{}
 };
 
 export const useStore = create((set) => ({
