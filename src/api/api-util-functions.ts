@@ -315,6 +315,7 @@ export const onBotUpdate = () => {
 
   const reqObj = {
     ...store?.editState,
+
     meta: { isPinned: store?.editState?.isPinned ?? false },
     tags: store?.editState?.tags ? store?.editState?.tags?.split(",") :null,
     id: store.state.id,
