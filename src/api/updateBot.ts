@@ -11,6 +11,7 @@ export const updateBot = (data: any) => {
       asset: "bot",
     },
   };
+  
 
   return axios.patch(url,  omit (data,['id','segmentId']), config);
 };
