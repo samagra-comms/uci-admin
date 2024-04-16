@@ -53,7 +53,6 @@ export const Add = () => {
     },
     [store, isEditParamAvailable]
   );
-
   const onSubmitHandler = useCallback(
     (ev) => {
       ev.preventDefault();

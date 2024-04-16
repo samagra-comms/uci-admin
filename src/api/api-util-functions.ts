@@ -315,8 +315,8 @@ export const onBotUpdate = () => {
   const reqObj = {
     ...store?.editState,
 
-    meta: store?.editState?.isPinned ? { isPinned: store?.editState?.isPinned ?? false } : null,
-    tags: store?.editState?.tags ? store?.editState?.tags?.split(",") : null,
+    meta: Object.keys(store?.editState)?.includes("isPinned") ?  { isPinned: store?.editState?.isPinned ?? false } : null,
+    tags:Object.keys(store?.editState)?.includes("tags")  ? store?.editState?.tags?.split(",").filter(tag=>tag!=="") : null,
     id: store.state.id,
   };
   
@@ -338,7 +338,7 @@ export const onBotUpdate = () => {
       toast.success("Bot Updated");
       store.stopLoading();
       store.onReset();
-      history.navigate("/success");
+      history.navigate("/success",{replace:true});
     })
     .catch((err) => {
       store?.stopLoading();
