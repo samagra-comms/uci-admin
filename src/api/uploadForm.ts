@@ -9,7 +9,7 @@ export const uploadForm = (data: any) => {
       "Content-type": "multipart/form-data",
     },
   };
-
+console.log("debug:",{form:data?.form})
   const formData = new FormData();
   formData.append("form", data.form, `${data.form.name}`);
   if (data?.media) {

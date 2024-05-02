@@ -24,12 +24,14 @@ import { getUploadErrorMsg } from "../../utils";
 import { useStore } from "../../store";
 import "./style.css";
 import FileModal from "../fileModal";
+import { getSimplifiedForm } from "./simplified-xml-form";
 
 const AddLogicModal: FC<any> = ({
   open,
   activeLogic = {},
   setConversationLogic,
   onToggle,
+  isSimpleFlow,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [logics, setLogics] = useState<any>([]);
@@ -41,7 +43,7 @@ const AddLogicModal: FC<any> = ({
   const [modalState, setModalState] = useState<any>({ ...activeLogic });
   const store: any = useStore();
   const onSubmitHandler = useCallback(() => {}, []);
-
+console.log("debug",{media,form,modalState,state:store?.state})
   const onChangeHandler = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       setModalState((prev: any) => ({
@@ -86,7 +88,6 @@ const AddLogicModal: FC<any> = ({
       adapter: process.env.REACT_APP_adapterId,
     };
 
-
     addLogic({ data })
       .then((res) => {
         const newLogic = [...logics, { ...res.data.result }];
@@ -117,10 +118,12 @@ const AddLogicModal: FC<any> = ({
   }, []);
 
   const onFormUpload = useCallback(
-    (ev: any) => {
+   async (ev: any) => {
       ev.preventDefault();
       setIsLoading(true);
-      uploadForm(omitBy({ form, media }, isNull))
+      const updatedForm =isSimpleFlow ? await getSimplifiedForm({media,name:store?.state?.name,content:modalState?.content}) : form;
+
+      uploadForm(omitBy({ form:updatedForm, media,isSimpleFlow }, isNull))
         .then((res) => {
           if (res?.data?.result?.status === "ERROR") {
             toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`);
@@ -136,7 +139,7 @@ const AddLogicModal: FC<any> = ({
           toast.error(err.message || "Something Went Wrong");
         });
     },
-    [form, media]
+    [form, isSimpleFlow, media, modalState?.content, store?.state?.name]
   );
 
   const onCadenceChange = useCallback(
@@ -185,8 +188,7 @@ const AddLogicModal: FC<any> = ({
     }
   };
 
- 
-
+  console.log({modalState})
   if (!open) return null;
   return (
     <>
@@ -195,7 +197,9 @@ const AddLogicModal: FC<any> = ({
           <MDBContainer>
             <MDBModalContent>
               <MDBModalHeader>
-                <MDBModalTitle>Add Conversation Logic</MDBModalTitle>
+                <MDBModalTitle>
+                  Add {isSimpleFlow ? "Simplified" : ""} Conversation Logic{" "}
+                </MDBModalTitle>
                 <MDBBtn
                   className="btn-close"
                   color="none"
@@ -207,7 +211,7 @@ const AddLogicModal: FC<any> = ({
                   <MDBContainer>
                     <MDBRow className="mb-3">
                       <MDBInput
-                        label="Name"
+                        label="Notification title"
                         name="name"
                         value={modalState.name}
                         onChange={onChangeHandler}
@@ -215,36 +219,48 @@ const AddLogicModal: FC<any> = ({
                     </MDBRow>
                     <MDBRow className="mb-3">
                       <MDBInput
-                        label="Description"
-                        name="description" 
+                        label="Notification Description"
+                        name="description"
                         value={modalState.description}
                         onChange={onChangeHandler}
                       />
                     </MDBRow>
                     <MDBRow className="mb-3">
-                      <label className="text-muted label">
-                        Cadence Records Per Page
-                      </label>
-                      <select
-                        className="form-control"
-                        value={cadencePerPage}
-                        onChange={onCadenceChange}
-                      >
-                        <option value="100">100</option>
-                        <option value="1000">1000</option>
-                      </select>
-                    </MDBRow>
-                    <MDBRow className="mb-3">
-                      <MDBFile
-                        label="Upload ODK Form (.xml)"
-                        accept=".xml"
-                        size="sm"
-                        id="formFileSm"
-                        name="file"
-                        onChange={onOdkFormChange}
+                      <MDBInput
+                        label="Content"
+                        name="content"
+                        value={modalState.content}
+                        onChange={onChangeHandler}
                       />
                     </MDBRow>
-                    
+                    {!isSimpleFlow && (
+                      <>
+                        {" "}
+                        <MDBRow className="mb-3">
+                          <label className="text-muted label">
+                            Cadence Records Per Page
+                          </label>
+                          <select
+                            className="form-control"
+                            value={cadencePerPage}
+                            onChange={onCadenceChange}
+                          >
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                          </select>
+                        </MDBRow>
+                        <MDBRow className="mb-3">
+                          <MDBFile
+                            label="Upload ODK Form (.xml)"
+                            accept=".xml"
+                            size="sm"
+                            id="formFileSm"
+                            name="file"
+                            onChange={onOdkFormChange}
+                          />
+                        </MDBRow>
+                      </>
+                    )}
                     <MDBRow className="mb-3">
                       <MDBFile
                         label="Upload Media"
@@ -252,10 +268,9 @@ const AddLogicModal: FC<any> = ({
                         id="formFileSm"
                         multiple
                         onChange={handleFileChange}
-
                       />
                     </MDBRow>
-                    
+
                     <MDBRow className="p-0">
                       {/* {renderSelectedFiles()}  */}
                       <div className="file-picker mb-2">
@@ -267,7 +282,6 @@ const AddLogicModal: FC<any> = ({
                                 className="d-flex justify-content-between mb-2 border p-1 align-items-center"
                               >
                                 <span>
-                                 
                                   <MDBIcon far icon="file" /> {file.name}
                                 </span>
 
@@ -283,7 +297,7 @@ const AddLogicModal: FC<any> = ({
                                   color="none"
                                   className="m-1"
                                   style={{ color: "#ff4444" }}
-                                  onClick={(ev) => confirmDelete(ev,file.name)}
+                                  onClick={(ev) => confirmDelete(ev, file.name)}
                                 >
                                   <MDBIcon fas icon="trash-alt" />
                                 </MDBBtn>
@@ -301,7 +315,7 @@ const AddLogicModal: FC<any> = ({
                         <MDBBtn
                           size="sm"
                           onClick={onFormUpload}
-                          disabled={form === null || isLoading}
+                          disabled={(isSimpleFlow ? modalState?.content==="" : form === null) || isLoading}
                         >
                           {isLoading ? (
                             <MDBSpinner
@@ -327,7 +341,7 @@ const AddLogicModal: FC<any> = ({
                 <MDBBtn color="secondary" onClick={onClose}>
                   Close
                 </MDBBtn>
-                <MDBBtn onClick={onLogicAdd} disabled={isSubmitDisabled}>
+                <MDBBtn onClick={onLogicAdd} >
                   Add
                 </MDBBtn>
               </MDBModalFooter>

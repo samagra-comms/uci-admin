@@ -10,8 +10,16 @@ import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
 import { isNull, omit, omitBy } from "lodash";
 
+// const getDefaultIcon = async () => {
+//   const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
+//   console.log({ response })
+//   return await response.blob();
+//   // const blob = await response.blob(); // Convert the response to a Blob
 
-export const onBotCreate = () => {
+//   // const formData = new FormData();
+//   // formData.append('image', blob, 'myimage.png');
+// }
+export const onBotCreate =async () => {
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -19,12 +27,16 @@ export const onBotCreate = () => {
     ...omit(store?.state, ["isPinned"]) as any,
     tags: store?.state?.tags?.split(","),
     // isPinned: store?.state?.isPinned,
+
     meta: {
       isPinned: store?.state?.isPinned,
     },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
+    description: store?.state?.name + "_description" ,
+    purpose: store?.state?.name + "_purpose",
+    startingMessage: store?.state?.name + "_startingMessage",
   };
   store?.userSegments.forEach((userSegment) => {
     reqObj.users.push(userSegment.id);
@@ -46,14 +58,21 @@ export const onBotCreate = () => {
   store?.startLoading();
   var formdata = new FormData();
   //@ts-ignore
-  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
+
+
+  if(store?.state?.useDefaultIcon){
+    const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
+    const blob = await response.blob(); // Convert the response to a Blob
+    formdata.append('botImage', blob, 'defaultLogo.jpg');
+  } else {
+  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);}
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
   createBot(formdata)
     .then((res) => {
       store?.setConversationBot({
         ...res.data.result,
-        text: store?.state?.startingMessage,
+        text: store?.state?.name + "_startingMessage",
         botId: res.data.result.id,
       });
       if (store?.isBroadcastBot) {
@@ -257,7 +276,7 @@ export const onCreateBroadcastBotLogic = () => {
 };
 
 
-export const onBroadcastBotCreate = () => {
+export const onBroadcastBotCreate =async () => {
   const store: any = useStore.getState();
   store.startLoading();
 
@@ -268,6 +287,8 @@ export const onBroadcastBotCreate = () => {
     meta: {
       isPinned: store?.state?.isPinned,
     },
+    description: store?.state?.name + "_description" ,
+    purpose: store?.state?.purpose + "_purpose",
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
@@ -291,8 +312,13 @@ export const onBroadcastBotCreate = () => {
 
   // store?.startLoading();
   var formdata = new FormData();
-  //@ts-ignore
-  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
+  if(store?.state?.useDefaultIcon){
+    const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
+    const blob = await response.blob(); // Convert the response to a Blob
+    formdata.append('botImage', blob, 'defaultLogo.jpg');
+  } else {
+  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);}
+
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
   console.log("debug", { reqObj })

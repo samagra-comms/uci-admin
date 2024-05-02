@@ -5,24 +5,31 @@ import {
   MDBRow,
   MDBTextArea,
 } from "mdb-react-ui-kit";
-import React, { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useStore } from "../../store";
+//@ts-ignore
+import user from "./defaultLogo.jpg";
 import moment from "moment";
+import { fetchSegments } from "../../api/fetch-segments";
+import { map } from "lodash";
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore();
-
-  const { onChangeHandler, errors, disabled } = compProps;
+  const [segments, setSegments] = useState([]);
+  const { onChangeHandler, errors, disabled, isNewFlow } = compProps;
   const onDateChangeHandler = useCallback(
     (data) => {
-      
       onChangeHandler({ target: data });
     },
     [onChangeHandler]
   );
- 
+  useEffect(() => {
+    fetchSegments().then((res: any) => {
+      setSegments(res?.data);
+    });
+  }, []);
 
   return (
     <MDBRow className="">
@@ -31,8 +38,23 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       </MDBRow> */}
       <div className="my-3">
         <p>Bot Icon</p>
-
-        {store?.state.botImage && (
+        <div className="mb-3">
+          <MDBCheckbox
+            name="flexCheck"
+            checked={store?.state?.useDefaultIcon}
+            //  onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
+            onChange={(ev) =>
+              onChangeHandler({
+                target: { name: "useDefaultIcon", value: ev.target.checked },
+              })
+            }
+            id="flexCheckDefault2"
+            label="Use Default Icon"
+            size={5}
+            defaultChecked={store?.state?.useDefaultIcon}
+          />
+        </div>
+        {(store?.state.botImage || store?.state?.useDefaultIcon) && (
           <MDBRow className="text-center mb-2">
             <div
               className="text-center mx-auto"
@@ -56,20 +78,25 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
                   objectFit: "contain",
                   borderRadius: "50%",
                 }}
-                src={store?.state?.botImage}
+                src={
+                  store?.state?.useDefaultIcon ? user : store?.state?.botImage
+                }
                 alt="bot-icon"
               />
             </div>
           </MDBRow>
         )}
-        <MDBFile
-          accept="image/png, image/jpeg"
-          // size="sm"
-          id="formFileSm"
-          size="md"
-          disabled={disabled}
-          onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
-        />
+
+        {!store?.state?.useDefaultIcon && (
+          <MDBFile
+            accept="image/png, image/jpeg"
+            // size="sm"
+            id="formFileSm"
+            size="md"
+            disabled={disabled}
+            onChange={(ev) => store?.setBotIcon(ev.target?.files?.[0])}
+          />
+        )}
         {errors?.botIcon && (
           <div className="form-text text-danger">
             {" "}
@@ -124,46 +151,52 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           defaultChecked={store?.state?.isPinned}
         />
       </div>
-      <div className="mb-3">
-        <MDBTextArea
-          label="Conversation Description *"
-          //@ts-ignore
-          onChange={onChangeHandler}
-          name="description"
-          value={store?.state?.description || ""}
-          rows={4}
-          size="md"
-        />
-        {/* <div className="form-text text-danger">
+      {!isNewFlow && (
+        <div className="mb-3">
+          <MDBTextArea
+            label="Conversation Description *"
+            //@ts-ignore
+            onChange={onChangeHandler}
+            name="description"
+            value={store?.state?.description || ""}
+            rows={4}
+            size="md"
+          />
+          {/* <div className="form-text text-danger">
         Name Not Available
       </div> */}
-      </div>
-      <div className="mb-3">
-        <MDBInput
-          label="Purpose Of Conversation *"
-          type="text"
-          onChange={onChangeHandler}
-          name="purpose"
-          value={store?.state?.purpose || ""}
-          size="md"
-        />
-        {/* <div className="form-text text-danger">
+        </div>
+      )}
+      {!isNewFlow && (
+        <div className="mb-3">
+          <MDBInput
+            label="Purpose Of Conversation *"
+            type="text"
+            onChange={onChangeHandler}
+            name="purpose"
+            value={store?.state?.purpose || ""}
+            size="md"
+          />
+          {/* <div className="form-text text-danger">
         Name Not Available
       </div> */}
-      </div>
-      <div className="mb-3">
-        <MDBInput
-          label="Start Message *"
-          type="text"
-          onChange={onChangeHandler}
-          name="startingMessage"
-          value={store?.state?.startingMessage}
-          size="md"
-        />
-        {errors?.startingMessage && (
-          <div className="form-text text-danger">Message Not Available</div>
-        )}
-      </div>
+        </div>
+      )}
+      {!isNewFlow && (
+        <div className="mb-3">
+          <MDBInput
+            label="Start Message *"
+            type="text"
+            onChange={onChangeHandler}
+            name="startingMessage"
+            value={store?.state?.startingMessage}
+            size="md"
+          />
+          {errors?.startingMessage && (
+            <div className="form-text text-danger">Message Not Available</div>
+          )}
+        </div>
+      )}
 
       <div className="mb-2">
         <MDBCheckbox
@@ -181,7 +214,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         
         Name Not Available
       </div> */}
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <MDBInput
           label="Segment Id*"
           type="text"
@@ -191,17 +224,47 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           value={store?.state?.segmentId}
           disabled={!store?.isBroadcastBot || disabled}
         />
-      </div>
+      </div> */}
+      {!isNewFlow && (
+        <div className="mb-3">
+          <ReactDatePicker
+            minDate={new Date(moment().subtract(1, "days").valueOf())}
+            selected={store?.state.startDate}
+            className="w-100"
+            onChange={(value) =>
+              onDateChangeHandler({ name: "startDate", value })
+            }
+            customInput={<MDBInput label="Start Date*" />}
+          />
+        </div>
+      )}
+      {isNewFlow && (
+        <div className="mb-3">
+          <label>Segment Id</label>
+          <select
+            className="form-control"
+            onChange={onChangeHandler}
+            name="segmentId"
+            value={store?.state?.segmentId}
+            disabled={!store?.isBroadcastBot || disabled}
+          >
+            <option value="0">0</option>
+            {map(segments,(seg=>( <option value={seg.id}>{seg?.name}</option>)))}
+          </select>
+        </div>
+      )}
       <div className="mb-3">
-        <ReactDatePicker
-          minDate={new Date(moment().subtract(1, "days").valueOf())}
-          selected={store?.state.startDate}
-          className="w-100"
-          onChange={(value) =>
-            onDateChangeHandler({ name: "startDate", value })
-          }
-          customInput={<MDBInput label="Start Date*" />}
-        />
+        {isNewFlow && (
+          <MDBFile
+            //accept="image/png, image/jpeg"
+            // size="sm"
+            id="formFileSm"
+            size="md"
+            label="Recipient List"
+            disabled={disabled}
+            onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
+          />
+        )}
       </div>
       <div>
         <ReactDatePicker
