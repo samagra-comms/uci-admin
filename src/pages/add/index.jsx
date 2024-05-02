@@ -265,7 +265,6 @@ export const Add = () => {
     isEditParamAvailable
   ]);
 
-  console.log("debug:",{isNextDisabled,state:store?.state,errors})
   return (
     <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
       <MDBRow className="mt-3">

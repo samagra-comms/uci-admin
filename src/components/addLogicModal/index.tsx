@@ -43,7 +43,6 @@ const AddLogicModal: FC<any> = ({
   const [modalState, setModalState] = useState<any>({ ...activeLogic });
   const store: any = useStore();
   const onSubmitHandler = useCallback(() => {}, []);
-console.log("debug",{media,form,modalState,state:store?.state})
   const onChangeHandler = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       setModalState((prev: any) => ({
@@ -118,12 +117,18 @@ console.log("debug",{media,form,modalState,state:store?.state})
   }, []);
 
   const onFormUpload = useCallback(
-   async (ev: any) => {
+    async (ev: any) => {
       ev.preventDefault();
       setIsLoading(true);
-      const updatedForm =isSimpleFlow ? await getSimplifiedForm({media,name:store?.state?.name,content:modalState?.content}) : form;
+      const updatedForm = isSimpleFlow
+        ? await getSimplifiedForm({
+            media,
+            name: store?.state?.name,
+            content: modalState?.content,
+          })
+        : form;
 
-      uploadForm(omitBy({ form:updatedForm, media,isSimpleFlow }, isNull))
+      uploadForm(omitBy({ form: updatedForm, media, isSimpleFlow }, isNull))
         .then((res) => {
           if (res?.data?.result?.status === "ERROR") {
             toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`);
@@ -188,7 +193,6 @@ console.log("debug",{media,form,modalState,state:store?.state})
     }
   };
 
-  console.log({modalState})
   if (!open) return null;
   return (
     <>
@@ -315,7 +319,11 @@ console.log("debug",{media,form,modalState,state:store?.state})
                         <MDBBtn
                           size="sm"
                           onClick={onFormUpload}
-                          disabled={(isSimpleFlow ? modalState?.content==="" : form === null) || isLoading}
+                          disabled={
+                            (isSimpleFlow
+                              ? modalState?.content === ""
+                              : form === null) || isLoading
+                          }
                         >
                           {isLoading ? (
                             <MDBSpinner
@@ -341,9 +349,7 @@ console.log("debug",{media,form,modalState,state:store?.state})
                 <MDBBtn color="secondary" onClick={onClose}>
                   Close
                 </MDBBtn>
-                <MDBBtn onClick={onLogicAdd} >
-                  Add
-                </MDBBtn>
+                <MDBBtn onClick={onLogicAdd}>Add</MDBBtn>
               </MDBModalFooter>
             </MDBModalContent>
           </MDBContainer>

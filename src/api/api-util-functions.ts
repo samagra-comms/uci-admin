@@ -10,31 +10,22 @@ import { updateBot } from "./updateBot";
 import { mapToSegment } from "./segment-mapping";
 import { isNull, omit, omitBy } from "lodash";
 
-// const getDefaultIcon = async () => {
-//   const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
-//   console.log({ response })
-//   return await response.blob();
-//   // const blob = await response.blob(); // Convert the response to a Blob
 
-//   // const formData = new FormData();
-//   // formData.append('image', blob, 'myimage.png');
-// }
-export const onBotCreate =async () => {
+export const onBotCreate = async () => {
   const store: any = useStore.getState();
   store.startLoading();
 
   const reqObj = {
-    ...omit(store?.state, ["isPinned"]) as any,
+    ...(omit(store?.state, ["isPinned"]) as any),
     tags: store?.state?.tags?.split(","),
     // isPinned: store?.state?.isPinned,
-
     meta: {
       isPinned: store?.state?.isPinned,
     },
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
     logic: [],
-    description: store?.state?.name + "_description" ,
+    description: store?.state?.name + "_description",
     purpose: store?.state?.name + "_purpose",
     startingMessage: store?.state?.name + "_startingMessage",
   };
@@ -59,13 +50,13 @@ export const onBotCreate =async () => {
   var formdata = new FormData();
   //@ts-ignore
 
-
-  if(store?.state?.useDefaultIcon){
-    const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
+  if (store?.state?.useDefaultIcon) {
+    const response = await fetch("/assets/defaultLogo.jpg"); // Adjust the path as necessary
     const blob = await response.blob(); // Convert the response to a Blob
-    formdata.append('botImage', blob, 'defaultLogo.jpg');
+    formdata.append("botImage", blob, "defaultLogo.jpg");
   } else {
-  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);}
+    formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
+  }
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
   createBot(formdata)
@@ -142,10 +133,9 @@ export const onSegmentCreate = () => {
     });
 };
 
-
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState();
-  toast.success('Notification Triggered');
+  toast.success("Notification Triggered");
   startConversation(bot)
     // .then((res) => {
     //   store.stopLoading();
@@ -203,14 +193,12 @@ export const onMappingBotToSegment = (extras) => {
     segmentId: parseInt(store?.state?.segmentId, 10),
     botId: store.conversationBot.botId,
   };
-  return mapToSegment(mappingData)
-
+  return mapToSegment(mappingData);
 };
 
 export const onCreateBroadcastBotLogic = () => {
   const store: any = useStore.getState();
   for (const botLogic of store?.conversationLogic) {
-
     const newBotLogic = {
       ...botLogic,
       adapter: process.env.REACT_APP_broadcastAdapterId,
@@ -275,19 +263,18 @@ export const onCreateBroadcastBotLogic = () => {
   }
 };
 
-
-export const onBroadcastBotCreate =async () => {
+export const onBroadcastBotCreate = async () => {
   const store: any = useStore.getState();
   store.startLoading();
 
   const reqObj = {
-    ...omit(store?.state, ["isPinned"]) as any,
+    ...(omit(store?.state, ["isPinned"]) as any),
     tags: store?.state?.tags?.split(","),
     // isPinned: store?.state?.isPinned,
     meta: {
       isPinned: store?.state?.isPinned,
     },
-    description: store?.state?.name + "_description" ,
+    description: store?.state?.name + "_description",
     purpose: store?.state?.purpose + "_purpose",
     isBroadcastBotEnabled: store?.isBroadcastBot,
     users: [],
@@ -309,19 +296,19 @@ export const onBroadcastBotCreate =async () => {
   reqObj.name += " Broadcast";
   reqObj.startingMessage += " Broadcast";
 
-
   // store?.startLoading();
   var formdata = new FormData();
-  if(store?.state?.useDefaultIcon){
-    const response = await fetch('/assets/defaultLogo.jpg'); // Adjust the path as necessary
+  if (store?.state?.useDefaultIcon) {
+    const response = await fetch("/assets/defaultLogo.jpg"); // Adjust the path as necessary
     const blob = await response.blob(); // Convert the response to a Blob
-    formdata.append('botImage', blob, 'defaultLogo.jpg');
+    formdata.append("botImage", blob, "defaultLogo.jpg");
   } else {
-  formdata.append("botImage", store?.botIcon, store?.botIcon?.name);}
+    formdata.append("botImage", store?.botIcon, store?.botIcon?.name);
+  }
 
   formdata.append("data", JSON.stringify({ data: reqObj }));
 
-  console.log("debug", { reqObj })
+  console.log("debug", { reqObj });
   createBot(formdata)
     .then((res) => {
       onStartConversation(res?.data?.result);
@@ -330,10 +317,7 @@ export const onBroadcastBotCreate =async () => {
       store?.stopLoading();
       toast.error(err?.response?.data?.message || err?.message);
     });
-}
-
-
-
+};
 
 export const onBotUpdate = () => {
   const store: any = useStore.getState();
@@ -341,11 +325,14 @@ export const onBotUpdate = () => {
   const reqObj = {
     ...store?.editState,
 
-    meta: Object.keys(store?.editState)?.includes("isPinned") ?  { isPinned: store?.editState?.isPinned ?? false } : null,
-    tags:Object.keys(store?.editState)?.includes("tags")  ? store?.editState?.tags?.split(",").filter(tag=>tag!=="") : null,
+    meta: Object.keys(store?.editState)?.includes("isPinned")
+      ? { isPinned: store?.editState?.isPinned ?? false }
+      : null,
+    tags: Object.keys(store?.editState)?.includes("tags")
+      ? store?.editState?.tags?.split(",").filter((tag) => tag !== "")
+      : null,
     id: store.state.id,
   };
-  
 
   const _reqObj = omitBy(reqObj, isNull);
 
@@ -364,7 +351,7 @@ export const onBotUpdate = () => {
       toast.success("Bot Updated");
       store.stopLoading();
       store.onReset();
-      history.navigate("/success",{replace:true});
+      history.navigate("/success", { replace: true });
     })
     .catch((err) => {
       store?.stopLoading();
