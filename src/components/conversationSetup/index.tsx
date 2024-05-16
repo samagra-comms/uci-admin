@@ -4,32 +4,47 @@ import {
   MDBInput,
   MDBRow,
   MDBTextArea,
-} from "mdb-react-ui-kit";
-import { FC, useCallback, useEffect, useState } from "react";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useStore } from "../../store";
+} from 'mdb-react-ui-kit'
+import { FC, useCallback, useEffect, useState } from 'react'
+import ReactDatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { useStore } from '../../store'
 //@ts-ignore
-import user from "./defaultLogo.jpg";
-import moment from "moment";
-import { fetchSegments } from "../../api/fetch-segments";
-import { map } from "lodash";
+import user from './defaultLogo.jpg'
+import moment from 'moment'
+import { fetchSegments } from '../../api/fetch-segments'
+import { map } from 'lodash'
+import toast from 'react-hot-toast'
+import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
-  const store: any = useStore();
-  const [segments, setSegments] = useState([]);
-  const { onChangeHandler, errors, disabled, isNewFlow } = compProps;
+  const store: any = useStore()
+  const [segments, setSegments] = useState([])
+  const { onChangeHandler, errors, disabled, isNewFlow } = compProps
   const onDateChangeHandler = useCallback(
     (data) => {
-      onChangeHandler({ target: data });
+      onChangeHandler({ target: data })
     },
     [onChangeHandler]
-  );
+  )
   useEffect(() => {
     fetchSegments().then((res: any) => {
-      setSegments(res?.data);
-    });
-  }, []);
+      setSegments(res?.data)
+    })
+  }, [])
+
+  const handleSegmentFileUpload = async (file: File) => {
+    if (!store.state.name) {
+      toast.error('First select the bot Name')
+      return
+    }
+    try {
+      const phoneNumbers: string[] = await extractPhoneNumberFromCsv(file)
+      console.log('ankit', phoneNumbers, 'ankit')
+    } catch (error) {
+      toast.error(error)
+    }
+  }
 
   return (
     <MDBRow className="">
@@ -45,7 +60,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             //  onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
             onChange={(ev) =>
               onChangeHandler({
-                target: { name: "useDefaultIcon", value: ev.target.checked },
+                target: { name: 'useDefaultIcon', value: ev.target.checked },
               })
             }
             id="flexCheckDefault2"
@@ -59,24 +74,24 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             <div
               className="text-center mx-auto"
               style={{
-                background: "white",
-                overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "150px",
-                height: "150px",
-                borderRadius: "50%",
-                border: "2px solid lightgray",
+                background: 'white',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '150px',
+                height: '150px',
+                borderRadius: '50%',
+                border: '2px solid lightgray',
               }}
             >
               <img
                 className="mx-auto"
                 style={{
-                  height: "150px",
-                  width: "150px",
-                  objectFit: "contain",
-                  borderRadius: "50%",
+                  height: '150px',
+                  width: '150px',
+                  objectFit: 'contain',
+                  borderRadius: '50%',
                 }}
                 src={
                   store?.state?.useDefaultIcon ? user : store?.state?.botImage
@@ -99,7 +114,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         )}
         {errors?.botIcon && (
           <div className="form-text text-danger">
-            {" "}
+            {' '}
             Filename must contain only alphanumeric characters, hyphens, and
             underscores.
           </div>
@@ -112,7 +127,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           onChange={onChangeHandler}
           name="name"
-          style={{ background: "white" }}
+          style={{ background: 'white' }}
           value={store?.state?.name}
           size="md"
         />
@@ -127,7 +142,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           type="text"
           onChange={onChangeHandler}
           name="tags"
-          style={{ background: "white" }}
+          style={{ background: 'white' }}
           value={store?.state?.tags}
           size="md"
         />
@@ -142,7 +157,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           //  onChange={(ev) => ev.target.checked ? onChangeHandler({target:{name:'status',value:'pinned'}} ) : onChangeHandler({target:{name:'status',value:'enabled'}})}
           onChange={(ev) =>
             onChangeHandler({
-              target: { name: "isPinned", value: ev.target.checked },
+              target: { name: 'isPinned', value: ev.target.checked },
             })
           }
           id="flexCheckDefault2"
@@ -158,7 +173,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             //@ts-ignore
             onChange={onChangeHandler}
             name="description"
-            value={store?.state?.description || ""}
+            value={store?.state?.description || ''}
             rows={4}
             size="md"
           />
@@ -174,7 +189,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             type="text"
             onChange={onChangeHandler}
             name="purpose"
-            value={store?.state?.purpose || ""}
+            value={store?.state?.purpose || ''}
             size="md"
           />
           {/* <div className="form-text text-danger">
@@ -228,11 +243,11 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       {!isNewFlow && (
         <div className="mb-3">
           <ReactDatePicker
-            minDate={new Date(moment().subtract(1, "days").valueOf())}
+            minDate={new Date(moment().subtract(1, 'days').valueOf())}
             selected={store?.state.startDate}
             className="w-100"
             onChange={(value) =>
-              onDateChangeHandler({ name: "startDate", value })
+              onDateChangeHandler({ name: 'startDate', value })
             }
             customInput={<MDBInput label="Start Date*" />}
           />
@@ -249,20 +264,23 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             disabled={!store?.isBroadcastBot || disabled}
           >
             <option value="0">0</option>
-            {map(segments,(seg=>( <option value={seg.id}>{seg?.name}</option>)))}
+            {map(segments, (seg) => (
+              <option value={seg.id}>{seg?.name}</option>
+            ))}
           </select>
         </div>
       )}
       <div className="mb-3">
         {isNewFlow && (
           <MDBFile
-            //accept="image/png, image/jpeg"
+            accept=".csv"
             // size="sm"
             id="formFileSm"
             size="md"
             label="Recipient List"
             disabled={disabled}
-            onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
+            onChange={(ev) => handleSegmentFileUpload(ev.target.files[0])}
+            // onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
           />
         )}
       </div>
@@ -271,12 +289,12 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           className="w-100"
           minDate={new Date()}
           selected={store?.state.endDate}
-          onChange={(value) => onDateChangeHandler({ name: "endDate", value })}
+          onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
           customInput={<MDBInput label="End Date*" />}
         />
       </div>
     </MDBRow>
-  );
-};
+  )
+}
 
-export default ConversationSetup;
+export default ConversationSetup

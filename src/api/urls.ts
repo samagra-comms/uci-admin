@@ -1,23 +1,27 @@
+export const loginUrl = `${process.env.REACT_APP_nl_login_url}/api/login`
 
+export const searchBot = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/search`
 
-export const loginUrl= `${process.env.REACT_APP_nl_login_url}/api/login`;
+export const getStartConversationUrl = (bot: string) =>
+  `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/start/${bot}`
 
-export const searchBot = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/search`;
+export const createBotUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot`
 
-export const getStartConversationUrl =(bot:string)=> `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/start/${bot}`
+export const getUpdateBotUrl = (id: string) =>
+  `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
 
-export const createBotUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot`;
+export const segmentMappingUrl = `${process.env.REACT_APP_user_segment_url}/segment-bot-mapping`
 
-export const getUpdateBotUrl = (id:string) =>`${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
+export const createSegmentUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/user-segment`
 
-export const segmentMappingUrl = `${process.env.REACT_APP_user_segment_url}/segment-bot-mapping`;
-
-export const createSegmentUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/user-segment`;
-
-export const odkUploadUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/form/upload`;
+export const odkUploadUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/form/upload`
 
 export const addLogicUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/conversationLogic`
 
-export const getBotByIdUrl =(id:string)=> `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`;
+export const getBotByIdUrl = (id: string) =>
+  `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
 
-export const getSegmentCountUrl = (segment:string | number) => `${process.env.REACT_APP_nl_url}/segments/${segment}/mentors/count`
+export const getSegmentCountUrl = (segment: string | number) =>
+  `${process.env.REACT_APP_nl_url}/segments/${segment}/mentors/count`
+
+export const getSegmentUrl = `${process.env.REACT_APP_nl_url}/segments`
