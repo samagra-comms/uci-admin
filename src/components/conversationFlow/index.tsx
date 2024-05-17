@@ -12,20 +12,46 @@ import React, { FC } from "react";
 import emptyList from "../../assets/images/empty.svg";
 
 const ConversationFlow: FC<{ compProps: any }> = ({ compProps }) => {
-  const { conversationLogic, onToggle } = compProps;
-  
+  const {
+    conversationLogic,
+    onToggle,
+    isNewFlow,
+    setIsNewFlow,
+    isSimpleFlow,
+    setIsSimpleFlow,
+  } = compProps;
+
   return (
     <MDBRow>
       <h4>Conversation Flow</h4>
       {conversationLogic.length === 0 ? (
         <>
           <MDBRow>
-            <MDBCol></MDBCol>
             <MDBCol className="d-flex justify-content-end">
-              <MDBBtn size="sm" onClick={onToggle}>
+              <MDBBtn
+                size="sm"
+                onClick={() => {
+                  setIsSimpleFlow(false);
+                  onToggle();
+                }}
+              >
                 Add Logic
               </MDBBtn>
+              <div style={{ marginLeft: "10px" }}>
+                <MDBBtn
+                  size="sm"
+                  onClick={() => {
+                    setIsSimpleFlow(true);
+                    onToggle();
+                  }}
+                >
+                 Add Simplified Logic
+                </MDBBtn>
+              </div>
             </MDBCol>
+            {/* <MDBCol><MDBBtn size="sm" onClick={onToggle}>
+                Create Simple Bot
+              </MDBBtn></MDBCol> */}
           </MDBRow>
           <MDBRow>
             <img alt="empty" src={emptyList} height="200px" />

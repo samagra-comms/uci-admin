@@ -14,7 +14,8 @@ const initialState = {
     startDate: new Date(moment().subtract(1,'days').valueOf()),
     endDate: null,
     startingMessage: "",
-    tags:""
+    tags:"",
+    useDefaultIcon: false,
   },
   segmentCount: 100,
   activeLogic: {},
@@ -51,6 +52,7 @@ export const useStore = create((set) => ({
     startingMessage: "",
     tags:"",
     isPinned: false,
+    useDefaultIcon: false,
   },
   editState:{
   },
@@ -62,7 +64,9 @@ export const useStore = create((set) => ({
   activeLogic: {},
   setActiveLogic: (newValue) => set({ activeLogic: newValue }),
   botIcon: "",
+  segmentFile:"",
   setBotIcon: (newValue) => set({ botIcon: newValue }),
+  setSegmentFile: (newValue) => set({ segmentFile: newValue }),
   userSegments: [],
   setUserSegments: (newValue) => set({ userSegments: newValue }),
   broadcastBotLogics: [],

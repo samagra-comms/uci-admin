@@ -29,7 +29,8 @@ export const Add = () => {
 
   const [searchParams] = useSearchParams();
   const [isStep1, setIsStep1] = useState(true);
-
+  const [isNewFlow, setIsNewFlow] = useState(true);
+  const [isSimpleFlow, setIsSimpleFlow] = useState(false);
   const [errors, setErrors] = useState({});
   const [open, setOpen] = useState(false);
 
@@ -40,7 +41,10 @@ export const Add = () => {
     [searchParams]
   );
 
-  const isInvalidFileName =useMemo(()=> !(filenameRegex.test(store?.botIcon?.name)),[store?.botIcon?.name]);
+  const isInvalidFileName = useMemo(
+    () => !filenameRegex.test(store?.botIcon?.name),
+    [store?.botIcon?.name]
+  );
   const onChangeHandler = useCallback(
     (ev) => {
       if (isEditParamAvailable) {
@@ -62,15 +66,17 @@ export const Add = () => {
     [isEditParamAvailable]
   );
 
-  useEffect(()=>{
-    if(store?.botIcon && isInvalidFileName){
-      setErrors((prev) => ({ ...prev, botIcon: "Filename must contain only alphanumeric characters, hyphens, and underscores" }));
-    }
-    else {
+  useEffect(() => {
+    if (store?.botIcon && isInvalidFileName) {
+      setErrors((prev) => ({
+        ...prev,
+        botIcon:
+          "Filename must contain only alphanumeric characters, hyphens, and underscores",
+      }));
+    } else {
       setErrors((prev) => ({ ...prev, botIcon: null }));
     }
-
-  },[isInvalidFileName, store?.botIcon]);
+  }, [isInvalidFileName, store?.botIcon]);
 
   useEffect(() => {
     if (searchParams.get("bot")) {
@@ -85,7 +91,7 @@ export const Add = () => {
             description: res?.data?.result?.description || "",
             purpose: res?.data?.result?.purpose || "",
           };
-       
+
           store?.setState({
             ...data,
           });
@@ -184,9 +190,17 @@ export const Add = () => {
       isBroadcastBot: store?.isBroadcastBot,
       setIsBroadcastBot: store?.setIsBroadcastBot,
       setBotIcon: store?.setBotIcon,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
     }),
     [
       errors,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
       isEditParamAvailable,
       onChangeHandler,
       store?.isBroadcastBot,
@@ -200,8 +214,20 @@ export const Add = () => {
       conversationLogic: store?.conversationLogic,
       onToggle,
       disabled: isEditParamAvailable,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
     }),
-    [store?.conversationLogic, onToggle, isEditParamAvailable]
+    [
+      store?.conversationLogic,
+      onToggle,
+      isEditParamAvailable,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
+    ]
   );
 
   const isNextDisabled = useMemo(() => {
@@ -211,19 +237,34 @@ export const Add = () => {
     return (
       Object.values(errors).some((v) => v !== null) ||
       Object.values(
-        store?.isBroadcastBot ? omit(store?.state,["tags"]) : omit(store?.state, ["segmentId","tags"])
+        store?.isBroadcastBot
+          ? omit(store?.state, [
+              "tags",
+              "description",
+              "purpose",
+              "startDate",
+              "startingMessage",
+            ])
+          : omit(store?.state, [
+              "segmentId",
+              "tags",
+              "description",
+              "purpose",
+              "startDate",
+              "startingMessage",
+            ])
       ).some((v) => v === "" || v === undefined || v === null) ||
-      store?.botIcon === "" ||
-      store?.botIcon === null
+     (store?.state?.useDefaultIcon ? false : store?.botIcon === "" )||
+      (store?.state?.useDefaultIcon ? false : store?.botIcon === null)
     );
   }, [
     errors,
     store?.state,
     store?.botIcon,
     store?.isBroadcastBot,
-    isEditParamAvailable,
+    isEditParamAvailable
   ]);
- 
+
   return (
     <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
       <MDBRow className="mt-3">
@@ -279,6 +320,7 @@ export const Add = () => {
           </MDBRow>
           <AddLogicModal
             open={open}
+            isSimpleFlow={isSimpleFlow}
             onToggle={onToggle}
             activeLogic={store?.activeLogic}
             setConversationLogic={store?.setConversationLogic}
