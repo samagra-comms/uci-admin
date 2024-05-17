@@ -25,3 +25,4 @@ export const getSegmentCountUrl = (segment: string | number) =>
   `${process.env.REACT_APP_nl_url}/segments/${segment}/mentors/count`
 
 export const getSegmentUrl = `${process.env.REACT_APP_nl_url}/segments`
+export const createCsvSegmentUrl = `${process.env.REACT_APP_nl_url}/segment/phone`
