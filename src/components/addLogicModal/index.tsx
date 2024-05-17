@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from 'react'
 import {
   MDBBtn,
   MDBModal,
@@ -15,16 +15,16 @@ import {
   MDBCol,
   MDBSpinner,
   MDBIcon,
-} from "mdb-react-ui-kit";
-import { toast } from "react-hot-toast";
-import { uploadForm } from "../../api/uploadForm";
-import { addLogic } from "../../api/addLogic";
-import { omitBy, isNull } from "lodash";
-import { getUploadErrorMsg } from "../../utils";
-import { useStore } from "../../store";
-import "./style.css";
-import FileModal from "../fileModal";
-import { getSimplifiedForm } from "./simplified-xml-form";
+} from 'mdb-react-ui-kit'
+import { toast } from 'react-hot-toast'
+import { uploadForm } from '../../api/uploadForm'
+import { addLogic } from '../../api/addLogic'
+import { omitBy, isNull } from 'lodash'
+import { getUploadErrorMsg } from '../../utils'
+import { useStore } from '../../store'
+import './style.css'
+import FileModal from '../fileModal'
+import { getSimplifiedForm } from './simplified-xml-form'
 
 const AddLogicModal: FC<any> = ({
   open,
@@ -33,30 +33,30 @@ const AddLogicModal: FC<any> = ({
   onToggle,
   isSimpleFlow,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [logics, setLogics] = useState<any>([]);
-  const [form, setForm] = useState(null);
-  const [media, setMedia] = useState(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [cadencePerPage, setCadencePerPage] = useState(100);
-  const [formId, setFormId] = useState("");
-  const [modalState, setModalState] = useState<any>({ ...activeLogic });
-  const store: any = useStore();
-  const onSubmitHandler = useCallback(() => {}, []);
+  const [isLoading, setIsLoading] = useState(false)
+  const [logics, setLogics] = useState<any>([])
+  const [form, setForm] = useState(null)
+  const [media, setMedia] = useState(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [cadencePerPage, setCadencePerPage] = useState(100)
+  const [formId, setFormId] = useState('')
+  const [modalState, setModalState] = useState<any>({ ...activeLogic })
+  const store: any = useStore()
+  const onSubmitHandler = useCallback(() => {}, [])
   const onChangeHandler = useCallback(
     (ev: React.ChangeEvent<HTMLInputElement>) => {
       setModalState((prev: any) => ({
         ...prev,
         [ev.target.name]: ev.target.value,
-      }));
+      }))
     },
     []
-  );
+  )
 
   const onClose = useCallback(() => {
-    setModalState({});
-    onToggle();
-  }, [onToggle]);
+    setModalState({})
+    onToggle()
+  }, [onToggle])
 
   const onLogicAdd = useCallback(() => {
     const data = {
@@ -69,131 +69,131 @@ const AddLogicModal: FC<any> = ({
             formID: formId,
             title: modalState.name,
             body: modalState.description,
-            serviceClass: "SurveyService",
+            serviceClass: 'SurveyService',
             hiddenFields: [
               {
-                name: "mobilePhone",
-                path: "mobilePhone",
-                type: "param",
+                name: 'mobilePhone',
+                path: 'mobilePhone',
+                type: 'param',
                 config: {
-                  dataObjName: "user",
+                  dataObjName: 'user',
                 },
               },
             ],
-            templateType: "JS_TEMPLATE_LITERALS",
+            templateType: 'JS_TEMPLATE_LITERALS',
           },
         },
       ],
       adapter: process.env.REACT_APP_adapterId,
-    };
+    }
 
     addLogic({ data })
       .then((res) => {
-        const newLogic = [...logics, { ...res.data.result }];
-        setLogics(newLogic);
-        setConversationLogic(newLogic);
-        toast.success("Logic Added..");
+        const newLogic = [...logics, { ...res.data.result }]
+        setLogics(newLogic)
+        setConversationLogic(newLogic)
+        toast.success('Logic Added..')
       })
       .catch((err) => {
-        toast.error(err.message);
-      });
+        toast.error(err.message)
+      })
 
-    onClose();
-  }, [formId, logics, modalState, onClose, setConversationLogic]);
+    onClose()
+  }, [formId, logics, modalState, onClose, setConversationLogic])
 
   const onOdkFormChange = useCallback((event: any) => {
     if (!event.target.files.length) {
-      toast.error("No File Selected");
+      toast.error('No File Selected')
     }
-    setForm(event.target.files[0]);
-  }, []);
+    setForm(event.target.files[0])
+  }, [])
 
   const onMediaChange = useCallback((event: any) => {
-    const files = Array.from(event.target.files);
+    const files = Array.from(event.target.files)
     if (!files.length) {
-      toast.error("No File Selected");
+      toast.error('No File Selected')
     }
-    setMedia(files);
-  }, []);
+    setMedia(files)
+  }, [])
 
   const onFormUpload = useCallback(
     async (ev: any) => {
-      ev.preventDefault();
-      setIsLoading(true);
+      ev.preventDefault()
+      setIsLoading(true)
       const updatedForm = isSimpleFlow
         ? await getSimplifiedForm({
             media,
             name: store?.state?.name,
             content: modalState?.content,
           })
-        : form;
+        : form
 
       uploadForm(omitBy({ form: updatedForm, media, isSimpleFlow }, isNull))
         .then((res) => {
-          if (res?.data?.result?.status === "ERROR") {
-            toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`);
+          if (res?.data?.result?.status === 'ERROR') {
+            toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`)
           } else {
-            localStorage.setItem("formID", res?.data?.result?.data?.formID);
-            setFormId(res?.data?.result?.data?.formID);
-            toast.success("Succesfully Uploaded");
+            localStorage.setItem('formID', res?.data?.result?.data?.formID)
+            setFormId(res?.data?.result?.data?.formID)
+            toast.success('Succesfully Uploaded')
           }
-          setIsLoading(false);
+          setIsLoading(false)
         })
         .catch((err) => {
-          setIsLoading(false);
-          toast.error(err.message || "Something Went Wrong");
-        });
+          setIsLoading(false)
+          toast.error(err.message || 'Something Went Wrong')
+        })
     },
     [form, isSimpleFlow, media, modalState?.content, store?.state?.name]
-  );
+  )
 
   const onCadenceChange = useCallback(
     (ev) => {
-      setCadencePerPage(Number(ev.target.value));
-      store?.setCadencePerPage(Number(ev.target.value));
+      setCadencePerPage(Number(ev.target.value))
+      store?.setCadencePerPage(Number(ev.target.value))
     },
     [store]
-  );
+  )
 
   const isSubmitDisabled = useMemo(
     () =>
-      formId === "" ||
+      formId === '' ||
       form === null ||
       Object.values(modalState).some(
-        (v) => v === "" || v === undefined || v === null
+        (v) => v === '' || v === undefined || v === null
       ),
     [form, formId, modalState]
-  );
+  )
 
   // Handle file selection
   const handleFileChange = (e) => {
     if (!e.target.files.length) {
-      toast.error("No File Selected");
+      toast.error('No File Selected')
     }
-    const files = Array.from(e.target.files);
-    setMedia(files);
-  };
+    const files = Array.from(e.target.files)
+    setMedia(files)
+  }
 
   // Handle file removal
   const handleFileRemove = (fileName) => {
     //setIsDeleteModalOpen(true)
     setMedia((prevSelectedFiles) =>
       prevSelectedFiles.filter((file) => file.name !== fileName)
-    );
-  };
+    )
+  }
 
   const confirmDelete = (ev, fileName) => {
     const shouldDelete = window.confirm(
-      "Are you sure you want to delete this media?"
-    );
+      'Are you sure you want to delete this media?'
+    )
     if (shouldDelete) {
-      handleFileRemove(fileName);
+      handleFileRemove(fileName)
     } else {
-      ev.preventDefault();
+      ev.preventDefault()
     }
-  };
+  }
 
-  if (!open) return null;
+  if (!open) return null
   return (
     <>
       <MDBModal show={open} tabIndex="-1">
@@ -202,7 +202,7 @@ const AddLogicModal: FC<any> = ({
             <MDBModalContent>
               <MDBModalHeader>
                 <MDBModalTitle>
-                  Add {isSimpleFlow ? "Simplified" : ""} Conversation Logic{" "}
+                  Add {isSimpleFlow ? 'Simplified' : ''} Conversation Logic{' '}
                 </MDBModalTitle>
                 <MDBBtn
                   className="btn-close"
@@ -229,17 +229,19 @@ const AddLogicModal: FC<any> = ({
                         onChange={onChangeHandler}
                       />
                     </MDBRow>
-                    <MDBRow className="mb-3">
-                      <MDBInput
-                        label="Content"
-                        name="content"
-                        value={modalState.content}
-                        onChange={onChangeHandler}
-                      />
-                    </MDBRow>
+                    {isSimpleFlow && (
+                      <MDBRow className="mb-3">
+                        <MDBInput
+                          label="Content"
+                          name="content"
+                          value={modalState.content}
+                          onChange={onChangeHandler}
+                        />
+                      </MDBRow>
+                    )}
                     {!isSimpleFlow && (
                       <>
-                        {" "}
+                        {' '}
                         <MDBRow className="mb-3">
                           <label className="text-muted label">
                             Cadence Records Per Page
@@ -300,7 +302,7 @@ const AddLogicModal: FC<any> = ({
                                   tag="a"
                                   color="none"
                                   className="m-1"
-                                  style={{ color: "#ff4444" }}
+                                  style={{ color: '#ff4444' }}
                                   onClick={(ev) => confirmDelete(ev, file.name)}
                                 >
                                   <MDBIcon fas icon="trash-alt" />
@@ -321,7 +323,9 @@ const AddLogicModal: FC<any> = ({
                           onClick={onFormUpload}
                           disabled={
                             (isSimpleFlow
-                              ? modalState?.content === ""
+                              ? modalState?.content === undefined ||
+                                modalState?.content === null ||
+                                modalState?.content === ''
                               : form === null) || isLoading
                           }
                         >
@@ -336,7 +340,7 @@ const AddLogicModal: FC<any> = ({
                               </span>
                             </MDBSpinner>
                           ) : (
-                            "Upload Form"
+                            'Upload Form'
                           )}
                         </MDBBtn>
                       </MDBCol>
@@ -360,7 +364,7 @@ const AddLogicModal: FC<any> = ({
         onClose={() => setIsDeleteModalOpen(false)}
       />
     </>
-  );
-};
+  )
+}
 
-export default AddLogicModal;
+export default AddLogicModal
