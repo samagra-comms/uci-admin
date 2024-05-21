@@ -55,6 +55,9 @@ const AddLogicModal: FC<any> = ({
 
   const onClose = useCallback(() => {
     setModalState({})
+    setForm(null)
+    setMedia(null)
+    setFormId('')
     onToggle()
   }, [onToggle])
 
@@ -196,7 +199,7 @@ const AddLogicModal: FC<any> = ({
   if (!open) return null
   return (
     <>
-      <MDBModal show={open} tabIndex="-1">
+      <MDBModal show={open} tabIndex="-1" onHide={onClose}>
         <MDBModalDialog size="lg">
           <MDBContainer>
             <MDBModalContent>
