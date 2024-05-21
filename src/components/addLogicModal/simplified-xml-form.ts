@@ -1,5 +1,7 @@
 export const getSimplifiedForm = async (details) => {
-    const xmlString = `<?xml version="1.0"?>
+  const mediaType = details?.media?.[0]?.type
+
+  const xmlString = `<?xml version="1.0"?>
     <h:html
         xmlns="http://www.w3.org/2002/xforms"
         xmlns:h="http://www.w3.org/1999/xhtml"
@@ -12,10 +14,20 @@ export const getSimplifiedForm = async (details) => {
             <h:title>${details?.name}_title_${new Date().valueOf()}</h:title>
             <model odk:xforms-version="1.0.0">
                 <instance>
-                    <data id="${details?.name}_id_${new Date().valueOf()}" version="1">
+                    <data id="${
+                      details?.name
+                    }_id_${new Date().valueOf()}" version="1">
                         <application_process>
                             <mobilePhone/>
-                            ${details?.media?.length > 0 ? "<display_image/>" : "<content/>"}
+                            ${
+                              mediaType === 'application/pdf'
+                                ? '<display_document/>'
+                                : mediaType === 'video/mp4'
+                                ? '<display_video1/>'
+                                : details?.media?.length > 0
+                                ? '<display_image/>'
+                                : '<content/>'
+                            }
                         </application_process>
                         <meta>
                             <instanceID/>
@@ -23,38 +35,64 @@ export const getSimplifiedForm = async (details) => {
                     </data>
                 </instance>
                 <bind nodeset="/data/application_process/mobilePhone" type="string"/>
-                ${details?.media?.length > 0 ? `<bind nodeset="/data/application_process/display_image" type="string" required="true()" odk:stylingTags="image" odk:caption="${details?.content.replace(/"/g, '&quot;')}"/>` : `<bind nodeset="/data/application_process/content" type="string" required="true()"/>`}
+                ${
+                  mediaType === 'application/pdf'
+                    ? `<bind nodeset="/data/application_process/display_document" type="text" required="true()" odk:stylingTags="file" odk:caption="${details?.content.replace(
+                        /"/g,
+                        '&quot;'
+                      )}"/>`
+                    : mediaType === 'video/mp4'
+                    ? `<bind nodeset="/data/application_process/display_video1" type="text" required="true()" odk:stylingTags="video" odk:caption="${details?.content.replace(
+                        /"/g,
+                        '&quot;'
+                      )}"/>`
+                    : details?.media?.length > 0
+                    ? `<bind nodeset="/data/application_process/display_image" type="string" required="true()" odk:stylingTags="image" odk:caption="${details?.content.replace(
+                        /"/g,
+                        '&quot;'
+                      )}"/>`
+                    : `<bind nodeset="/data/application_process/content" type="string" required="true()"/>`
+                }
                 <bind nodeset="/data/meta/instanceID" type="string" readonly="true()" jr:preload="uid"/>
             </model>
         </h:head>
         <h:body>
             <group ref="/data/application_process">
                 <label>Flow Selection</label>
-                ${details?.media?.length > 0 ? `<input ref="/data/application_process/display_image">
+                ${
+                  mediaType === 'application/pdf'
+                    ? `<input ref="/data/application_process/display_document">
+                    <label>{${details?.media?.[0]?.name}}</label>
+                </input>`
+                    : mediaType === 'video/mp4'
+                    ? `<input ref="/data/application_process/display_video1">
+                    <label>{${details?.media?.[0]?.name}}</label>
+                </input>`
+                    : details?.media?.length > 0
+                    ? `<input ref="/data/application_process/display_image">
                     <label>${details?.media?.[0]?.name}</label>
-                </input>` : `<input ref="/data/application_process/content">
+                </input>`
+                    : `<input ref="/data/application_process/content">
                     <label>${details?.content}</label>
-                </input>`}
+                </input>`
+                }
             </group>
         </h:body>
-    </h:html>`;
-    
-    
-    const file = await new File([xmlString], `${details?.name}.xml`, {
-        type: "application/xml",
-    });
-    const url = URL.createObjectURL(file);
+    </h:html>`
 
-    const a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        document.body.appendChild(a);
-        a.click();
+  const file = await new File([xmlString], `${details?.name}.xml`, {
+    type: 'application/xml',
+  })
+  const url = URL.createObjectURL(file)
 
-    // Cleanup: remove the element and revoke the URL after download
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  return file;
-};
+  const a = document.createElement('a')
+  a.href = url
+  a.download = file.name
+  document.body.appendChild(a)
+  a.click()
 
-
+  // Cleanup: remove the element and revoke the URL after download
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+  return file
+}
