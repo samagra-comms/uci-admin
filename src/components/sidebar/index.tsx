@@ -5,103 +5,103 @@ import {
   menuClasses,
   MenuItemStyles,
   SubMenu,
-} from "react-pro-sidebar";
-import { Link, useNavigate } from "react-router-dom";
-import React, { useCallback } from "react";
-import { Switch } from "./Switch";
+} from 'react-pro-sidebar'
+import { Link, useNavigate } from 'react-router-dom'
+import React, { useCallback } from 'react'
+import { Switch } from './Switch'
 // import { PackageBadges } from './PackageBadges';
 // import { Typography } from './Typography';
-import { SidebarFooter } from "./SidebarFooter";
-import { SidebarHeader } from "./SidebarHeader";
-import DashobardIcon from "../icons/Dashobard";
-import AddIcon from "../icons/AddIcon";
-import LogoutIcon from "../icons/LogoutIcon";
-import ThemeIcon from "../icons/ThemeIcon";
-import { useStore } from "../../store";
-import { ShoppingCart } from "../icons/ShoppingCart";
+import { SidebarFooter } from './SidebarFooter'
+import { SidebarHeader } from './SidebarHeader'
+import DashobardIcon from '../icons/Dashobard'
+import AddIcon from '../icons/AddIcon'
+import LogoutIcon from '../icons/LogoutIcon'
+import ThemeIcon from '../icons/ThemeIcon'
+import { useStore } from '../../store'
+import { ShoppingCart } from '../icons/ShoppingCart'
 // import { Badge } from './Badge';
 
-type Theme = "light" | "dark";
+type Theme = 'light' | 'dark'
 
 const themes = {
   light: {
     sidebar: {
       // backgroundColor: '#ffffff',
-      backgroundColor: "#0b2948",
+      backgroundColor: '#0b2948',
       // color: '#607489',
-      color: "#8ba1b7",
+      color: '#8ba1b7',
     },
     menu: {
-      menuContent: "#fbfcfd",
-      icon: "#0098e5",
+      menuContent: '#fbfcfd',
+      icon: '#0098e5',
       hover: {
-        backgroundColor: "#c5e4ff",
-        color: "#44596e",
+        backgroundColor: '#c5e4ff',
+        color: '#44596e',
       },
       disabled: {
-        color: "#9fb6cf",
+        color: '#9fb6cf',
       },
     },
   },
   dark: {
     sidebar: {
       // backgroundColor: '#0b2948',
-      backgroundColor: "#24292d",
-      color: "white",
+      backgroundColor: '#24292d',
+      color: 'white',
     },
     menu: {
-      menuContent: "#082440",
-      icon: "#59d0ff",
+      menuContent: '#082440',
+      icon: '#59d0ff',
       hover: {
-        backgroundColor: "#00458b",
-        color: "#b6c8d9",
+        backgroundColor: '#00458b',
+        color: '#b6c8d9',
       },
       disabled: {
-        color: "#3e5e7e",
+        color: '#3e5e7e',
       },
     },
   },
-};
+}
 
 // hex to rgba converter
 const hexToRgba = (hex: string, alpha: number) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
 
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-};
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
 
 const SidebarComponent = () => {
-  const store: any = useStore();
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [toggled, setToggled] = React.useState(false);
-  const [broken, setBroken] = React.useState(false);
-  const [rtl, setRtl] = React.useState(false);
-  const [hasImage, setHasImage] = React.useState(true);
-  const [theme, setTheme] = React.useState<Theme>(store?.theme);
+  const store: any = useStore()
+  const [collapsed, setCollapsed] = React.useState(false)
+  const [toggled, setToggled] = React.useState(false)
+  const [broken, setBroken] = React.useState(false)
+  const [rtl, setRtl] = React.useState(false)
+  const [hasImage, setHasImage] = React.useState(true)
+  const [theme, setTheme] = React.useState<Theme>(store?.theme)
 
   // handle on RTL change event
   const handleRTLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRtl(e.target.checked);
-  };
+    setRtl(e.target.checked)
+  }
 
   // handle on theme change event
   const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.checked ? "dark" : "light");
-    store?.setTheme(store?.theme === "dark" ? "light" : "dark");
-    localStorage.setItem("theme", store?.theme === "dark" ? "light" : "dark");
-  };
+    setTheme(e.target.checked ? 'dark' : 'light')
+    store?.setTheme(store?.theme === 'dark' ? 'light' : 'dark')
+    localStorage.setItem('theme', store?.theme === 'dark' ? 'light' : 'dark')
+  }
 
-  const navigate=useNavigate();
+  const navigate = useNavigate()
   // handle on image change event
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHasImage(e.target.checked);
-  };
+    setHasImage(e.target.checked)
+  }
 
   const menuItemStyles: MenuItemStyles = {
     root: {
-      fontSize: "14px",
+      fontSize: '14px',
       fontWeight: 400,
     },
     icon: {
@@ -111,7 +111,7 @@ const SidebarComponent = () => {
       },
     },
     SubMenuExpandIcon: {
-      color: "#b6b7b9",
+      color: '#b6b7b9',
     },
     subMenuContent: ({ level }) => ({
       backgroundColor:
@@ -120,13 +120,13 @@ const SidebarComponent = () => {
               themes[theme].menu.menuContent,
               hasImage && !collapsed ? 0.4 : 1
             )
-          : "transparent",
+          : 'transparent',
     }),
     button: {
       [`&.${menuClasses.disabled}`]: {
         color: themes[theme].menu.disabled.color,
       },
-      "&:hover": {
+      '&:hover': {
         backgroundColor: hexToRgba(
           themes[theme].menu.hover.backgroundColor,
           hasImage ? 0.8 : 1
@@ -137,24 +137,23 @@ const SidebarComponent = () => {
     label: ({ open }) => ({
       fontWeight: open ? 600 : undefined,
     }),
-  };
+  }
 
   const onLogout = useCallback(() => {
-    
-     store?.setUser(null);
-     localStorage.clear();
-     setTimeout(()=>{
-       navigate("/login");
-     },10)
-  }, [navigate, store]);
-  
+    store?.setUser(null)
+    localStorage.clear()
+    setTimeout(() => {
+      navigate('/login')
+    }, 10)
+  }, [navigate, store])
+
   return (
     <div
       style={{
-        display: "flex",
-        height: "100vh",
-        width: "100%",
-        direction: rtl ? "rtl" : "ltr",
+        display: 'flex',
+        height: '100vh',
+        width: '100%',
+        direction: rtl ? 'rtl' : 'ltr',
       }}
     >
       <Sidebar
@@ -171,22 +170,22 @@ const SidebarComponent = () => {
         )}
         rootStyles={{
           color: themes[theme].sidebar.color,
-          width: "100%",
+          width: '100%',
         }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-            width: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            width: '100%',
           }}
         >
           <SidebarHeader
             rtl={rtl}
-            style={{ marginBottom: "24px", marginTop: "16px" }}
+            style={{ marginBottom: '24px', marginTop: '16px' }}
           />
-          <div style={{ flex: 1, marginBottom: "32px" }}>
+          <div style={{ flex: 1, marginBottom: '32px' }}>
             {/* <div style={{ padding: '0 24px', marginBottom: '8px' }}>
             <Typography
               variant="body2"
@@ -222,18 +221,23 @@ const SidebarComponent = () => {
           </div> */}
 
             <Menu menuItemStyles={menuItemStyles}>
-              <MenuItem icon={<ThemeIcon />} >
-            <Switch
-              id="theme"
-              checked={theme === 'dark'}
-              onChange={handleThemeChange}
-              label="Dark theme"
-            />
-            </MenuItem>
+              <MenuItem icon={<ThemeIcon />}>
+                <Switch
+                  id="theme"
+                  checked={theme === 'dark'}
+                  onChange={handleThemeChange}
+                  label="Dark theme"
+                />
+              </MenuItem>
               <MenuItem icon={<DashobardIcon />} component={<Link to="/" />}>
                 Dashboard
               </MenuItem>
-              <MenuItem icon={<AddIcon />} component={<Link to="/add-bot" />}>
+              <MenuItem
+                icon={<AddIcon />}
+                component={
+                  <Link to="/add-bot" onClick={() => store.onReset()} />
+                }
+              >
                 Add Bot
               </MenuItem>
 
@@ -296,7 +300,7 @@ const SidebarComponent = () => {
       </div>
     </main> */}
     </div>
-  );
-};
+  )
+}
 
-export default SidebarComponent;
+export default SidebarComponent

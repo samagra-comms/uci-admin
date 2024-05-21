@@ -52,6 +52,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       try {
         const res = await createSegmentFromCsv(segData)
         setSegments([...segments, res.data.segment])
+        store.setState({ ...store.state, segmentId: res.data.segment.id })
         toast.success('This new segment is added into the segment list')
       } catch (err) {
         const errorMessage =
@@ -282,7 +283,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             value={store?.state?.segmentId}
             disabled={!store?.isBroadcastBot || disabled}
           >
-            <option value="0">0</option>
+            <option value="">-select-</option>
             {map(segments, (seg) => (
               <option value={seg.id}>{seg?.name}</option>
             ))}
