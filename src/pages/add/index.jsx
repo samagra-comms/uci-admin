@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   MDBBtn,
   MDBContainer,
@@ -7,75 +7,80 @@ import {
   MDBCol,
   MDBBreadcrumb,
   MDBBreadcrumbItem,
-} from "mdb-react-ui-kit";
-import { omit } from "lodash";
-import { Step, Stepper } from "react-form-stepper";
+} from 'mdb-react-ui-kit'
+import { omit } from 'lodash'
+import { Step, Stepper } from 'react-form-stepper'
 
-import { checkDuplicateName } from "../../api/checkDupliacteName";
-import AddLogicModal from "../../components/addLogicModal";
+import { checkDuplicateName } from '../../api/checkDupliacteName'
+import AddLogicModal from '../../components/addLogicModal'
 
-import { getSegmentCount } from "../../api/getSegmentCount";
-import { toast } from "react-hot-toast";
+import { getSegmentCount } from '../../api/getSegmentCount'
+import { toast } from 'react-hot-toast'
 
-import ConversationSetup from "../../components/conversationSetup";
-import ConversationFlow from "../../components/conversationFlow";
-import { useSearchParams } from "react-router-dom";
-import { onBotCreate, onBotUpdate } from "../../api/api-util-functions";
-import { useStore } from "../../store";
-import { getBotById } from "../../api/getBotById";
-const filenameRegex = /^[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+$/;
+import ConversationSetup from '../../components/conversationSetup'
+import ConversationFlow from '../../components/conversationFlow'
+import { useSearchParams } from 'react-router-dom'
+import { onBotCreate, onBotUpdate } from '../../api/api-util-functions'
+import { useStore } from '../../store'
+import { getBotById } from '../../api/getBotById'
+const filenameRegex = /^[a-zA-Z0-9-_]+\.[a-zA-Z0-9-_]+$/
 export const Add = () => {
-  const store = useStore();
+  const store = useStore()
 
-  const [searchParams] = useSearchParams();
-  const [isStep1, setIsStep1] = useState(true);
+  const [searchParams] = useSearchParams()
+  const [isStep1, setIsStep1] = useState(true)
+  const [isNewFlow, setIsNewFlow] = useState(true)
+  const [isSimpleFlow, setIsSimpleFlow] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [open, setOpen] = useState(false)
 
-  const [errors, setErrors] = useState({});
-  const [open, setOpen] = useState(false);
-
-  const onToggle = useCallback(() => setOpen((prev) => !prev), []);
+  const onToggle = useCallback(() => setOpen((prev) => !prev), [])
 
   const isEditParamAvailable = useMemo(
-    () => (searchParams.get("bot") ? true : false),
+    () => (searchParams.get('bot') ? true : false),
     [searchParams]
-  );
+  )
 
-  const isInvalidFileName =useMemo(()=> !(filenameRegex.test(store?.botIcon?.name)),[store?.botIcon?.name]);
+  const isInvalidFileName = useMemo(
+    () => !filenameRegex.test(store?.botIcon?.name),
+    [store?.botIcon?.name]
+  )
   const onChangeHandler = useCallback(
     (ev) => {
       if (isEditParamAvailable) {
         store.setEditState({
           ...store.editState,
           [ev.target.name]: ev.target.value,
-        });
+        })
       }
-      store.setState({ ...store.state, [ev.target.name]: ev.target.value });
+      store.setState({ ...store.state, [ev.target.name]: ev.target.value })
     },
     [store, isEditParamAvailable]
-  );
-
+  )
   const onSubmitHandler = useCallback(
     (ev) => {
-      ev.preventDefault();
-      if (isEditParamAvailable) onBotUpdate();
-      else onBotCreate(false, false);
+      ev.preventDefault()
+      if (isEditParamAvailable) onBotUpdate()
+      else onBotCreate(false, false)
     },
     [isEditParamAvailable]
-  );
-
-  useEffect(()=>{
-    if(store?.botIcon && isInvalidFileName){
-      setErrors((prev) => ({ ...prev, botIcon: "Filename must contain only alphanumeric characters, hyphens, and underscores" }));
-    }
-    else {
-      setErrors((prev) => ({ ...prev, botIcon: null }));
-    }
-
-  },[isInvalidFileName, store?.botIcon]);
+  )
 
   useEffect(() => {
-    if (searchParams.get("bot")) {
-      getBotById(searchParams.get("bot"))
+    if (store?.botIcon && isInvalidFileName) {
+      setErrors((prev) => ({
+        ...prev,
+        botIcon:
+          'Filename must contain only alphanumeric characters, hyphens, and underscores',
+      }))
+    } else {
+      setErrors((prev) => ({ ...prev, botIcon: null }))
+    }
+  }, [isInvalidFileName, store?.botIcon])
+
+  useEffect(() => {
+    if (searchParams.get('bot')) {
+      getBotById(searchParams.get('bot'))
         .then((res) => {
           const data = {
             // ...store?.state,
@@ -83,20 +88,20 @@ export const Add = () => {
             isPinned: res?.data?.result?.meta?.isPinned ?? false,
             startDate: new Date(res?.data?.result?.startDate),
             endDate: new Date(res?.data?.result?.endDate),
-            description: res?.data?.result?.description || "",
-            purpose: res?.data?.result?.purpose || "",
-          };
-       
+            description: res?.data?.result?.description || '',
+            purpose: res?.data?.result?.purpose || '',
+          }
+
           store?.setState({
             ...data,
-          });
-          store?.setBotToEdit(data);
-          store?.setConversationLogic(data?.logicIDs);
-          store?.setBotIcon(data?.botImage);
+          })
+          store?.setBotToEdit(data)
+          store?.setConversationLogic(data?.logicIDs)
+          store?.setBotIcon(data?.botImage)
         })
         .catch((error) => {
-          console.log({ error });
-        });
+          console.log({ error })
+        })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -105,29 +110,29 @@ export const Add = () => {
     store?.setBotToEdit,
     store?.setConversationLogic,
     store?.setBotIcon,
-  ]);
+  ])
 
   const onCheckDuplicateName = useCallback(
     ({ name }) => {
-      if (name !== "" && name !== store?.botToEdit?.name) {
+      if (name !== '' && name !== store?.botToEdit?.name) {
         checkDuplicateName({
           name,
         }).then((res) => {
           if (res?.data?.result?.data?.length > 0) {
-            setErrors((prev) => ({ ...prev, name: "Name Not Available" }));
+            setErrors((prev) => ({ ...prev, name: 'Name Not Available' }))
           } else {
-            setErrors((prev) => ({ ...prev, name: null }));
+            setErrors((prev) => ({ ...prev, name: null }))
           }
-        });
+        })
       }
     },
     [store?.botToEdit]
-  );
+  )
 
   const onCheckDuplicateStartingMsg = useCallback(
     ({ startingMessage }) => {
       if (
-        startingMessage !== "" &&
+        startingMessage !== '' &&
         startingMessage !== store?.botToEdit?.startingMessage
       )
         checkDuplicateName({
@@ -136,45 +141,45 @@ export const Add = () => {
           if (res?.data?.result?.data?.length > 0) {
             setErrors((prev) => ({
               ...prev,
-              startingMessage: "Staring Message Not Available",
-            }));
+              startingMessage: 'Staring Message Not Available',
+            }))
           } else {
-            setErrors((prev) => ({ ...prev, startingMessage: null }));
+            setErrors((prev) => ({ ...prev, startingMessage: null }))
           }
-        });
+        })
     },
     [store?.botToEdit?.startingMessage]
-  );
+  )
 
   useEffect(() => {
-    onCheckDuplicateName({ name: store?.state.name });
+    onCheckDuplicateName({ name: store?.state.name })
     onCheckDuplicateStartingMsg({
       startingMessage: store?.state.startingMessage,
-    });
+    })
     return () => {
-      setErrors({});
-    };
+      setErrors({})
+    }
   }, [
     onCheckDuplicateName,
     onCheckDuplicateStartingMsg,
     store?.state?.name,
     store?.state.startingMessage,
     store?.state,
-  ]);
+  ])
 
   useEffect(() => {
     if (store?.state.segmentId)
       getSegmentCount(store?.state.segmentId)
         .then((res) => {
-          store?.setSegmentCount(res.data.totalCount || 100);
+          store?.setSegmentCount(res.data.totalCount || 100)
         })
         .catch((err) => {
           toast.error(
-            err.message || "Something went wrong in fetching segment count"
-          );
-        });
+            err.message || 'Something went wrong in fetching segment count'
+          )
+        })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store?.state.segmentId, store?.setSegmentCount]);
+  }, [store?.state.segmentId, store?.setSegmentCount])
 
   const compProps = useMemo(
     () => ({
@@ -185,9 +190,17 @@ export const Add = () => {
       isBroadcastBot: store?.isBroadcastBot,
       setIsBroadcastBot: store?.setIsBroadcastBot,
       setBotIcon: store?.setBotIcon,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
     }),
     [
       errors,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
       isEditParamAvailable,
       onChangeHandler,
       store?.isBroadcastBot,
@@ -195,38 +208,65 @@ export const Add = () => {
       store?.setIsBroadcastBot,
       store?.state,
     ]
-  );
+  )
   const step2CompProps = useMemo(
     () => ({
       conversationLogic: store?.conversationLogic,
       onToggle,
       disabled: isEditParamAvailable,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
     }),
-    [store?.conversationLogic, onToggle, isEditParamAvailable]
-  );
+    [
+      store?.conversationLogic,
+      onToggle,
+      isEditParamAvailable,
+      isNewFlow,
+      setIsNewFlow,
+      isSimpleFlow,
+      setIsSimpleFlow,
+    ]
+  )
 
   const isNextDisabled = useMemo(() => {
     if (isEditParamAvailable) {
-      return false;
+      return false
     }
     return (
       Object.values(errors).some((v) => v !== null) ||
       Object.values(
-        store?.isBroadcastBot ? omit(store?.state,["tags"]) : omit(store?.state, ["segmentId","tags"])
-      ).some((v) => v === "" || v === undefined || v === null) ||
-      store?.botIcon === "" ||
-      store?.botIcon === null
-    );
+        store?.isBroadcastBot
+          ? omit(store?.state, [
+              'tags',
+              'description',
+              'purpose',
+              'startDate',
+              'startingMessage',
+            ])
+          : omit(store?.state, [
+              'segmentId',
+              'tags',
+              'description',
+              'purpose',
+              'startDate',
+              'startingMessage',
+            ])
+      ).some((v) => v === '' || v === undefined || v === null) ||
+      (store?.state?.useDefaultIcon ? false : store?.botIcon === '') ||
+      (store?.state?.useDefaultIcon ? false : store?.botIcon === null)
+    )
   }, [
     errors,
     store?.state,
     store?.botIcon,
     store?.isBroadcastBot,
     isEditParamAvailable,
-  ]);
- 
+  ])
+
   return (
-    <MDBContainer style={{ margin: 0, height: "100vh", overflow: "scroll" }}>
+    <MDBContainer style={{ margin: 0, height: '100vh', overflow: 'scroll' }}>
       <MDBRow className="mt-3">
         <>
           <MDBBreadcrumb>
@@ -254,12 +294,12 @@ export const Add = () => {
                   <MDBCol md="3" className="d-flex">
                     <MDBBtn
                       onClick={(ev) => {
-                        ev.preventDefault();
-                        setIsStep1((prev) => !prev);
+                        ev.preventDefault()
+                        setIsStep1((prev) => !prev)
                       }}
                       disabled={isStep1 ? isNextDisabled : false}
                     >
-                      {isStep1 ? "Next" : "Previous"}
+                      {isStep1 ? 'Next' : 'Previous'}
                     </MDBBtn>
                   </MDBCol>
 
@@ -269,7 +309,7 @@ export const Add = () => {
                         onClick={onSubmitHandler}
                         disabled={store?.conversationLogic.length === 0}
                       >
-                        {isEditParamAvailable ? "Update" : "Submit"}
+                        {isEditParamAvailable ? 'Update' : 'Submit'}
                       </MDBBtn>
                     </MDBCol>
                   )}
@@ -280,6 +320,7 @@ export const Add = () => {
           </MDBRow>
           <AddLogicModal
             open={open}
+            isSimpleFlow={isSimpleFlow}
             onToggle={onToggle}
             activeLogic={store?.activeLogic}
             setConversationLogic={store?.setConversationLogic}
@@ -287,5 +328,5 @@ export const Add = () => {
         </>
       </MDBRow>
     </MDBContainer>
-  );
-};
+  )
+}
