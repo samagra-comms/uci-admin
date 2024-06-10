@@ -38,6 +38,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const handleSegmentFileUpload = async (file: File) => {
     if (!store.state.name) {
       toast.error('First select the bot Name')
+
       return
     }
     try {
@@ -212,9 +213,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             value={store?.state?.purpose || ''}
             size="md"
           />
-          {/* <div className="form-text text-danger">
-        Name Not Available
-      </div> */}
         </div>
       )}
       {!isNewFlow && (
@@ -239,27 +237,50 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           checked={store?.isBroadcastBot}
           onChange={(ev) => store?.setIsBroadcastBot(ev.target.checked)}
           id="flexCheckDefault"
-          label="Create Broadcast bot"
+          label="Notify User"
           size={5}
           defaultChecked
           disabled={disabled}
         />
       </div>
-      {/* <div className="form-text text-danger">
-        
-        Name Not Available
-      </div> */}
-      {/* <div className="mb-3">
-        <MDBInput
-          label="Segment Id*"
-          type="text"
-          size="md"
-          onChange={onChangeHandler}
-          name="segmentId"
-          value={store?.state?.segmentId}
-          disabled={!store?.isBroadcastBot || disabled}
-        />
-      </div> */}
+
+      <div className="d-flex flex-row align-items-center justify-content-between">
+        {isNewFlow && (
+          <div className="mb-3">
+            <label style={{ marginBottom: '4px' }}>Segment</label>
+            <select
+              className="form-control"
+              onChange={onChangeHandler}
+              name="segmentId"
+              value={store?.state?.segmentId}
+              disabled={!store?.isBroadcastBot || disabled}
+            >
+              <option value="">-select-</option>
+              {map(segments, (seg) => (
+                <option value={seg.id}>{seg?.name}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        <p>OR</p>
+        <div className="mb-3">
+          {isNewFlow && (
+            <MDBFile
+              accept=".csv"
+              // size="sm"
+              id="formFileSm"
+              size="md"
+              label="Recipient List"
+              disabled={
+                !store?.isBroadcastBot || disabled || store?.state?.segmentId
+              }
+              onChange={(ev) => handleSegmentFileUpload(ev.target.files[0])}
+              // onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
+            />
+          )}
+        </div>
+      </div>
+
       {!isNewFlow && (
         <div className="mb-3">
           <ReactDatePicker
@@ -273,37 +294,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           />
         </div>
       )}
-      {isNewFlow && (
-        <div className="mb-3">
-          <label>Segment Id</label>
-          <select
-            className="form-control"
-            onChange={onChangeHandler}
-            name="segmentId"
-            value={store?.state?.segmentId}
-            disabled={!store?.isBroadcastBot || disabled}
-          >
-            <option value="">-select-</option>
-            {map(segments, (seg) => (
-              <option value={seg.id}>{seg?.name}</option>
-            ))}
-          </select>
-        </div>
-      )}
-      <div className="mb-3">
-        {isNewFlow && (
-          <MDBFile
-            accept=".csv"
-            // size="sm"
-            id="formFileSm"
-            size="md"
-            label="Recipient List"
-            disabled={disabled}
-            onChange={(ev) => handleSegmentFileUpload(ev.target.files[0])}
-            // onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
-          />
-        )}
-      </div>
       <div>
         <ReactDatePicker
           className="w-100"
@@ -312,6 +302,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
           customInput={<MDBInput label="End Date*" />}
         />
+        {store.state.endDate && (
+          <p className="mt-2" style={{ color: '#9e1b32' }}>
+            {`This bot will stop working on ${moment(
+              store.state.endDate
+            ).format('ddd MMM DD YYYY')} at 11:59:59 PM`}
+          </p>
+        )}
       </div>
     </MDBRow>
   )
