@@ -205,7 +205,8 @@ const AddLogicModal: FC<any> = ({
             <MDBModalContent>
               <MDBModalHeader>
                 <MDBModalTitle>
-                  Add {isSimpleFlow ? 'Simplified' : ''} Conversation Logic{' '}
+                  {/* Add {isSimpleFlow ? 'Simplified' : ''} Conversation Logic{' '} */}
+                  Create bot
                 </MDBModalTitle>
                 <MDBBtn
                   className="btn-close"
@@ -235,7 +236,7 @@ const AddLogicModal: FC<any> = ({
                     {isSimpleFlow && (
                       <MDBRow className="mb-3">
                         <MDBInput
-                          label="Content"
+                          label="Bot Content to show to user"
                           name="content"
                           value={modalState.content}
                           onChange={onChangeHandler}
