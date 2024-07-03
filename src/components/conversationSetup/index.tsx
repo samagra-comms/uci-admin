@@ -298,6 +298,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <ReactDatePicker
           className="w-100"
           minDate={new Date()}
+          maxDate={moment(new Date()).add(2, 'days').toDate()}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
           customInput={<MDBInput label="End Date*" />}
