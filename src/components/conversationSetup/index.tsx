@@ -18,6 +18,7 @@ import toast from 'react-hot-toast'
 import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
 import { AxiosError } from 'axios'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
+import MultiselectDropDown from '../custome-component/multiselectComponent'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
@@ -29,6 +30,16 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
     },
     [onChangeHandler]
   )
+  const setMultipleSegment = (data: any) => {
+    console.log('data ankit', data, store.state.segmentId)
+    onChangeHandler({
+      target: {
+        name: 'segmentId',
+        value: data,
+      },
+    })
+  }
+
   useEffect(() => {
     fetchSegments().then((res: any) => {
       setSegments(res?.data)
@@ -246,22 +257,16 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
 
       <div className="d-flex flex-row align-items-center justify-content-between">
         {isNewFlow && (
-          <div className="mb-3">
+          <div style={{ width: '40%', marginBottom: '12px' }}>
             <label style={{ marginBottom: '4px' }}>Segment</label>
-            <select
-              className="form-control"
-              onChange={onChangeHandler}
-              name="segmentId"
-              value={store?.state?.segmentId}
-              disabled={!store?.isBroadcastBot || disabled}
-            >
-              <option value="">-select-</option>
-              {map(segments, (seg) => (
-                <option value={seg.id}>{seg?.name}</option>
-              ))}
-            </select>
+
+            <MultiselectDropDown
+              dropDownOptions={segments}
+              onChange={setMultipleSegment}
+            />
           </div>
         )}
+
         <p>OR</p>
         <div className="mb-3">
           {isNewFlow && (
@@ -301,6 +306,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           maxDate={moment(new Date()).add(2, 'days').toDate()}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
+          // showTimeInput
+          // timeInputLabel="Time:"
+          // timeFormat="h:mm aa"
+          dateFormat="MM/dd/yyyy"
           customInput={<MDBInput label="End Date*" />}
         />
         {store.state.endDate && (
