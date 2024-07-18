@@ -100,7 +100,7 @@ export const onSegmentCreate = () => {
     all: {
       type: 'get',
       config: {
-        url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
+        url: `${process.env.REACT_APP_user_segment_url}/v2/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: 'GET',
         cadence: {
           perPage: store?.cadencePerPage || 100,
@@ -170,7 +170,7 @@ export const onStartConversation = (bot) => {
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
 
@@ -189,7 +189,7 @@ export const onAfterBotSubmit = (extras) => {
 export const onMappingBotToSegment = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
   return mapToSegment(mappingData)

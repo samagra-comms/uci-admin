@@ -13,17 +13,17 @@ import { useStore } from '../../store'
 import user from './defaultLogo.jpg'
 import moment from 'moment'
 import { fetchSegments } from '../../api/fetch-segments'
-import { map } from 'lodash'
 import toast from 'react-hot-toast'
 import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
-import { AxiosError } from 'axios'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
+import BotSchedule from './BotSchedule'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
   const [segments, setSegments] = useState([])
   const { onChangeHandler, errors, disabled, isNewFlow } = compProps
+
   const onDateChangeHandler = useCallback(
     (data) => {
       onChangeHandler({ target: data })
@@ -31,7 +31,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
     [onChangeHandler]
   )
   const setMultipleSegment = (data: any) => {
-    console.log('data ankit', data, store.state.segmentId)
     onChangeHandler({
       target: {
         name: 'segmentId',
@@ -286,6 +285,8 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         </div>
       </div>
 
+      <BotSchedule />
+
       {!isNewFlow && (
         <div className="mb-3">
           <ReactDatePicker
@@ -306,9 +307,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           maxDate={moment(new Date()).add(2, 'days').toDate()}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
-          // showTimeInput
-          // timeInputLabel="Time:"
-          // timeFormat="h:mm aa"
           dateFormat="MM/dd/yyyy"
           customInput={<MDBInput label="End Date*" />}
         />

@@ -21,13 +21,13 @@ const MultiselectDropDown = ({ dropDownOptions, onChange }: any) => {
       getOptionValue={(option) => option.id.toString()}
       className="basic-multi-select"
       classNamePrefix="select"
-      styles={{
-        control: (provided) => ({
-          ...provided,
+      // styles={{
+      //   control: (provided) => ({
+      //     ...provided,
 
-          width: '100%',
-        }),
-      }}
+      //     width: '100%',
+      //   }),
+      // }}
     />
   )
 }

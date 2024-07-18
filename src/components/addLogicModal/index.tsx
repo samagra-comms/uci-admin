@@ -15,6 +15,7 @@ import {
   MDBCol,
   MDBSpinner,
   MDBIcon,
+  MDBTextArea,
 } from 'mdb-react-ui-kit'
 import { toast } from 'react-hot-toast'
 import { uploadForm } from '../../api/uploadForm'
@@ -44,7 +45,7 @@ const AddLogicModal: FC<any> = ({
   const store: any = useStore()
   const onSubmitHandler = useCallback(() => {}, [])
   const onChangeHandler = useCallback(
-    (ev: React.ChangeEvent<HTMLInputElement>) => {
+    (ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setModalState((prev: any) => ({
         ...prev,
         [ev.target.name]: ev.target.value,
@@ -235,7 +236,7 @@ const AddLogicModal: FC<any> = ({
                     </MDBRow>
                     {isSimpleFlow && (
                       <MDBRow className="mb-3">
-                        <MDBInput
+                        <MDBTextArea
                           label="Bot Content to show to user"
                           name="content"
                           value={modalState.content}
