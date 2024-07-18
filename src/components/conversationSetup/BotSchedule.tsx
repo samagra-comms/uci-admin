@@ -1,22 +1,36 @@
 import { DatePicker, Radio } from 'antd'
 import React, { useState } from 'react'
 import dayjs from 'dayjs'
+import { useStore } from '../../store'
 
-const BotSchedule = () => {
-  const [scheduleOption, setScheduleOption] = useState('sendNow')
-  const [date, setDate] = useState(dayjs())
+const BotSchedule = ({ onChangeHandler }) => {
+  const [scheduleOption, setScheduleOption] = useState('')
+  const [date, setDate] = useState(null)
   const onChangeScheduleOption = (e) => {
-    setScheduleOption(e.target.value)
-    if (e.target.value === 'sendNow') {
-      setDate(dayjs())
-    } else if (e.target.value === 'schedule') {
-      setDate(dayjs().add(1, 'day'))
+    const newScheduleOption = e.target.value
+    setScheduleOption(newScheduleOption)
+
+    let newDate
+    if (newScheduleOption === 'sendNow') {
+      newDate = dayjs()
+    } else if (newScheduleOption === 'schedule') {
+      newDate = dayjs().add(1, 'day')
     }
+    setDate(newDate)
+    onChangeDate(newDate)
   }
 
   const onChangeDate = (value) => {
+    const formattedDate = value.toISOString()
     setDate(value)
+    onChangeHandler({
+      target: {
+        name: 'scheduleTime',
+        value: formattedDate,
+      },
+    })
   }
+
   return (
     <div
       style={{
@@ -40,14 +54,15 @@ const BotSchedule = () => {
       </Radio.Group>
 
       <DatePicker
-        value={date}
+        value={date ? date : null}
         showTime={{ format: 'hh:mm A' }}
         format="DD-MM-YYYY hh:mm A"
         onChange={onChangeDate}
         disabled={scheduleOption !== 'schedule'}
         minDate={dayjs()}
         // className="flex-grow"
-        style={{ flex: 1, height: '36px' }}
+        style={{ flex: 1, height: '38px' }}
+        placeholder="Please select bot scheduling time"
       />
     </div>
   )

@@ -6,6 +6,12 @@ export const searchBot = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/search
 export const getStartConversationUrl = (bot: string) =>
   `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/start/${bot}`
 
+export const getStartConversationScheduleUrl = (
+  bot: string,
+  scheduleTime: string
+) =>
+  `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/start/${bot}/${scheduleTime}`
+
 export const createBotUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot`
 
 export const getUpdateBotUrl = (id: string) =>

@@ -1,17 +1,24 @@
-import axios from "axios";
-import { getStartConversationUrl } from "./urls";
-import { getDefaultHeaders } from "./utils";
+import axios from 'axios'
+import {
+  getStartConversationUrl,
+  getStartConversationScheduleUrl,
+} from './urls'
+import { getDefaultHeaders } from './utils'
 
-export const startConversation = (data: any) => {
+export const startConversation = (data: any, scheduleTime?: string) => {
+  let url
+  if (scheduleTime) {
+    url = getStartConversationScheduleUrl(data.id, scheduleTime)
+  } else {
+    url = getStartConversationUrl(data.id)
+  }
+  console.log('function to get url with time is callled', url)
 
-  const url = getStartConversationUrl(data.id);
   const config = {
     headers: {
       ...getDefaultHeaders(),
-      asset: "bot",
+      asset: 'bot',
     },
-  };  
-  return axios.get(url, config);
-};
-
-
+  }
+  return axios.get(url, config)
+}
