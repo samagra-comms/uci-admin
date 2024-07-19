@@ -12,23 +12,35 @@ import { useStore } from '../../store'
 //@ts-ignore
 import user from './defaultLogo.jpg'
 import moment from 'moment'
+
 import { fetchSegments } from '../../api/fetch-segments'
-import { map } from 'lodash'
 import toast from 'react-hot-toast'
 import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
-import { AxiosError } from 'axios'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
+import MultiselectDropDown from '../custome-component/multiselectComponent'
+import BotSchedule from './BotSchedule'
+import { utcToIst } from '../../utils/timeConverter'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
   const [segments, setSegments] = useState([])
   const { onChangeHandler, errors, disabled, isNewFlow } = compProps
+
   const onDateChangeHandler = useCallback(
     (data) => {
       onChangeHandler({ target: data })
     },
     [onChangeHandler]
   )
+  const setMultipleSegment = (data: any) => {
+    onChangeHandler({
+      target: {
+        name: 'segmentId',
+        value: data,
+      },
+    })
+  }
+
   useEffect(() => {
     fetchSegments().then((res: any) => {
       setSegments(res?.data)
@@ -66,6 +78,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       toast.error(error.message || error)
     }
   }
+  const scheduleTime = store?.state?.scheduleTime
+    ? new Date(store.state.scheduleTime)
+    : null
+  const minDate = scheduleTime || new Date()
 
   return (
     <MDBRow className="">
@@ -246,22 +262,16 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
 
       <div className="d-flex flex-row align-items-center justify-content-between">
         {isNewFlow && (
-          <div className="mb-3">
+          <div style={{ width: '40%', marginBottom: '12px' }}>
             <label style={{ marginBottom: '4px' }}>Segment</label>
-            <select
-              className="form-control"
-              onChange={onChangeHandler}
-              name="segmentId"
-              value={store?.state?.segmentId}
-              disabled={!store?.isBroadcastBot || disabled}
-            >
-              <option value="">-select-</option>
-              {map(segments, (seg) => (
-                <option value={seg.id}>{seg?.name}</option>
-              ))}
-            </select>
+
+            <MultiselectDropDown
+              dropDownOptions={segments}
+              onChange={setMultipleSegment}
+            />
           </div>
         )}
+
         <p>OR</p>
         <div className="mb-3">
           {isNewFlow && (
@@ -281,6 +291,8 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         </div>
       </div>
 
+      <BotSchedule onChangeHandler={onChangeHandler} />
+
       {!isNewFlow && (
         <div className="mb-3">
           <ReactDatePicker
@@ -297,10 +309,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       <div>
         <ReactDatePicker
           className="w-100"
-          minDate={new Date()}
-          maxDate={moment(new Date()).add(2, 'days').toDate()}
+          // minDate={new Date()}
+          // maxDate={moment(new Date()).add(2, 'days').toDate()}
+          minDate={minDate}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
+          dateFormat="MM/dd/yyyy"
+          disabled={store?.state?.scheduleTime == ''}
           customInput={<MDBInput label="End Date*" />}
         />
         {store.state.endDate && (

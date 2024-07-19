@@ -9,6 +9,7 @@ import { history } from '../utils/history'
 import { updateBot } from './updateBot'
 import { mapToSegment } from './segment-mapping'
 import { isNull, omit, omitBy } from 'lodash'
+import { utcToIst } from '../utils/timeConverter'
 
 export const onBotCreate = async () => {
   const store: any = useStore.getState()
@@ -100,7 +101,7 @@ export const onSegmentCreate = () => {
     all: {
       type: 'get',
       config: {
-        url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
+        url: `${process.env.REACT_APP_user_segment_url}/v2/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: 'GET',
         cadence: {
           perPage: store?.cadencePerPage || 100,
@@ -134,8 +135,22 @@ export const onSegmentCreate = () => {
 
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState()
-  toast.success('Notification Triggered')
-  startConversation(bot)
+
+  const scheduledTimeUTC = store?.state?.scheduleTime
+  const scheduledTimeIST = utcToIst(scheduledTimeUTC)
+  const currentTimeIST = new Date()
+
+  console.log('Scheduled Time IST:', scheduledTimeIST)
+  console.log('Scheduled Time UTC:', scheduledTimeUTC)
+  console.log('Current Time IST:', currentTimeIST)
+  let scheduled
+  if (scheduledTimeIST <= currentTimeIST) {
+    toast.success('Notification Triggered')
+  } else {
+    toast.success(`Notification scheduled`)
+    scheduled = scheduledTimeUTC
+  }
+  startConversation(bot, scheduled)
     // .then((res) => {
     //   store.stopLoading();
     //   store.onReset();
@@ -170,7 +185,7 @@ export const onStartConversation = (bot) => {
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
 
@@ -189,7 +204,7 @@ export const onAfterBotSubmit = (extras) => {
 export const onMappingBotToSegment = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
   return mapToSegment(mappingData)

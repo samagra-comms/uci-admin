@@ -1,3 +1,4 @@
+//update the ip
 export const loginUrl = `${process.env.REACT_APP_nl_login_url}/api/login`
 
 export const searchBot = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/search`
@@ -10,7 +11,8 @@ export const createBotUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot`
 export const getUpdateBotUrl = (id: string) =>
   `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
 
-export const segmentMappingUrl = `${process.env.REACT_APP_user_segment_url}/segment-bot-mapping`
+export const segmentMappingUrl = `${process.env.REACT_APP_user_segment_url}/v2/segment-bot-mapping`
+export const removeBotsFromNlurl = `${process.env.REACT_APP_user_segment_url}/segment-bot-mapping`
 
 export const createSegmentUrl = `${process.env.REACT_APP_UCI_BASE_URL}/admin/user-segment`
 
@@ -22,7 +24,7 @@ export const getBotByIdUrl = (id: string) =>
   `${process.env.REACT_APP_UCI_BASE_URL}/admin/bot/${id}`
 
 export const getSegmentCountUrl = (segment: string | number) =>
-  `${process.env.REACT_APP_nl_url}/segments/${segment}/mentors/count`
+  `${process.env.REACT_APP_nl_url}/v2/segments/${segment}/mentors/count`
 
 export const getSegmentUrl = `${process.env.REACT_APP_nl_url}/segments`
 export const createCsvSegmentUrl = `${process.env.REACT_APP_nl_url}/segment/phone`
