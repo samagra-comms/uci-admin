@@ -41,7 +41,7 @@ const BotSchedule = () => {
 
       <DatePicker
         value={date}
-        showTime={{ format: 'hh:mm A' }}
+        showTime={{ format: 'hh:mm A', showHour: true, showMinute: true }}
         format="DD-MM-YYYY hh:mm A"
         onChange={onChangeDate}
         disabled={scheduleOption !== 'schedule'}

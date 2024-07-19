@@ -18,6 +18,7 @@ import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
 import BotSchedule from './BotSchedule'
+import SegmentFromMultipleOption from './createSegment'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
@@ -266,7 +267,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           </div>
         )}
 
-        <p>OR</p>
+        <p className="mx-2">OR</p>
         <div className="mb-3">
           {isNewFlow && (
             <MDBFile
@@ -283,6 +284,8 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             />
           )}
         </div>
+        <p className="mx-2">OR</p>
+        <div className="mb-3">{isNewFlow && <SegmentFromMultipleOption />}</div>
       </div>
 
       <BotSchedule />
