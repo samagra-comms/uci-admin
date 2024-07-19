@@ -1,18 +1,12 @@
 import axios from 'axios'
-import {
-  getStartConversationUrl,
-  getStartConversationScheduleUrl,
-} from './urls'
+import { getStartConversationUrl } from './urls'
 import { getDefaultHeaders } from './utils'
 
 export const startConversation = (data: any, scheduleTime?: string) => {
-  let url
+  let url = getStartConversationUrl(data.id)
   if (scheduleTime) {
-    url = getStartConversationScheduleUrl(data.id, scheduleTime)
-  } else {
-    url = getStartConversationUrl(data.id)
+    url += `?triggerTime=${encodeURIComponent(scheduleTime)}`
   }
-  console.log('function to get url with time is callled', url)
 
   const config = {
     headers: {

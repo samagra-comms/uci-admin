@@ -234,9 +234,21 @@ const AddLogicModal: FC<any> = ({
                         onChange={onChangeHandler}
                       />
                     </MDBRow>
+
+                    {isSimpleFlow && (
+                      <p
+                        style={{ fontSize: '12px', padding: '0', margin: '0' }}
+                      >
+                        {
+                          '*To add link use this formate <a href="link" >title<a>'
+                        }
+                      </p>
+                    )}
+
                     {isSimpleFlow && (
                       <MDBRow className="mb-3">
                         <MDBTextArea
+                          className="my-3"
                           label="Bot Content to show to user"
                           name="content"
                           value={modalState.content}

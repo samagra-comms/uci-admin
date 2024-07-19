@@ -140,13 +140,17 @@ export const onStartConversation = (bot) => {
   const scheduledTimeIST = utcToIst(scheduledTimeUTC)
   const currentTimeIST = new Date()
 
-  console.log(scheduledTimeIST, scheduledTimeUTC, currentTimeIST)
+  console.log('Scheduled Time IST:', scheduledTimeIST)
+  console.log('Scheduled Time UTC:', scheduledTimeUTC)
+  console.log('Current Time IST:', currentTimeIST)
+  let scheduled
   if (scheduledTimeIST <= currentTimeIST) {
     toast.success('Notification Triggered')
   } else {
-    toast.success(`Notification scheduled =`)
+    toast.success(`Notification scheduled`)
+    scheduled = scheduledTimeUTC
   }
-  startConversation(bot, store?.state?.scheduleTime)
+  startConversation(bot, scheduled)
     // .then((res) => {
     //   store.stopLoading();
     //   store.onReset();

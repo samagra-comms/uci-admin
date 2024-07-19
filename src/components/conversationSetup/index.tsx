@@ -19,6 +19,7 @@ import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
 import BotSchedule from './BotSchedule'
+import { utcToIst } from '../../utils/timeConverter'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()

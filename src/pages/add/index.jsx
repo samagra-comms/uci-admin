@@ -171,7 +171,7 @@ export const Add = () => {
     if (store?.state.segmentId)
       getSegmentCount(store?.state.segmentId)
         .then((res) => {
-          store?.setSegmentCount(res?.data?.totalCounts || 100)
+          store?.setSegmentCount(res?.data?.totalCount || 100)
         })
         .catch((err) => {
           toast.error(
