@@ -20,10 +20,14 @@ import { deleteBot } from '../../api/deleteBot'
 import { removeBotsFromNl } from '../../api/removeBotsfromNl'
 import { startConversation } from '../../api/startConversation'
 import ConfirmationModal from './confirmation-modal'
+import UpdateTitleDesciptionModal from './updateTitleDesc'
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const [showConfimationModal, setShowConfirmationModal] =
     useState<boolean>(false)
+  const [showUpdateNotificationModal, setShowUpdateNotificationModal] =
+    useState<boolean>(false)
+  const [selectedBot, setSelectedBot] = useState(null)
   const navigate = useNavigate()
   const store: any = useStore()
   const [phoneNumber, setPhoneNumber] = useState(
@@ -145,7 +149,26 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
         onCancel={() => {
           setShowConfirmationModal(false)
         }}
-        onEdit={() => {}}
+        onEdit={() => {
+          setShowUpdateNotificationModal(true)
+          setShowConfirmationModal(false)
+        }}
+        onRetriggerButtonClick={() => {
+          if (selectedBot) {
+            onResendNotification(selectedBot)
+          }
+        }}
+      />
+      {/* modal to update tile and notification */}
+      <UpdateTitleDesciptionModal
+        open={showUpdateNotificationModal}
+        handleClose={setShowUpdateNotificationModal}
+        onRetriggerButtonClick={() => {
+          if (selectedBot) {
+            onResendNotification(selectedBot)
+          }
+        }}
+        currentBot={selectedBot}
       />
       <MDBTableHead>
         <tr>
@@ -298,9 +321,10 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                       disabled={!record.name.includes('Broadcast')}
                       onClick={(ev) => {
                         ev.preventDefault()
-                        setShowConfirmationModal(true)
-                        // record.name.includes('Broadcast') &&
-                        // onResendNotification(record)
+                        if (record.name.includes('Broadcast')) {
+                          setSelectedBot(record)
+                          setShowConfirmationModal(true)
+                        }
                       }}
                     >
                       Edit and Re-trigger Notification

@@ -5,20 +5,27 @@ interface ConfirmationModalProps {
   visible: boolean
   onCancel: () => void
   onEdit: () => void
+  onRetriggerButtonClick: () => void
 }
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   visible,
   onCancel,
   onEdit,
+  onRetriggerButtonClick,
 }) => {
+  const handleTriggerButton = () => {
+    onRetriggerButtonClick()
+    onCancel()
+  }
+
   return (
     <Modal
       title="Confirmation"
-      visible={visible}
+      open={visible}
       onCancel={onCancel}
       footer={[
-        <Button key="cancel" onClick={onCancel}>
+        <Button key="cancel" onClick={handleTriggerButton}>
           No, Retrigger with current value
         </Button>,
         <Button key="edit" type="primary" onClick={onEdit}>

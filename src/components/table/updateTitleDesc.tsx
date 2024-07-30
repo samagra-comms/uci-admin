@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   MDBBtn,
   MDBModal,
@@ -10,111 +10,69 @@ import {
   MDBModalFooter,
   MDBRow,
   MDBInput,
-  MDBFile,
   MDBContainer,
-  MDBCol,
-  MDBSpinner,
-  MDBIcon,
-  MDBTextArea,
 } from 'mdb-react-ui-kit'
 import { toast } from 'react-hot-toast'
-import { uploadForm } from '../../api/uploadForm'
-import { addLogic } from '../../api/addLogic'
-import { omitBy, isNull } from 'lodash'
-import { getUploadErrorMsg } from '../../utils'
-import { useStore } from '../../store'
-import './style.css'
-import FileModal from '../fileModal'
+import { updateTitleAndDescription } from '../../api/updatenotification'
 
-const UpdateTitleDesciptionModal: FC<any> = ({ open, handleClose }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [logics, setLogics] = useState<any>([])
-  const [form, setForm] = useState(null)
-  const [media, setMedia] = useState(null)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [cadencePerPage, setCadencePerPage] = useState(100)
-  const [formId, setFormId] = useState('')
-  const store: any = useStore()
-  const onSubmitHandler = useCallback(() => {}, [])
+const UpdateTitleDesciptionModal = ({
+  open,
+  handleClose,
+  onRetriggerButtonClick,
+  currentBot,
+}: {
+  open: boolean
+  handleClose: (val: boolean) => void
+  onRetriggerButtonClick: () => void
+  currentBot: any
+}) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+  })
+  useEffect(() => {
+    if (currentBot?.logicIDs?.[0]) {
+      setFormData({
+        title: currentBot.logicIDs[0].name || '',
+        description: currentBot.logicIDs[0].description || '',
+      })
+    }
+  }, [currentBot])
+
   const onChangeHandler = useCallback(
-    (ev: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {},
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = ev.target
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }))
+    },
     []
   )
-
-  const onClose = useCallback(() => {
-    setForm(null)
-    setMedia(null)
-    setFormId('')
-  }, [])
-
-  const onLogicAdd = useCallback(() => {
-    const data = {}
-
-    addLogic({ data })
-      .then((res) => {
-        const newLogic = [...logics, { ...res.data.result }]
-        setLogics(newLogic)
-        toast.success('Logic Added..')
-      })
-      .catch((err) => {
-        toast.error(err.message)
-      })
-
-    onClose()
-  }, [formId, logics, onClose])
-
-  const onOdkFormChange = useCallback((event: any) => {
-    if (!event.target.files.length) {
-      toast.error('No File Selected')
-    }
-    setForm(event.target.files[0])
-  }, [])
-
-  const onMediaChange = useCallback((event: any) => {
-    const files = Array.from(event.target.files)
-    if (!files.length) {
-      toast.error('No File Selected')
-    }
-    setMedia(files)
-  }, [])
-
-  const onFormUpload = useCallback(
-    async (ev: any) => {
+  const onClose = () => handleClose(false)
+  const handleRetrigger = useCallback(
+    async (ev: React.FormEvent) => {
       ev.preventDefault()
-        .then((res) => {
-          if (res?.data?.result?.status === 'ERROR') {
-            toast.error(`${getUploadErrorMsg(res?.data?.result?.errorCode)}`)
-          } else {
-            localStorage.setItem('formID', res?.data?.result?.data?.formID)
-            setFormId(res?.data?.result?.data?.formID)
-            toast.success('Succesfully Uploaded')
-          }
-          setIsLoading(false)
-        })
-        .catch((err) => {
-          setIsLoading(false)
-          toast.error(err.message || 'Something Went Wrong')
-        })
-    },
-    [form, media, store?.state?.name]
-  )
+      try {
+        const response = await updateTitleAndDescription(currentBot, formData)
 
-  const onCadenceChange = useCallback(
-    (ev) => {
-      setCadencePerPage(Number(ev.target.value))
-      store?.setCadencePerPage(Number(ev.target.value))
+        console.log(response)
+        return
+        // const { data } = response
+        // if (data.status === 'ERROR') {
+        //   toast.error(`${getUploadErrorMsg(data.errorCode)}`)
+        // } else {
+        //   toast.success('Successfully Updated')
+        //   onRetriggerButtonClick()
+        // }
+      } catch (err) {
+        toast.error((err as Error).message || 'Something Went Wrong')
+      } finally {
+        handleClose(false)
+      }
     },
-    [store]
+    [currentBot, handleClose, formData]
   )
-
-  // Handle file selection
-  const handleFileChange = (e) => {
-    if (!e.target.files.length) {
-      toast.error('No File Selected')
-    }
-    const files = Array.from(e.target.files)
-    setMedia(files)
-  }
 
   if (!open) return null
   return (
@@ -132,13 +90,13 @@ const UpdateTitleDesciptionModal: FC<any> = ({ open, handleClose }) => {
                 ></MDBBtn>
               </MDBModalHeader>
               <MDBModalBody>
-                <form onSubmit={onSubmitHandler}>
+                <form onSubmit={handleRetrigger}>
                   <MDBContainer>
                     <MDBRow className="mb-3">
                       <MDBInput
-                        label="Notification title"
-                        name="name"
-                        value={''}
+                        label="Notification Title"
+                        name="title"
+                        value={formData.title}
                         onChange={onChangeHandler}
                       />
                     </MDBRow>
@@ -146,28 +104,27 @@ const UpdateTitleDesciptionModal: FC<any> = ({ open, handleClose }) => {
                       <MDBInput
                         label="Notification Description"
                         name="description"
-                        value={''}
+                        value={formData.description}
                         onChange={onChangeHandler}
                       />
                     </MDBRow>
                   </MDBContainer>
+
+                  <MDBModalFooter>
+                    <MDBBtn
+                      color="secondary"
+                      onClick={() => handleClose(false)}
+                    >
+                      Cancel
+                    </MDBBtn>
+                    <MDBBtn type="submit">Update and Retrigger</MDBBtn>
+                  </MDBModalFooter>
                 </form>
               </MDBModalBody>
-
-              <MDBModalFooter>
-                <MDBBtn color="secondary" onClick={onClose}>
-                  Close
-                </MDBBtn>
-                <MDBBtn onClick={onLogicAdd}>Add</MDBBtn>
-              </MDBModalFooter>
             </MDBModalContent>
           </MDBContainer>
         </MDBModalDialog>
       </MDBModal>
-      <FileModal
-        open={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-      />
     </>
   )
 }
