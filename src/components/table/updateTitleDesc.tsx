@@ -14,6 +14,7 @@ import {
 } from 'mdb-react-ui-kit'
 import { toast } from 'react-hot-toast'
 import { updateTitleAndDescription } from '../../api/updatenotification'
+import { getUploadErrorMsg } from '../../utils'
 
 const UpdateTitleDesciptionModal = ({
   open,
@@ -31,10 +32,11 @@ const UpdateTitleDesciptionModal = ({
     description: '',
   })
   useEffect(() => {
-    if (currentBot?.logicIDs?.[0]) {
+    if (currentBot?.logicIDs?.[0].transformers?.[0]?.meta) {
       setFormData({
-        title: currentBot.logicIDs[0].name || '',
-        description: currentBot.logicIDs[0].description || '',
+        title: currentBot?.logicIDs?.[0].transformers?.[0]?.meta?.title || '',
+        description:
+          currentBot?.logicIDs?.[0].transformers?.[0]?.meta?.body || '',
       })
     }
   }, [currentBot])
@@ -57,14 +59,14 @@ const UpdateTitleDesciptionModal = ({
         const response = await updateTitleAndDescription(currentBot, formData)
 
         console.log(response)
-        return
-        // const { data } = response
-        // if (data.status === 'ERROR') {
-        //   toast.error(`${getUploadErrorMsg(data.errorCode)}`)
-        // } else {
-        //   toast.success('Successfully Updated')
-        //   onRetriggerButtonClick()
-        // }
+
+        const { data } = response
+        if (data?.status === 'ERROR') {
+          toast.error(`${getUploadErrorMsg(data.errorCode)}`)
+        } else {
+          toast.success('Bot Successfully Updated')
+          onRetriggerButtonClick()
+        }
       } catch (err) {
         toast.error((err as Error).message || 'Something Went Wrong')
       } finally {
