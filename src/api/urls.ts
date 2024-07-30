@@ -28,3 +28,7 @@ export const getSegmentCountUrl = (segment: string | number) =>
 
 export const getSegmentUrl = `${process.env.REACT_APP_nl_url}/segments`
 export const createCsvSegmentUrl = `${process.env.REACT_APP_nl_url}/segment/phone`
+
+export const getSegmentFiltersUrl = `${process.env.REACT_APP_nl_url}/segment-filters`
+
+export const createGeographySegmentUrl = `${process.env.REACT_APP_nl_url}/segment-filters/create`

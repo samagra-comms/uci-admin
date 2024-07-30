@@ -1,14 +1,18 @@
 import { Button, Checkbox, Modal, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { MDBBtn } from 'mdb-react-ui-kit'
+import { MDBBtn, MDBInput, MDBRow } from 'mdb-react-ui-kit'
 import axios from 'axios'
 import { getDefaultHeaders } from '../../api/utils'
+import { getSegmentFilters } from '../../api/get-segment-filter'
+import toast from 'react-hot-toast'
+import { createSegmentBasedOnGerography } from '../../api/create-segment-from-user'
 
 const SegmentFromMultipleOption = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const showModal = () => setIsModalOpen(true)
   const handleCancel = () => setIsModalOpen(false)
-
+  const [segmentName, setSegmentName] = useState('')
+  const [segmentDescription, setSegmentDescription] = useState('')
   const [selectedActor, setSelectedActor] = useState([])
   const [selectedDistricts, setSelectedDistricts] = useState([])
   const [selectedBlocks, setSelectedBlocks] = useState([])
@@ -21,33 +25,67 @@ const SegmentFromMultipleOption = () => {
   const [blocks, setBlocks] = useState([])
   const [schools, setSchools] = useState([])
   const fetchUsers = async () => {
-    const config = {
-      headers: {
-        ...getDefaultHeaders(),
-        asset: 'bot',
-      },
-      params: {
-        actors: selectedActor.length > 0 ? selectedActor.join(',') : -1,
-        districts:
-          selectedDistricts.length > 0 ? selectedDistricts.join(',') : -1,
-        blocks: selectedBlocks.length > 0 ? selectedBlocks.join(',') : -1,
-        schools: selectedSchools.length > 0 ? selectedSchools.join(',') : -1,
-      },
+    const params: {
+      actors: string
+      districts: string
+      blocks: string
+      schools: string
+    } = {
+      actors: selectedActor.length > 0 ? selectedActor.join(',') : '-1',
+      districts:
+        selectedDistricts.length > 0 ? selectedDistricts.join(',') : '-1',
+      blocks: selectedBlocks.length > 0 ? selectedBlocks.join(',') : '-1',
+      schools: selectedSchools.length > 0 ? selectedSchools.join(',') : '-1',
     }
 
-    const response = await axios.get(
-      `${process.env.REACT_APP_nl_url}/segment-filters`,
-      config
-    )
-    setActors(response?.data?.actors ?? [])
-    setDistricts(response?.data?.districts ?? [])
-    setBlocks(response?.data?.blocks ?? [])
-    setSchools(response?.data?.schools ?? [])
+    try {
+      const response = await getSegmentFilters(params)
+      setActors(response?.data?.actors ?? [])
+      setDistricts(response?.data?.districts ?? [])
+      setBlocks(response?.data?.blocks ?? [])
+      setSchools(response?.data?.schools ?? [])
+    } catch (error) {
+      toast.error('somethings went wrong')
+    }
   }
 
   useEffect(() => {
     fetchUsers()
   }, [selectedActor, selectedBlocks, selectedDistricts])
+
+  const handleCreateSegmentButton = async () => {
+    try {
+      const segData = {
+        actors: selectedActor.length > 0 ? selectedActor : ['-1'],
+        districts: selectedDistricts.length > 0 ? selectedDistricts : ['-1'],
+        blocks: selectedBlocks.length > 0 ? selectedBlocks : ['-1'],
+        schools: selectedSchools.length > 0 ? selectedSchools : ['-1'],
+        name: segmentName.trim(),
+        description: segmentDescription.trim(),
+      }
+      const response = await createSegmentBasedOnGerography(segData)
+      console.log('ankit response is here', response)
+      handleCancel()
+      toast.success('Segment created successfully')
+    } catch (error) {
+      console.error('Error creating segment:', error)
+      if (axios.isAxiosError(error) && error.response) {
+        const { status, data } = error.response
+
+        if (status === 409 && data.error_message) {
+          toast.error(`Error: ${data.error_message}`)
+        } else {
+          toast.error(
+            `Error: ${data.error_message || 'An unexpected error occurred'}`
+          )
+        }
+      } else if (error instanceof Error) {
+        toast.error(`Error: ${error.message}`)
+      } else {
+        toast.error('An unexpected error occurred.')
+      }
+    }
+  }
 
   const handleActorChange = (actor) => {
     const updatedActor = selectedActor.includes(actor)
@@ -86,7 +124,7 @@ const SegmentFromMultipleOption = () => {
     <div>
       <Modal
         open={isModalOpen}
-        onCancel={null}
+        onCancel={handleCancel}
         title={null}
         footer={null}
         width={'50%'}
@@ -106,8 +144,11 @@ const SegmentFromMultipleOption = () => {
           </div>
           <MDBBtn
             onClick={() => {
-              setIsModalOpen(!isModalOpen)
+              handleCreateSegmentButton()
             }}
+            disabled={
+              selectedActor.length <= 0 || !segmentName || !segmentDescription
+            }
           >
             Create
           </MDBBtn>
@@ -142,6 +183,22 @@ const SegmentFromMultipleOption = () => {
               ))}
             </div>
           </div> */}
+          <MDBRow className="mx-1 my-2">
+            <MDBInput
+              label="Segment Name"
+              name="name"
+              value={segmentName}
+              onChange={(e) => setSegmentName(e.target.value)}
+            />
+          </MDBRow>
+          <MDBRow className="mx-1">
+            <MDBInput
+              label="Segment Description"
+              name="description"
+              value={segmentDescription}
+              onChange={(e) => setSegmentDescription(e.target.value)}
+            />
+          </MDBRow>
           <IndividualSelection
             heading={'Actor'}
             listOfChoice={actors}
