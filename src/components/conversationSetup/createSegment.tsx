@@ -1,6 +1,8 @@
 import { Button, Checkbox, Modal, Space } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MDBBtn } from 'mdb-react-ui-kit'
+import axios from 'axios'
+import { getDefaultHeaders } from '../../api/utils'
 
 const SegmentFromMultipleOption = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -11,14 +13,41 @@ const SegmentFromMultipleOption = () => {
   const [selectedDistricts, setSelectedDistricts] = useState([])
   const [selectedBlocks, setSelectedBlocks] = useState([])
   const [selectedSchools, setSelectedSchools] = useState([])
-  const [isDistrictSelected, setIsDistrictSelected] = useState(false)
-  const [isBlockSelected, setIsBlockSelected] = useState(false)
-  const [isSchoolSelected, setIsSchoolSelected] = useState(false)
+  // const [isDistrictSelected, setIsDistrictSelected] = useState(false)
+  // const [isBlockSelected, setIsBlockSelected] = useState(false)
+  // const [isSchoolSelected, setIsSchoolSelected] = useState(false)
+  const [actors, setActors] = useState([])
+  const [districts, setDistricts] = useState()
+  const [blocks, setBlocks] = useState([])
+  const [schools, setSchools] = useState([])
+  const fetchUsers = async () => {
+    const config = {
+      headers: {
+        ...getDefaultHeaders(),
+        asset: 'bot',
+      },
+      params: {
+        actors: selectedActor.length > 0 ? selectedActor.join(',') : -1,
+        districts:
+          selectedDistricts.length > 0 ? selectedDistricts.join(',') : -1,
+        blocks: selectedBlocks.length > 0 ? selectedBlocks.join(',') : -1,
+        schools: selectedSchools.length > 0 ? selectedSchools.join(',') : -1,
+      },
+    }
 
-  const actors = ['Teacher', 'Mentor', 'Examiner']
-  const districts = ['Prayagraj', 'District 2', 'District 3', 'District 4']
-  const blocks = ['Block 1', 'Block 2', 'Block 3', 'Block 4']
-  const schools = ['School 1', 'School 2', 'School 3', 'School 4']
+    const response = await axios.get(
+      `${process.env.REACT_APP_nl_url}/segment-filters`,
+      config
+    )
+    setActors(response?.data?.actors ?? [])
+    setDistricts(response?.data?.districts ?? [])
+    setBlocks(response?.data?.blocks ?? [])
+    setSchools(response?.data?.schools ?? [])
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [selectedActor, selectedBlocks, selectedDistricts])
 
   const handleActorChange = (actor) => {
     const updatedActor = selectedActor.includes(actor)
@@ -56,7 +85,7 @@ const SegmentFromMultipleOption = () => {
   return (
     <div>
       <Modal
-        visible={isModalOpen}
+        open={isModalOpen}
         onCancel={null}
         title={null}
         footer={null}
@@ -83,14 +112,17 @@ const SegmentFromMultipleOption = () => {
             Create
           </MDBBtn>
         </div>
-        <Space direction="vertical" style={{ width: '100%' }}>
+        <Space
+          direction="vertical"
+          style={{ width: '100%', maxHeight: '500px', overflowY: 'auto' }}
+        >
           {/* actor  */}
-          <div
+          {/* <div
             style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}
           >
             <p
               style={{
-                margin: '0 0 0 26px',
+                // margin: '0 0 0 26px',
                 fontSize: '16px',
                 fontWeight: 600,
                 width: '80px',
@@ -101,15 +133,27 @@ const SegmentFromMultipleOption = () => {
             <div>
               {actors.map((actor) => (
                 <Checkbox
-                  key={actor}
-                  checked={selectedActor.includes(actor)}
+                  key={actor.id}
+                  checked={selectedActor.includes(actor.id)}
                   onChange={() => handleActorChange(actor)}
                 >
-                  {actor}
+                  {actor.label}
                 </Checkbox>
               ))}
             </div>
-          </div>
+          </div> */}
+          <IndividualSelection
+            heading={'Actor'}
+            listOfChoice={actors}
+            selectedItem={selectedActor}
+            handleOnChange={handleActorChange}
+            showListOfChoices={true}
+            // isSelected={isDistrictSelected}
+            // onSelectChange={(e) => {
+            //   setIsDistrictSelected(e.target.checked)
+            //   if (!e.target.checked) setSelectedDistricts([])
+            // }}
+          />
           {/* district  */}
           <IndividualSelection
             heading={'District'}
@@ -117,11 +161,11 @@ const SegmentFromMultipleOption = () => {
             selectedItem={selectedDistricts}
             handleOnChange={handleDistrictChange}
             showListOfChoices={selectedActor.length > 0}
-            isSelected={isDistrictSelected}
-            onSelectChange={(e) => {
-              setIsDistrictSelected(e.target.checked)
-              if (!e.target.checked) setSelectedDistricts([])
-            }}
+            // isSelected={isDistrictSelected}
+            // onSelectChange={(e) => {
+            //   setIsDistrictSelected(e.target.checked)
+            //   if (!e.target.checked) setSelectedDistricts([])
+            // }}
           />
 
           <IndividualSelection
@@ -130,11 +174,11 @@ const SegmentFromMultipleOption = () => {
             selectedItem={selectedBlocks}
             handleOnChange={handleBlockChange}
             showListOfChoices={selectedDistricts.length > 0}
-            isSelected={isBlockSelected}
-            onSelectChange={(e) => {
-              setIsBlockSelected(e.target.checked)
-              if (!e.target.checked) setSelectedBlocks([])
-            }}
+            // isSelected={isBlockSelected}
+            // onSelectChange={(e) => {
+            //   setIsBlockSelected(e.target.checked)
+            //   if (!e.target.checked) setSelectedBlocks([])
+            // }}
           />
           <IndividualSelection
             heading={'Schools'}
@@ -142,21 +186,23 @@ const SegmentFromMultipleOption = () => {
             selectedItem={selectedSchools}
             handleOnChange={handleSchoolChange}
             showListOfChoices={selectedBlocks.length > 0}
-            isSelected={isSchoolSelected}
-            onSelectChange={(e) => {
-              setIsSchoolSelected(e.target.checked)
-              if (!e.target.checked) setSelectedSchools([])
-            }}
+            // isSelected={isSchoolSelected}
+            // onSelectChange={(e) => {
+            //   setIsSchoolSelected(e.target.checked)
+            //   if (!e.target.checked) setSelectedSchools([])
+            // }}
           />
         </Space>
       </Modal>
+      <label style={{ marginBottom: '4px' }}>Create Segment</label>
+
       <MDBBtn
         onClick={() => {
           setIsModalOpen(!isModalOpen)
         }}
-        style={{ marginTop: '6px' }}
+        style={{ marginTop: '2px', width: '150px' }}
       >
-        Create Segement
+        New Segement
       </MDBBtn>
     </div>
   )
@@ -168,8 +214,8 @@ const IndividualSelection = ({
   handleOnChange,
   selectedItem,
   showListOfChoices = false,
-  isSelected,
-  onSelectChange,
+  // isSelected,
+  // onSelectChange,
 }) => {
   return (
     <div
@@ -180,23 +226,25 @@ const IndividualSelection = ({
         width: '100%',
       }}
     >
-      <Checkbox
-        checked={isSelected && showListOfChoices}
-        onChange={onSelectChange}
+      {/* <Checkbox
+        checked={showListOfChoices}
+        // checked={isSelected && showListOfChoices}
+        // onChange={onSelectChange}
         disabled={!showListOfChoices}
+      > */}
+      <p
+        style={{
+          fontSize: '16px',
+          fontWeight: 600,
+          width: '75px',
+          margin: 0,
+        }}
       >
-        <p
-          style={{
-            fontSize: '16px',
-            fontWeight: 600,
-            width: '75px',
-            margin: 0,
-          }}
-        >
-          {heading} :
-        </p>
-      </Checkbox>
-      {showListOfChoices && isSelected && (
+        {heading} :
+      </p>
+      {/* </Checkbox> */}
+      {/* {showListOfChoices && isSelected && ( */}
+      {showListOfChoices && (
         <div
           style={{
             border: '1px solid #aaa',
@@ -206,11 +254,12 @@ const IndividualSelection = ({
         >
           {listOfChoice.map((actor) => (
             <Checkbox
-              key={actor}
-              checked={selectedItem.includes(actor)}
-              onChange={() => handleOnChange(actor)}
+              style={{ width: '150px' }}
+              key={actor.id}
+              checked={selectedItem.includes(actor.id)}
+              onChange={() => handleOnChange(actor.id)}
             >
-              {actor}
+              {actor.label}
             </Checkbox>
           ))}
         </div>
