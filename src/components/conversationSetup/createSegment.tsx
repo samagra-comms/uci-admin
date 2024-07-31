@@ -227,6 +227,7 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedSchools}
             handleOnChange={handleSchoolChange}
             showListOfChoices={selectedBlocks.length > 0}
+            showId={true}
             // isSelected={isSchoolSelected}
             // onSelectChange={(e) => {
             //   setIsSchoolSelected(e.target.checked)
@@ -256,6 +257,7 @@ const IndividualSelection = ({
   handleOnChange,
   selectedItem,
   showListOfChoices = false,
+  showId = false,
   // isSelected,
   // onSelectChange,
 }) => {
@@ -301,7 +303,7 @@ const IndividualSelection = ({
               checked={selectedItem.includes(actor.id)}
               onChange={() => handleOnChange(actor.id)}
             >
-              {actor.label}
+              {showId ? actor.id : actor.label}
             </Checkbox>
           ))}
         </div>
