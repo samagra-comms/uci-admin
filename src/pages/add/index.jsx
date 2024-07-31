@@ -243,12 +243,14 @@ export const Add = () => {
               'description',
               'purpose',
               'startDate',
+              'newBotName',
               'startingMessage',
             ])
           : omit(store?.state, [
               'segmentId',
               'tags',
               'description',
+              'newBotName',
               'purpose',
               'startDate',
               'startingMessage',
