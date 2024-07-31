@@ -54,8 +54,8 @@ const BotSchedule = ({ onChangeHandler }) => {
       </Radio.Group>
 
       <DatePicker
-        value={date ? date : null}
-        showTime={{ format: 'hh:mm A' }}
+        value={date}
+        showTime={{ format: 'hh:mm A', showHour: true, showMinute: true }}
         format="DD-MM-YYYY hh:mm A"
         onChange={onChangeDate}
         disabled={scheduleOption !== 'schedule'}
