@@ -12,6 +12,7 @@ import { useStore } from '../../store'
 //@ts-ignore
 import user from './defaultLogo.jpg'
 import moment from 'moment'
+
 import { fetchSegments } from '../../api/fetch-segments'
 import toast from 'react-hot-toast'
 import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
@@ -19,6 +20,7 @@ import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
 import BotSchedule from './BotSchedule'
 import SegmentFromMultipleOption from './createSegment'
+import { utcToIst } from '../../utils/timeConverter'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
@@ -85,6 +87,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       toast.error(error.message || error)
     }
   }
+  const scheduleTime = store?.state?.scheduleTime
+    ? new Date(store.state.scheduleTime)
+    : null
+  const minDate = scheduleTime || new Date()
 
   return (
     <MDBRow className="">
@@ -313,7 +319,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <p>Selected Bot: {store?.state?.newBotName ?? ''}</p>
       )}
 
-      <BotSchedule />
+      <BotSchedule onChangeHandler={onChangeHandler} />
 
       {!isNewFlow && (
         <div className="mb-3">
@@ -331,11 +337,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       <div>
         <ReactDatePicker
           className="w-100"
-          minDate={new Date()}
-          maxDate={moment(new Date()).add(2, 'days').toDate()}
+          // minDate={new Date()}
+          // maxDate={moment(new Date()).add(2, 'days').toDate()}
+          minDate={minDate}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
           dateFormat="MM/dd/yyyy"
+          disabled={store?.state?.scheduleTime == ''}
           customInput={<MDBInput label="End Date*" />}
         />
         {store.state.endDate && (

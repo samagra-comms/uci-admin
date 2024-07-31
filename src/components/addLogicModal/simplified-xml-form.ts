@@ -92,7 +92,6 @@ export const getSimplifiedForm = async (details) => {
         </h:body>
     </h:html>`
 
-  console.log(xmlString)
   const file = await new File([xmlString], `${details?.name}.xml`, {
     type: 'application/xml',
   })
