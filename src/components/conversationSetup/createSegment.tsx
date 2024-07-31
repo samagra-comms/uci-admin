@@ -1,15 +1,16 @@
-import { Button, Checkbox, Modal, Space } from 'antd'
+import { Checkbox, Modal, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { MDBBtn, MDBInput, MDBRow } from 'mdb-react-ui-kit'
 import axios from 'axios'
-import { getDefaultHeaders } from '../../api/utils'
 import { getSegmentFilters } from '../../api/get-segment-filter'
 import toast from 'react-hot-toast'
 import { createSegmentBasedOnGerography } from '../../api/create-segment-from-user'
+import { useStore } from '../../store'
 
-const SegmentFromMultipleOption = () => {
+const SegmentFromMultipleOption = ({ isDisable }) => {
+  const store: any = useStore()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const showModal = () => setIsModalOpen(true)
   const handleCancel = () => setIsModalOpen(false)
   const [segmentName, setSegmentName] = useState('')
   const [segmentDescription, setSegmentDescription] = useState('')
@@ -64,7 +65,14 @@ const SegmentFromMultipleOption = () => {
         description: segmentDescription.trim(),
       }
       const response = await createSegmentBasedOnGerography(segData)
-      console.log('ankit response is here', response)
+      console.log('response', response)
+
+      store.setState({
+        ...store.state,
+        segmentId: String(response?.data?.id),
+        newBotName: response?.data?.name,
+      })
+
       handleCancel()
       toast.success('Segment created successfully')
     } catch (error) {
@@ -158,31 +166,7 @@ const SegmentFromMultipleOption = () => {
           style={{ width: '100%', maxHeight: '500px', overflowY: 'auto' }}
         >
           {/* actor  */}
-          {/* <div
-            style={{ display: 'flex', alignItems: 'center', margin: '8px 0' }}
-          >
-            <p
-              style={{
-                // margin: '0 0 0 26px',
-                fontSize: '16px',
-                fontWeight: 600,
-                width: '80px',
-              }}
-            >
-              Actor :
-            </p>
-            <div>
-              {actors.map((actor) => (
-                <Checkbox
-                  key={actor.id}
-                  checked={selectedActor.includes(actor.id)}
-                  onChange={() => handleActorChange(actor)}
-                >
-                  {actor.label}
-                </Checkbox>
-              ))}
-            </div>
-          </div> */}
+
           <MDBRow className="mx-1 my-2">
             <MDBInput
               label="Segment Name"
@@ -257,6 +241,7 @@ const SegmentFromMultipleOption = () => {
         onClick={() => {
           setIsModalOpen(!isModalOpen)
         }}
+        disabled={isDisable}
         style={{ marginTop: '2px', width: '150px' }}
       >
         New Segement
@@ -293,7 +278,7 @@ const IndividualSelection = ({
         style={{
           fontSize: '16px',
           fontWeight: 600,
-          width: '75px',
+          width: '80px',
           margin: 0,
         }}
       >
@@ -311,7 +296,7 @@ const IndividualSelection = ({
         >
           {listOfChoice.map((actor) => (
             <Checkbox
-              style={{ width: '150px' }}
+              style={{ width: '160px' }}
               key={actor.id}
               checked={selectedItem.includes(actor.id)}
               onChange={() => handleOnChange(actor.id)}
