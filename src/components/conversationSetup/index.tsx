@@ -19,11 +19,14 @@ import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
 import BotSchedule from './BotSchedule'
+import SegmentFromMultipleOption from './createSegment'
 import { utcToIst } from '../../utils/timeConverter'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
   const [segments, setSegments] = useState([])
+  const [selectedSegments, setSelectedSegments] = useState([])
+
   const { onChangeHandler, errors, disabled, isNewFlow } = compProps
 
   const onDateChangeHandler = useCallback(
@@ -33,6 +36,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
     [onChangeHandler]
   )
   const setMultipleSegment = (data: any) => {
+    setSelectedSegments(data)
     onChangeHandler({
       target: {
         name: 'segmentId',
@@ -65,8 +69,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       try {
         const res = await createSegmentFromCsv(segData)
         setSegments([...segments, res.data.segment])
-        store.setState({ ...store.state, segmentId: res.data.segment.id })
-        toast.success('This new segment is added into the segment list')
+        store.setState({
+          ...store.state,
+          segmentId: `${res?.data?.segment?.id}`,
+          newBotName: res?.data?.segment?.name,
+        })
+
+        toast.success('Segment created successfully')
       } catch (err) {
         const errorMessage =
           err.response?.data?.message?.join(', ') ||
@@ -268,11 +277,16 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             <MultiselectDropDown
               dropDownOptions={segments}
               onChange={setMultipleSegment}
+              disable={
+                (!selectedSegments.length && store?.state?.segmentId) ||
+                !store?.isBroadcastBot ||
+                disabled
+              }
             />
           </div>
         )}
 
-        <p>OR</p>
+        <p className="mx-2">OR</p>
         <div className="mb-3">
           {isNewFlow && (
             <MDBFile
@@ -289,7 +303,21 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             />
           )}
         </div>
+        <p className="mx-2">OR</p>
+        <div className="mb-3">
+          {isNewFlow && (
+            <SegmentFromMultipleOption
+              isDisable={
+                !store?.isBroadcastBot || disabled || store?.state?.segmentId
+              }
+            />
+          )}
+        </div>
       </div>
+      {((isNewFlow && !selectedSegments.length && store?.state?.segmentId) ||
+        (!store?.isBroadcastBot && store?.state?.newBotName)) && (
+        <p>Selected Bot: {store?.state?.newBotName ?? ''}</p>
+      )}
 
       <BotSchedule onChangeHandler={onChangeHandler} />
 

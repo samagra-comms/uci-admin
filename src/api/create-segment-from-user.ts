@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { createSegmentUrl } from './urls'
+import { createGeographySegmentUrl } from './urls'
 import { getDefaultHeaders } from './utils'
 
-export const createSegment = (data: any) => {
+export const createSegmentBasedOnGerography = (data: any) => {
   const config = {
     headers: {
       ...getDefaultHeaders(),
@@ -10,5 +10,5 @@ export const createSegment = (data: any) => {
     },
   }
 
-  return axios.post(createSegmentUrl, data, config)
+  return axios.post(createGeographySegmentUrl, data, config)
 }

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import Select from 'react-select'
 
-const MultiselectDropDown = ({ dropDownOptions, onChange }: any) => {
+const MultiselectDropDown = ({ dropDownOptions, onChange, disable }: any) => {
   const [selectedOptions, setSelectedOptions] = useState([])
 
   const handleChange = (selected) => {
-    console.log('Selected options', selected)
     onChange(selected.map((option) => option.id).join(','))
     setSelectedOptions(selected)
   }
@@ -21,6 +20,7 @@ const MultiselectDropDown = ({ dropDownOptions, onChange }: any) => {
       getOptionValue={(option) => option.id.toString()}
       className="basic-multi-select"
       classNamePrefix="select"
+      isDisabled={disable}
       // styles={{
       //   control: (provided) => ({
       //     ...provided,
