@@ -57,10 +57,10 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
   const handleCreateSegmentButton = async () => {
     try {
       const segData = {
-        actors: selectedActor.length > 0 ? selectedActor : ['-1'],
-        districts: selectedDistricts.length > 0 ? selectedDistricts : ['-1'],
-        blocks: selectedBlocks.length > 0 ? selectedBlocks : ['-1'],
-        schools: selectedSchools.length > 0 ? selectedSchools : ['-1'],
+        actors: selectedActor.length > 0 ? selectedActor : [],
+        districts: selectedDistricts.length > 0 ? selectedDistricts : [],
+        blocks: selectedBlocks.length > 0 ? selectedBlocks : [],
+        schools: selectedSchools.length > 0 ? selectedSchools : [],
         name: segmentName.trim(),
         description: segmentDescription.trim(),
       }
