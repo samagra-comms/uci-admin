@@ -20,7 +20,6 @@ import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
 import MultiselectDropDown from '../custome-component/multiselectComponent'
 import BotSchedule from './BotSchedule'
 import SegmentFromMultipleOption from './createSegment'
-import { utcToIst } from '../../utils/timeConverter'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()

@@ -37,6 +37,7 @@ export const onBotCreate = async () => {
   })
   if (reqObj.startDate) {
     reqObj.startDate = moment(reqObj.startDate).format('YYYY-MM-DD')
+    reqObj.startDate = store?.state?.scheduleTime
   }
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format('YYYY-MM-DD')
