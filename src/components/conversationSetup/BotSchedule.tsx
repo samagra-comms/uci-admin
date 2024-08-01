@@ -3,10 +3,13 @@ import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import { useStore } from '../../store'
 
-const BotSchedule = ({ onChangeHandler }) => {
+const BotSchedule = ({ onChangeHandler, disabled }) => {
+  const store: any = useStore()
+
   const [scheduleOption, setScheduleOption] = useState('')
   const [date, setDate] = useState(null)
   const onChangeScheduleOption = (e) => {
+    if (disabled) return
     const newScheduleOption = e.target.value
     setScheduleOption(newScheduleOption)
 
@@ -14,7 +17,7 @@ const BotSchedule = ({ onChangeHandler }) => {
     if (newScheduleOption === 'sendNow') {
       newDate = dayjs()
     } else if (newScheduleOption === 'schedule') {
-      newDate = dayjs().add(1, 'day')
+      newDate = dayjs()
     }
     setDate(newDate)
     onChangeDate(newDate)
@@ -58,11 +61,15 @@ const BotSchedule = ({ onChangeHandler }) => {
         showTime={{ format: 'hh:mm A', showHour: true, showMinute: true }}
         format="DD-MM-YYYY hh:mm A"
         onChange={onChangeDate}
-        disabled={scheduleOption !== 'schedule'}
+        disabled={scheduleOption !== 'schedule' || disabled}
         minDate={dayjs()}
         // className="flex-grow"
         style={{ flex: 1, height: '38px' }}
-        placeholder="Please select bot scheduling time"
+        placeholder={
+          disabled
+            ? new Date(store?.state?.scheduleTime).toString() || ''
+            : 'Please select bot scheduling time'
+        }
       />
     </div>
   )

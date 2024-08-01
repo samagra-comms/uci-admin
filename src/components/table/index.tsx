@@ -80,7 +80,6 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
         .catch((err) => {
           store.stopLoading()
           toast.error(`Error occured in updating bot-${err.message}`)
-          console.log({ err })
         })
     },
     [store]
@@ -113,7 +112,6 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
         .catch((err) => {
           store.stopLoading()
           toast.error(`Error occured in updating bot-${err.message}`)
-          console.log({ err })
         })
     },
     [store]
@@ -303,25 +301,13 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
                     >
                       Delete Bot
                     </MDBDropdownItem>
-                    {/* <MDBDropdownItem
-                      link
-                      childTag="button"
-                      disabled={!record.name.includes('Broadcast')}
-                      onClick={(ev) => {
-                        ev.preventDefault()
-                        record.name.includes('Broadcast') &&
-                          onResendNotification(record)
-                      }}
-                    >
-                      Trigger Notification
-                    </MDBDropdownItem> */}
 
                     <MDBDropdownItem
                       link
                       childTag="button"
                       disabled={
                         !record?.name?.includes('Broadcast') ||
-                        new Date() <=
+                        new Date() <
                           utcToIst(record?.schedules?.[0]?.scheduledAt)
                       }
                       onClick={(ev) => {

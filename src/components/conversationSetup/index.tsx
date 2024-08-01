@@ -23,7 +23,6 @@ import SegmentFromMultipleOption from './createSegment'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
-  const [segments, setSegments] = useState([])
   const [selectedSegments, setSelectedSegments] = useState([])
 
   const { onChangeHandler, errors, disabled, isNewFlow } = compProps
@@ -44,12 +43,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
     })
   }
 
-  useEffect(() => {
-    fetchSegments().then((res: any) => {
-      setSegments(res?.data)
-    })
-  }, [])
-
   const handleSegmentFileUpload = async (file: File) => {
     if (!store.state.name) {
       toast.error('First select the bot Name')
@@ -67,7 +60,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
 
       try {
         const res = await createSegmentFromCsv(segData)
-        setSegments([...segments, res.data.segment])
         store.setState({
           ...store.state,
           segmentId: `${res?.data?.segment?.id}`,
@@ -274,12 +266,11 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
             <label style={{ marginBottom: '4px' }}>Segment</label>
 
             <MultiselectDropDown
-              dropDownOptions={segments}
               onChange={setMultipleSegment}
               disable={
-                (!selectedSegments.length && store?.state?.segmentId) ||
+                (selectedSegments.length === 0 && !!store?.state?.segmentId) ||
                 !store?.isBroadcastBot ||
-                disabled
+                !!disabled
               }
             />
           </div>
@@ -314,11 +305,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         </div>
       </div>
       {((isNewFlow && !selectedSegments.length && store?.state?.segmentId) ||
-        (!store?.isBroadcastBot && store?.state?.newBotName)) && (
-        <p>Selected Bot: {store?.state?.newBotName ?? ''}</p>
-      )}
+        (!store?.isBroadcastBot && store?.state?.newBotName)) &&
+        !disabled && <p>Selected Bot: {store?.state?.newBotName ?? ''}</p>}
 
-      <BotSchedule onChangeHandler={onChangeHandler} />
+      <BotSchedule onChangeHandler={onChangeHandler} disabled={disabled} />
 
       {!isNewFlow && (
         <div className="mb-3">

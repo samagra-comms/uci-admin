@@ -65,7 +65,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
         description: segmentDescription.trim(),
       }
       const response = await createSegmentBasedOnGerography(segData)
-      console.log('response', response)
 
       store.setState({
         ...store.state,
