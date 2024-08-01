@@ -37,6 +37,7 @@ export const onBotCreate = async () => {
   })
   if (reqObj.startDate) {
     reqObj.startDate = moment(reqObj.startDate).format('YYYY-MM-DD')
+    reqObj.startDate = store?.state?.scheduleTime
   }
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format('YYYY-MM-DD')
@@ -140,9 +141,6 @@ export const onStartConversation = (bot) => {
   const scheduledTimeIST = utcToIst(scheduledTimeUTC)
   const currentTimeIST = new Date()
 
-  // console.log('Scheduled Time IST:', scheduledTimeIST)
-  // console.log('Scheduled Time UTC:', scheduledTimeUTC)
-  // console.log('Current Time IST:', currentTimeIST)
   let scheduled
   if (scheduledTimeIST <= currentTimeIST) {
     toast.success('Notification Triggered')
@@ -322,7 +320,6 @@ export const onBroadcastBotCreate = async () => {
 
   formdata.append('data', JSON.stringify({ data: reqObj }))
 
-  console.log('debug', { reqObj })
   createBot(formdata)
     .then((res) => {
       onStartConversation(res?.data?.result)

@@ -82,6 +82,15 @@ export const Add = () => {
     if (searchParams.get('bot')) {
       getBotById(searchParams.get('bot'))
         .then((res) => {
+          console.log(
+            'ankit is here bot id',
+            res?.data?.result?.users &&
+              res.data.result.users?.[0]?.all?.config?.url
+              ? res.data.result.users[0].all.config.url
+                  ?.match(/segments\/([^/]+)/)?.[1]
+                  ?.replace(/^,/, '') || ''
+              : ''
+          )
           const data = {
             // ...store?.state,
             ...res.data.result,
@@ -90,6 +99,18 @@ export const Add = () => {
             endDate: new Date(res?.data?.result?.endDate),
             description: res?.data?.result?.description || '',
             purpose: res?.data?.result?.purpose || '',
+            scheduleTime:
+              res?.data?.result?.schedules &&
+              res.data.result.schedules?.length > 0
+                ? new Date(res.data.result.schedules[0].scheduledAt)
+                : new Date(res.data.result?.createdAt),
+            segmentId:
+              res?.data?.result?.users &&
+              res.data.result.users?.[0]?.all?.config?.url
+                ? res.data.result.users[0].all.config.url
+                    ?.match(/segments\/([^/]+)/)?.[1]
+                    ?.replace(/^,/, '') || ''
+                : '',
           }
 
           store?.setState({

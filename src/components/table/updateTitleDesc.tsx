@@ -58,8 +58,6 @@ const UpdateTitleDesciptionModal = ({
       try {
         const response = await updateTitleAndDescription(currentBot, formData)
 
-        console.log(response)
-
         const { data } = response
         if (data?.status === 'ERROR') {
           toast.error(`${getUploadErrorMsg(data.errorCode)}`)
