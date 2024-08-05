@@ -22,6 +22,7 @@ import { startConversation } from '../../api/startConversation'
 import ConfirmationModal from './confirmation-modal'
 import UpdateTitleDesciptionModal from './updateTitleDesc'
 import { utcToIst } from '../../utils/timeConverter'
+import { deleteSchedules } from '../../api/deleteSchedule'
 
 export const Table: FC<{ data: Array<any> }> = ({ data }) => {
   const [showConfimationModal, setShowConfirmationModal] =
@@ -85,38 +86,101 @@ export const Table: FC<{ data: Array<any> }> = ({ data }) => {
     [store]
   )
 
+  // const onDelete = useCallback(
+  //   (bot) => {
+  //     store.startLoading()
+  //     const scheduleId = bot?.schedules[0]?.id
+
+  //     const data = {
+  //       botId: bot.id,
+  //     }
+  //     if (scheduleId) {
+  //       deleteSchedules(scheduleId).then
+  //     }
+
+  //     deleteBot(data)
+  //       .then((res) => {
+  //         store.stopLoading()
+  //         // toast.success('Bot Deleted Succesfully');
+  //         // window.location.reload();
+
+  //         removeBotsFromNl(res.data.result).then((res) => {
+  //           toast.success(
+  //             `Bots succesfully removed from NL-${
+  //               res?.data?.data?.delete_segment_bots?.affected_rows || 0
+  //             }`
+  //           )
+  //           setTimeout(() => {
+  //             window.location.reload()
+  //           }, 3000)
+  //         })
+  //       })
+  //       .catch((err) => {
+  //         store.stopLoading()
+  //         toast.error(`Error occured in updating bot-${err.message}`)
+  //       })
+  //   },
+  //   [store]
+  // )
+
   const onDelete = useCallback(
     (bot) => {
       store.startLoading()
-      const data = {
-        botId: bot.id,
-      }
+      console.log('ankit, bot', bot.schedules[0]?.id)
+      const scheduleId = bot.schedules[0]?.id
+      const botId = bot.id
 
-      deleteBot(data)
-        .then((res) => {
-          store.stopLoading()
-          // toast.success('Bot Deleted Succesfully');
-          // window.location.reload();
-
-          removeBotsFromNl(res.data.result).then((res) => {
-            toast.success(
-              `Bots succesfully removed from NL-${
-                res?.data?.data?.delete_segment_bots?.affected_rows || 0
-              }`
-            )
-            setTimeout(() => {
-              window.location.reload()
-            }, 3000)
+      if (scheduleId) {
+        deleteSchedules(scheduleId)
+          .then(() => {
+            // Schedule deleted successfully, now delete the bot
+            deleteBot({ botId })
+              .then((res) => {
+                store.stopLoading()
+                removeBotsFromNl(res.data.result).then((nlRes) => {
+                  toast.success(
+                    `Bots successfully removed from NL-${
+                      nlRes?.data?.data?.delete_segment_bots?.affected_rows || 0
+                    }`
+                  )
+                  setTimeout(() => {
+                    window.location.reload()
+                  }, 3000)
+                })
+              })
+              .catch((err) => {
+                store.stopLoading()
+                toast.error(`Error occurred in deleting bot - ${err.message}`)
+              })
           })
-        })
-        .catch((err) => {
-          store.stopLoading()
-          toast.error(`Error occured in updating bot-${err.message}`)
-        })
+          .catch((err) => {
+            store.stopLoading()
+            toast.error(`Error occurred in deleting schedule - ${err.message}`)
+          })
+      } else {
+        // No schedule to delete, proceed with bot deletion
+        deleteBot({ botId })
+          .then((res) => {
+            store.stopLoading()
+            removeBotsFromNl(res.data.result).then((nlRes) => {
+              toast.success(
+                `Bots successfully removed from NL-${
+                  nlRes?.data?.data?.delete_segment_bots?.affected_rows || 0
+                }`
+              )
+              setTimeout(() => {
+                window.location.reload()
+              }, 3000)
+            })
+          })
+          .catch((err) => {
+            store.stopLoading()
+            toast.error(`Error occurred in deleting bot - ${err.message}`)
+          })
+      }
     },
     [store]
   )
-
   const onResendNotification = useCallback(
     (bot) => {
       toast.success(`Notification Triggered`)
