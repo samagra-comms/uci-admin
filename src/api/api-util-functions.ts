@@ -87,6 +87,10 @@ export const onBotCreate = async () => {
             toast.error(err?.message)
             store.stopLoading()
           })
+      } else {
+        store.onReset()
+        store.stopLoading()
+        history.navigate('/success')
       }
     })
     .catch((err) => {
