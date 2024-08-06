@@ -47,7 +47,7 @@ const MultiselectDropDown = ({ onChange, disable }: any) => {
       getOptionValue={(option) => option?.id?.toString()}
       className="basic-multi-select"
       classNamePrefix="select"
-      // isDisabled={disable}
+      isDisabled={disable}
       // styles={{
       //   control: (provided) => ({
       //     ...provided,
