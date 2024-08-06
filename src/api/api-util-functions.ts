@@ -67,31 +67,25 @@ export const onBotCreate = async () => {
         text: store?.state?.name + '_startingMessage',
         botId: res.data.result.id,
       })
-      if (store?.isBroadcastBot) {
-        onMappingBotToSegment({
-          queryParams: {
-            text: reqObj.startingMessage,
-            botId: res.data.result.id,
-          },
+      onMappingBotToSegment({
+        queryParams: {
+          text: reqObj.startingMessage,
+          botId: res.data.result.id,
+        },
+      })
+        .then((res) => {
+          if (store?.isBroadcastBot) {
+            onSegmentCreate()
+          } else {
+            store?.stopLoading()
+            store.onReset()
+            history.navigate('/success')
+          }
         })
-          .then((res) => {
-            if (store?.isBroadcastBot) {
-              onSegmentCreate()
-            } else {
-              store?.stopLoading()
-              store.onReset()
-              history.navigate('/success')
-            }
-          })
-          .catch((err) => {
-            toast.error(err?.message)
-            store.stopLoading()
-          })
-      } else {
-        store.onReset()
-        store.stopLoading()
-        history.navigate('/success')
-      }
+        .catch((err) => {
+          toast.error(err?.message)
+          store.stopLoading()
+        })
     })
     .catch((err) => {
       store?.stopLoading()
