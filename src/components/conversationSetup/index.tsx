@@ -269,7 +269,6 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               onChange={setMultipleSegment}
               disable={
                 (selectedSegments.length === 0 && !!store?.state?.segmentId) ||
-                !store?.isBroadcastBot ||
                 !!disabled
               }
             />
@@ -285,9 +284,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               id="formFileSm"
               size="md"
               label="Recipient List"
-              disabled={
-                !store?.isBroadcastBot || disabled || store?.state?.segmentId
-              }
+              disabled={disabled || store?.state?.segmentId}
               onChange={(ev) => handleSegmentFileUpload(ev.target.files[0])}
               // onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
             />
@@ -297,9 +294,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
         <div className="mb-3">
           {isNewFlow && (
             <SegmentFromMultipleOption
-              isDisable={
-                !store?.isBroadcastBot || disabled || store?.state?.segmentId
-              }
+              isDisable={disabled || store?.state?.segmentId}
             />
           )}
         </div>
