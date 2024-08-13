@@ -188,11 +188,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedActor}
             handleOnChange={handleActorChange}
             showListOfChoices={true}
-            // isSelected={isDistrictSelected}
-            // onSelectChange={(e) => {
-            //   setIsDistrictSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedDistricts([])
-            // }}
           />
           {/* district  */}
           <IndividualSelection
@@ -201,11 +196,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedDistricts}
             handleOnChange={handleDistrictChange}
             showListOfChoices={selectedActor.length > 0}
-            // isSelected={isDistrictSelected}
-            // onSelectChange={(e) => {
-            //   setIsDistrictSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedDistricts([])
-            // }}
           />
 
           <IndividualSelection
@@ -214,11 +204,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedBlocks}
             handleOnChange={handleBlockChange}
             showListOfChoices={selectedDistricts.length > 0}
-            // isSelected={isBlockSelected}
-            // onSelectChange={(e) => {
-            //   setIsBlockSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedBlocks([])
-            // }}
           />
           <IndividualSelection
             heading={'Schools'}
@@ -227,11 +212,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             handleOnChange={handleSchoolChange}
             showListOfChoices={selectedBlocks.length > 0}
             showId={true}
-            // isSelected={isSchoolSelected}
-            // onSelectChange={(e) => {
-            //   setIsSchoolSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedSchools([])
-            // }}
           />
         </Space>
       </Modal>
@@ -257,8 +237,6 @@ const IndividualSelection = ({
   selectedItem,
   showListOfChoices = false,
   showId = false,
-  // isSelected,
-  // onSelectChange,
 }) => {
   return (
     <div
@@ -269,12 +247,6 @@ const IndividualSelection = ({
         width: '100%',
       }}
     >
-      {/* <Checkbox
-        checked={showListOfChoices}
-        // checked={isSelected && showListOfChoices}
-        // onChange={onSelectChange}
-        disabled={!showListOfChoices}
-      > */}
       <p
         style={{
           fontSize: '16px',
@@ -285,8 +257,7 @@ const IndividualSelection = ({
       >
         {heading} :
       </p>
-      {/* </Checkbox> */}
-      {/* {showListOfChoices && isSelected && ( */}
+
       {showListOfChoices && (
         <div
           style={{
