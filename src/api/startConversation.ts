@@ -1,17 +1,18 @@
-import axios from "axios";
-import { getStartConversationUrl } from "./urls";
-import { getDefaultHeaders } from "./utils";
+import axios from 'axios'
+import { getStartConversationUrl } from './urls'
+import { getDefaultHeaders } from './utils'
 
-export const startConversation = (data: any) => {
+export const startConversation = (data: any, scheduleTime?: string) => {
+  let url = getStartConversationUrl(data.id)
+  if (scheduleTime) {
+    url += `?triggerTime=${encodeURIComponent(scheduleTime)}`
+  }
 
-  const url = getStartConversationUrl(data.id);
   const config = {
     headers: {
       ...getDefaultHeaders(),
-      asset: "bot",
+      asset: 'bot',
     },
-  };  
-  return axios.get(url, config);
-};
-
-
+  }
+  return axios.get(url, config)
+}

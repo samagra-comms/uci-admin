@@ -12,28 +12,36 @@ import { useStore } from '../../store'
 //@ts-ignore
 import user from './defaultLogo.jpg'
 import moment from 'moment'
+
 import { fetchSegments } from '../../api/fetch-segments'
-import { map } from 'lodash'
 import toast from 'react-hot-toast'
 import { extractPhoneNumberFromCsv } from '../../utils/extractNumber'
-import { AxiosError } from 'axios'
 import { createSegmentFromCsv } from '../../api/create-segment-from-csv'
+import MultiselectDropDown from '../custome-component/multiselectComponent'
+import BotSchedule from './BotSchedule'
+import SegmentFromMultipleOption from './createSegment'
 
 const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
   const store: any = useStore()
-  const [segments, setSegments] = useState([])
+  const [selectedSegments, setSelectedSegments] = useState([])
+
   const { onChangeHandler, errors, disabled, isNewFlow } = compProps
+
   const onDateChangeHandler = useCallback(
     (data) => {
       onChangeHandler({ target: data })
     },
     [onChangeHandler]
   )
-  useEffect(() => {
-    fetchSegments().then((res: any) => {
-      setSegments(res?.data)
+  const setMultipleSegment = (data: any) => {
+    setSelectedSegments(data)
+    onChangeHandler({
+      target: {
+        name: 'segmentId',
+        value: data,
+      },
     })
-  }, [])
+  }
 
   const handleSegmentFileUpload = async (file: File) => {
     if (!store.state.name) {
@@ -52,9 +60,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
 
       try {
         const res = await createSegmentFromCsv(segData)
-        setSegments([...segments, res.data.segment])
-        store.setState({ ...store.state, segmentId: res.data.segment.id })
-        toast.success('This new segment is added into the segment list')
+        store.setState({
+          ...store.state,
+          segmentId: `${res?.data?.segment?.id}`,
+          newBotName: res?.data?.segment?.name,
+        })
+
+        toast.success('Segment created successfully')
       } catch (err) {
         const errorMessage =
           err.response?.data?.message?.join(', ') ||
@@ -66,6 +78,10 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       toast.error(error.message || error)
     }
   }
+  const scheduleTime = store?.state?.scheduleTime
+    ? new Date(store.state.scheduleTime)
+    : null
+  const minDate = scheduleTime || new Date()
 
   return (
     <MDBRow className="">
@@ -246,23 +262,20 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
 
       <div className="d-flex flex-row align-items-center justify-content-between">
         {isNewFlow && (
-          <div className="mb-3">
+          <div style={{ width: '40%', marginBottom: '12px' }}>
             <label style={{ marginBottom: '4px' }}>Segment</label>
-            <select
-              className="form-control"
-              onChange={onChangeHandler}
-              name="segmentId"
-              value={store?.state?.segmentId}
-              disabled={!store?.isBroadcastBot || disabled}
-            >
-              <option value="">-select-</option>
-              {map(segments, (seg) => (
-                <option value={seg.id}>{seg?.name}</option>
-              ))}
-            </select>
+
+            <MultiselectDropDown
+              onChange={setMultipleSegment}
+              disable={
+                (selectedSegments.length === 0 && !!store?.state?.segmentId) ||
+                !!disabled
+              }
+            />
           </div>
         )}
-        <p>OR</p>
+
+        <p className="mx-2">OR</p>
         <div className="mb-3">
           {isNewFlow && (
             <MDBFile
@@ -271,15 +284,26 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
               id="formFileSm"
               size="md"
               label="Recipient List"
-              disabled={
-                !store?.isBroadcastBot || disabled || store?.state?.segmentId
-              }
+              disabled={disabled || store?.state?.segmentId}
               onChange={(ev) => handleSegmentFileUpload(ev.target.files[0])}
               // onChange={(ev) => store?.setSegmentFile(ev.target?.files?.[0])}
             />
           )}
         </div>
+        <p className="mx-2">OR</p>
+        <div className="mb-3">
+          {isNewFlow && (
+            <SegmentFromMultipleOption
+              isDisable={disabled || store?.state?.segmentId}
+            />
+          )}
+        </div>
       </div>
+      {((isNewFlow && !selectedSegments.length && store?.state?.segmentId) ||
+        (!store?.isBroadcastBot && store?.state?.newBotName)) &&
+        !disabled && <p>Selected Bot: {store?.state?.newBotName ?? ''}</p>}
+
+      <BotSchedule onChangeHandler={onChangeHandler} disabled={disabled} />
 
       {!isNewFlow && (
         <div className="mb-3">
@@ -297,9 +321,13 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
       <div>
         <ReactDatePicker
           className="w-100"
-          minDate={new Date()}
+          // minDate={new Date()}
+          // maxDate={moment(new Date()).add(2, 'days').toDate()}
+          minDate={minDate}
           selected={store?.state.endDate}
           onChange={(value) => onDateChangeHandler({ name: 'endDate', value })}
+          dateFormat="MM/dd/yyyy"
+          disabled={store?.state?.scheduleTime == ''}
           customInput={<MDBInput label="End Date*" />}
         />
         {store.state.endDate && (

@@ -9,6 +9,7 @@ import { history } from '../utils/history'
 import { updateBot } from './updateBot'
 import { mapToSegment } from './segment-mapping'
 import { isNull, omit, omitBy } from 'lodash'
+import { utcToIst } from '../utils/timeConverter'
 
 export const onBotCreate = async () => {
   const store: any = useStore.getState()
@@ -36,6 +37,7 @@ export const onBotCreate = async () => {
   })
   if (reqObj.startDate) {
     reqObj.startDate = moment(reqObj.startDate).format('YYYY-MM-DD')
+    reqObj.startDate = store?.state?.scheduleTime
   }
   if (reqObj.endDate) {
     reqObj.endDate = moment(reqObj.endDate).format('YYYY-MM-DD')
@@ -65,27 +67,25 @@ export const onBotCreate = async () => {
         text: store?.state?.name + '_startingMessage',
         botId: res.data.result.id,
       })
-      if (store?.isBroadcastBot) {
-        onMappingBotToSegment({
-          queryParams: {
-            text: reqObj.startingMessage,
-            botId: res.data.result.id,
-          },
+      onMappingBotToSegment({
+        queryParams: {
+          text: reqObj.startingMessage,
+          botId: res.data.result.id,
+        },
+      })
+        .then((res) => {
+          if (store?.isBroadcastBot) {
+            onSegmentCreate()
+          } else {
+            store?.stopLoading()
+            store.onReset()
+            history.navigate('/success')
+          }
         })
-          .then((res) => {
-            if (store?.isBroadcastBot) {
-              onSegmentCreate()
-            } else {
-              store?.stopLoading()
-              store.onReset()
-              history.navigate('/success')
-            }
-          })
-          .catch((err) => {
-            toast.error(err?.message)
-            store.stopLoading()
-          })
-      }
+        .catch((err) => {
+          toast.error(err?.message)
+          store.stopLoading()
+        })
     })
     .catch((err) => {
       store?.stopLoading()
@@ -100,7 +100,7 @@ export const onSegmentCreate = () => {
     all: {
       type: 'get',
       config: {
-        url: `${process.env.REACT_APP_user_segment_url}/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
+        url: `${process.env.REACT_APP_user_segment_url}/v2/segments/${store?.state.segmentId}/mentors?deepLink=nipunlakshya://chatbot?botId=${store?.conversationBot?.id}`,
         type: 'GET',
         cadence: {
           perPage: store?.cadencePerPage || 100,
@@ -134,8 +134,19 @@ export const onSegmentCreate = () => {
 
 export const onStartConversation = (bot) => {
   const store: any = useStore.getState()
-  toast.success('Notification Triggered')
-  startConversation(bot)
+
+  const scheduledTimeUTC = store?.state?.scheduleTime
+  const scheduledTimeIST = utcToIst(scheduledTimeUTC)
+  const currentTimeIST = new Date()
+
+  let scheduled
+  if (scheduledTimeIST <= currentTimeIST) {
+    toast.success('Notification Triggered')
+  } else {
+    toast.success(`Notification scheduled`)
+    scheduled = scheduledTimeUTC
+  }
+  startConversation(bot, scheduled)
     // .then((res) => {
     //   store.stopLoading();
     //   store.onReset();
@@ -170,7 +181,7 @@ export const onStartConversation = (bot) => {
 export const onAfterBotSubmit = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
 
@@ -189,7 +200,7 @@ export const onAfterBotSubmit = (extras) => {
 export const onMappingBotToSegment = (extras) => {
   const store: any = useStore.getState()
   const mappingData = {
-    segmentId: parseInt(store?.state?.segmentId, 10),
+    segmentId: store?.state?.segmentId,
     botId: store.conversationBot.botId,
   }
   return mapToSegment(mappingData)
@@ -307,7 +318,6 @@ export const onBroadcastBotCreate = async () => {
 
   formdata.append('data', JSON.stringify({ data: reqObj }))
 
-  console.log('debug', { reqObj })
   createBot(formdata)
     .then((res) => {
       onStartConversation(res?.data?.result)
