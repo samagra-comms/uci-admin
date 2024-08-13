@@ -18,11 +18,8 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
   const [selectedDistricts, setSelectedDistricts] = useState([])
   const [selectedBlocks, setSelectedBlocks] = useState([])
   const [selectedSchools, setSelectedSchools] = useState([])
-  // const [isDistrictSelected, setIsDistrictSelected] = useState(false)
-  // const [isBlockSelected, setIsBlockSelected] = useState(false)
-  // const [isSchoolSelected, setIsSchoolSelected] = useState(false)
   const [actors, setActors] = useState([])
-  const [districts, setDistricts] = useState()
+  const [districts, setDistricts] = useState([])
   const [blocks, setBlocks] = useState([])
   const [schools, setSchools] = useState([])
   const fetchUsers = async () => {
@@ -105,27 +102,46 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
   }
 
   const handleDistrictChange = (district) => {
-    const updatedDistricts = selectedDistricts.includes(district)
-      ? selectedDistricts.filter((d) => d !== district)
-      : [...selectedDistricts, district]
-    setSelectedDistricts(updatedDistricts)
+    if (district === 'all') {
+      selectedDistricts.length !== districts.length
+        ? setSelectedDistricts(districts.map((d) => d.id))
+        : setSelectedDistricts([])
+    } else {
+      const updatedDistricts = selectedDistricts.includes(district)
+        ? selectedDistricts.filter((d) => d !== district)
+        : [...selectedDistricts, district]
+      setSelectedDistricts(updatedDistricts)
+    }
+
     setSelectedBlocks([])
     setSelectedSchools([])
   }
 
   const handleBlockChange = (block) => {
-    const updatedBlocks = selectedBlocks.includes(block)
-      ? selectedBlocks.filter((b) => b !== block)
-      : [...selectedBlocks, block]
-    setSelectedBlocks(updatedBlocks)
+    if (block === 'all') {
+      selectedBlocks.length !== blocks.length
+        ? setSelectedBlocks(blocks.map((d) => d.id))
+        : setSelectedBlocks([])
+    } else {
+      const updatedBlocks = selectedBlocks.includes(block)
+        ? selectedBlocks.filter((b) => b !== block)
+        : [...selectedBlocks, block]
+      setSelectedBlocks(updatedBlocks)
+    }
     setSelectedSchools([])
   }
 
   const handleSchoolChange = (school) => {
-    const updatedSchools = selectedSchools.includes(school)
-      ? selectedSchools.filter((s) => s !== school)
-      : [...selectedSchools, school]
-    setSelectedSchools(updatedSchools)
+    if (school === 'all') {
+      setSelectedSchools.length !== schools.length
+        ? setSelectedSchools(schools.map((d) => d.id))
+        : setSelectedSchools([])
+    } else {
+      const updatedSchools = selectedSchools.includes(school)
+        ? selectedSchools.filter((s) => s !== school)
+        : [...selectedSchools, school]
+      setSelectedSchools(updatedSchools)
+    }
   }
   return (
     <div>
@@ -188,11 +204,6 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedActor}
             handleOnChange={handleActorChange}
             showListOfChoices={true}
-            // isSelected={isDistrictSelected}
-            // onSelectChange={(e) => {
-            //   setIsDistrictSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedDistricts([])
-            // }}
           />
           {/* district  */}
           <IndividualSelection
@@ -201,11 +212,7 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedDistricts}
             handleOnChange={handleDistrictChange}
             showListOfChoices={selectedActor.length > 0}
-            // isSelected={isDistrictSelected}
-            // onSelectChange={(e) => {
-            //   setIsDistrictSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedDistricts([])
-            // }}
+            showAllOption={true}
           />
 
           <IndividualSelection
@@ -214,11 +221,7 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             selectedItem={selectedBlocks}
             handleOnChange={handleBlockChange}
             showListOfChoices={selectedDistricts.length > 0}
-            // isSelected={isBlockSelected}
-            // onSelectChange={(e) => {
-            //   setIsBlockSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedBlocks([])
-            // }}
+            showAllOption={true}
           />
           <IndividualSelection
             heading={'Schools'}
@@ -227,11 +230,7 @@ const SegmentFromMultipleOption = ({ isDisable }) => {
             handleOnChange={handleSchoolChange}
             showListOfChoices={selectedBlocks.length > 0}
             showId={true}
-            // isSelected={isSchoolSelected}
-            // onSelectChange={(e) => {
-            //   setIsSchoolSelected(e.target.checked)
-            //   if (!e.target.checked) setSelectedSchools([])
-            // }}
+            showAllOption={true}
           />
         </Space>
       </Modal>
@@ -257,8 +256,7 @@ const IndividualSelection = ({
   selectedItem,
   showListOfChoices = false,
   showId = false,
-  // isSelected,
-  // onSelectChange,
+  showAllOption = false,
 }) => {
   return (
     <div
@@ -269,12 +267,6 @@ const IndividualSelection = ({
         width: '100%',
       }}
     >
-      {/* <Checkbox
-        checked={showListOfChoices}
-        // checked={isSelected && showListOfChoices}
-        // onChange={onSelectChange}
-        disabled={!showListOfChoices}
-      > */}
       <p
         style={{
           fontSize: '16px',
@@ -285,8 +277,7 @@ const IndividualSelection = ({
       >
         {heading} :
       </p>
-      {/* </Checkbox> */}
-      {/* {showListOfChoices && isSelected && ( */}
+
       {showListOfChoices && (
         <div
           style={{
@@ -295,6 +286,16 @@ const IndividualSelection = ({
             width: '100%',
           }}
         >
+          {showAllOption && listOfChoice.length > 0 && (
+            <Checkbox
+              style={{ width: '160px', fontWeight: 700 }}
+              checked={selectedItem.length === listOfChoice.length}
+              onChange={() => handleOnChange('all')}
+            >
+              All
+            </Checkbox>
+          )}
+
           {listOfChoice.map((actor) => (
             <Checkbox
               style={{ width: '160px' }}
