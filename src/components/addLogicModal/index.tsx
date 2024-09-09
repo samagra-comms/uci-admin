@@ -370,7 +370,9 @@ const AddLogicModal: FC<any> = ({
                 <MDBBtn color="secondary" onClick={onClose}>
                   Close
                 </MDBBtn>
-                <MDBBtn onClick={onLogicAdd}>Add</MDBBtn>
+                <MDBBtn onClick={onLogicAdd} disabled={formId === ''}>
+                  Add
+                </MDBBtn>
               </MDBModalFooter>
             </MDBModalContent>
           </MDBContainer>
