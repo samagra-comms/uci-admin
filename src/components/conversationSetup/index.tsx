@@ -167,6 +167,7 @@ const ConversationSetup: FC<{ compProps: any }> = ({ compProps }) => {
           style={{ background: 'white' }}
           value={store?.state?.name}
           size="md"
+          maxLength={30}
         />
         {errors.name && (
           <div className="form-text text-danger"> {errors?.name}</div>
